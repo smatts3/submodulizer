@@ -1,0 +1,46 @@
+# GitHub Actions self-hosted runner on the same EC2 host as Harbor.
+# Wire this compose file next to your Harbor install (or set TRAEFIK_NETWORK_NAME).
+#
+# Docker pulls (docker pull, build): the daemon runs on the EC2 host. Ensure the
+# hostname used in image names (e.g. docker.ec2-…amazonaws.com) resolves ON THE HOST
+# to whatever serves Harbor (often add to /etc/hosts: 127.0.0.1 <harbor-hostname>).
+#
+# Run (from this directory):
+#   cp github-runner.env.example github-runner.env   # edit; chmod 600 github-runner.env
+#   docker compose -f docker-compose.github-runner.yml --env-file github-runner.env up -d
+#
+# Image docs: https://github.com/myoung34/docker-github-actions-runner
+# Wiki:       https://github.com/myoung34/docker-github-actions-runner/wiki
+
+services:
+  github-runner:
+    image: myoung34/github-runner:ubuntu-jammy
+    container_name: github-runner
+    restart: unless-stopped
+    security_opt:
+      - label:disable
+    environment:
+      REPO_URL: ${REPO_URL:?Set REPO_URL in github-runner.env and pass --env-file github-runner.env}
+      ACCESS_TOKEN: ${ACCESS_TOKEN:?Set ACCESS_TOKEN in github-runner.env}
+      RUNNER_NAME: ${RUNNER_NAME:-ec2-harbor-runner}
+      RUNNER_WORKDIR: /runner/_work
+      LABELS: ${LABELS:-harbor,self-hosted,linux}
+      # Avoid leaking registration secrets into job steps (recommended once workflows work)
+      # UNSET_CONFIG_VARS: "true"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - github_runner_work:/runner/_work
+    networks:
+      - traefik
+    # Helps tools running *inside this container* resolve your Harbor hostname to the host.
+    # Docker pull still resolves on the EC2 host — configure /etc/hosts there as noted above.
+    extra_hosts:
+      - "docker.ec2-3-137-190-96.us-east-2.compute.amazonaws.com:host-gateway"
+
+networks:
+  traefik:
+    external: true
+    name: ${TRAEFIK_NETWORK_NAME:-traefik_traefik}
+
+volumes:
+  github_runner_work:

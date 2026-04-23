@@ -1,0 +1,24 @@
+# Copy to .github/workflows/ in the repo that owns the self-hosted runner.
+# Add secrets: HARBOR_REGISTRY, HARBOR_USERNAME, HARBOR_PASSWORD
+# Use runs-on with the labels you set in docker-compose (e.g. harbor, self-hosted, linux).
+
+name: example-harbor-pull
+
+on:
+  workflow_dispatch:
+
+jobs:
+  pull:
+    runs-on: [self-hosted, harbor, linux]
+    steps:
+      - name: Log in to Harbor
+        env:
+          REGISTRY: ${{ secrets.HARBOR_REGISTRY }}
+          USERNAME: ${{ secrets.HARBOR_USERNAME }}
+          PASSWORD: ${{ secrets.HARBOR_PASSWORD }}
+        run: |
+          echo "$PASSWORD" | docker login "$REGISTRY" -u "$USERNAME" --password-stdin
+      - name: Pull image
+        env:
+          REGISTRY: ${{ secrets.HARBOR_REGISTRY }}
+        run: docker pull "${REGISTRY}/YOUR_PROJECT/YOUR_IMAGE:tag"

@@ -1,0 +1,181 @@
+# Moodle plugin paths → separate git repos (submodule layout).
+# Format: relative_path|clone_url|branch
+# Lines starting with # are ignored. Branch defaults to main if empty; submodulize/unsubmodulize
+# fall back to the remote default branch when that branch does not exist (e.g. master-only repos).
+#
+# Synced from repo CSV: Evaluation of LSU moodle messy plugins(List) (3).csv
+# Custom URL preferred over third-party when both are set.
+# How to refresh from CSV and team policy: cleandev/TEAM-PROCESS.md
+#
+# --- One repo per path (compatible with submodulize.sh / unsubmodulize.sh) ---
+
+admin/tool/ally|https://github.com/anthology-ally/moodle-tool_ally.git|main
+admin/tool/crawler|https://github.com/catalyst/moodle-tool_crawler.git|main
+admin/tool/mergeusers|https://github.com/jpahullo/moodle-tool_mergeusers.git|main
+admin/tool/migratehvp2h5p|https://github.com/moodlehq/moodle-tool_migratehvp2h5p.git|main
+admin/tool/s3_fs|https://github.com/catalyst/moodle-tool_objectfs.git|main
+auth/basic|https://github.com/catalyst/moodle-auth_basic.git|main
+availability/condition/password|https://github.com/moodle-an-hochschulen/moodle-availability_password.git|main
+availability/condition/relativedate|https://github.com/ewallah/moodle-availability_relativedate.git|main
+blocks/backadel|https://github.com/lsuits/lsu-block_backadel.git|main
+blocks/ce_enrollinfo|https://github.com/lsuonline/moodle-block_ce_enrollinfo.git|main
+blocks/configurable_reports|https://github.com/ULCC/moodle-block_configurable_reports.git|main
+blocks/course_hider|https://github.com/lsuonline/moodle-block-course_hider.git|main
+blocks/etextbook|https://github.com/lsuonline/moodle-block_etextbook.git|main
+blocks/helpdesk|https://github.com/lsuits/lsu-block_helpdesk.git|main
+blocks/link_logins|https://github.com/lsuonline/moodle-block_link_logins.git|main
+blocks/lsu_people|https://github.com/lsuonline/moodle-block_lsu_people.git|main
+blocks/lsuxe|https://github.com/lsuonline/moodle-block_lsuxe.git|main
+blocks/material_download|https://github.com/TUM-MZ/moodle-block_material-download.git|main
+blocks/mhaairs|https://github.com/itamart/moodle-block_mhaairs.git|main
+blocks/migrate_users|https://github.com/lsuonline/lsuce-block_migrate_users.git|main
+blocks/panopto|https://github.com/Panopto/Moodle-2.0-plugin-for-Panopto.git|main
+blocks/pu|https://github.com/lsuonline/block_pu.git|main
+blocks/quickmail|https://github.com/lsuonline/lsuce-block_quickmail.git|main
+blocks/quiz_results|https://github.com/moodlehq/moodle-block_quiz_results.git|main
+blocks/simple_restore|https://github.com/lsuits/lsu-block_simple_restore.git|main
+blocks/student_gradeviewer|https://github.com/lsuits/lsu-block_student_gradeviewer.git|main
+blocks/ues_logs|https://github.com/lsuits/lsu-block_ues_logs.git|main
+blocks/ues_meta_viewer|https://github.com/lsuits/lsu-block_ues_meta_viewer.git|main
+blocks/ues_reprocess|https://github.com/lsuits/lsu-block_ues_reprocess.git|main
+blocks/wds_postgrades|https://github.com/lsuonline/moodle-block_wds_postgrades.git|main
+blocks/wds_sportsgrades|https://github.com/lsuonline/moodle-block_wds_sportsgrades.git|main
+blocks/wdsprefs|https://github.com/lsuonline/moodle-block_wdsprefs.git|main
+cache/stores/rediscluster|https://github.com/open-lms-open-source/moodle-cachestore_rediscluster.git|main
+dataformat/xml|https://github.com/paulholden/moodle-dataformat_xml.git|main
+enrol/arlo|https://github.com/lsuonline/moodle-enrol_arlo.git|main
+enrol/d1|https://github.com/lsuonline/moodle-enrol_d1.git|main
+enrol/reenroller|https://github.com/lsuonline/moodle-enrol_reenroller.git|main
+enrol/studentstaff|https://github.com/lsuonline/moodle-enrol_studentstaff.git|main
+enrol/workdayhrm|https://github.com/lsuonline/moodle-enrol_workdayhrm.git|main
+enrol/workdaystudent|https://github.com/lsuonline/moodle-enrol_workdaystudent.git|main
+filter/ally|https://github.com/anthology-ally/moodle-filter_ally.git|main
+filter/wiris|https://github.com/wiris/moodle-filter_wiris.git|main
+grade/import/smart|https://github.com/lsuonline/moodle-grade_import_smart.git|main
+grade/report/forecast|https://github.com/lsuits/lsu-gradereport_forecast.git|main
+grade/report/grade_breakdown|https://github.com/lsuits/lsu-gradereport_grade_breakdown.git|main
+grade/report/gradebook_builder|https://github.com/lsuits/lsu-gradereport_gradebook_builder.git|main
+grade/report/rubrics|https://github.com/brickfield/moodle-gradereport_rubrics.git|main
+lib/editor/atto/plugins/cloze|https://github.com/dthies/moodle-atto_cloze.git|main
+lib/editor/atto/plugins/count|https://github.com/damyon/moodle-atto_count.git|main
+lib/editor/atto/plugins/fontfamily|https://github.com/projectestac/moodle-atto_fontfamily.git|main
+lib/editor/atto/plugins/fontsize|https://github.com/andrewnicols/moodle-atto_fontsize.git|main
+lib/editor/atto/plugins/fullscreen|https://github.com/dthies/moodle-atto_fullscreen.git|main
+lib/editor/atto/plugins/morefontcolors|https://github.com/ndunand/moodle-atto_morefontcolors.git|main
+lib/editor/atto/plugins/panoptobutton|https://github.com/lucisgit/moodle-repository_panopto.git|main
+lib/editor/atto/plugins/panoptoltibutton|https://github.com/lucisgit/moodle-block_panopto.git|main
+lib/editor/atto/plugins/phonetic|https://github.com/lsuonline/moodle_atto_phonetic.git|main
+lib/editor/atto/plugins/teamsmeeting|https://github.com/enovation/moodle-atto_teamsmeeting.git|main
+lib/editor/atto/plugins/vidgridbutton|https://github.com/ilosvideos/moodleAttoPlugin.git|main
+lib/editor/atto/plugins/wiris|https://github.com/wiris/moodle-atto_wiris.git|main
+lib/editor/atto/plugins/wordimport|https://github.com/ecampbell/moodle-atto_wordimport.git|main
+lib/editor/tiny/plugins/cloze|https://github.com/srobotta/moodle-tiny_cloze.git|main
+lib/editor/tiny/plugins/fontcolor|https://github.com/bfh/moodle-tiny_fontcolor.git|main
+lib/editor/tiny/plugins/fontfamily|https://github.com/finspire-fi/moodle-tiny_fontfamily.git|main
+lib/editor/tiny/plugins/fontsize|https://github.com/finspire-fi/moodle-tiny_fontsize.git|main
+lib/editor/tiny/plugins/kalturamedia|https://github.com/kaltura/moodle-tinymce_kalturamedia.git|main
+lib/editor/tiny/plugins/panoptoltibutton|https://github.com/Panopto/moodle-tiny_panoptoltibutton.git|main
+lib/editor/tiny/plugins/wiris|https://github.com/wiris/moodle-tiny_wiris.git|main
+lib/editor/tiny/plugins/wordimport|https://codeberg.org/linos/moodle-tiny_wordimport.git|main
+lib/editor/tiny/plugins/wordlimit|https://codeberg.org/linos/moodle-tiny_wordlimit.git|main
+local/adminer|https://github.com/adminerevo/adminerevo.git|main
+local/bulkenrol|https://github.com/moodle-an-hochschulen/moodle-local_bulkenrol.git|main
+local/d1|https://github.com/lsuonline/moodle-local_d1.git|main
+local/honorlockproctoring|https://github.com/HonorLock/moodle-local_honorlockproctoring.git|main
+local/kalpanmaps|https://github.com/lsuonline/local_kalpanmaps.git|main
+local/kaltura|https://github.com/kaltura/moodle-local_kaltura.git|main
+local/lsucli|https://github.com/lsuonline/moodle_local-lsucli.git|main
+local/redislock|https://github.com/open-lms-open-source/moodle-local_redislock.git|main
+local/reminders|https://github.com/isuru89/moodle-local_reminders.git|main
+local/remote_courses|https://github.com/LafColITS/moodle-local_remote_courses.git|main
+local/syllabusuploader|https://github.com/lsuonline/moodle-local_syllabusuploader.git|main
+local/wirisquizzes|https://github.com/wiris/moodle-local_wirisquizzes.git|main
+mod/attendance|https://github.com/danmarsden/moodle-mod_attendance.git|main
+mod/board|https://github.com/brickfield/moodle-mod_board.git|main
+mod/book/tool/wordimport|https://github.com/ecampbell/moodle-booktool_wordimport.git|main
+mod/choicegroup|https://github.com/ndunand/moodle-mod_choicegroup.git|main
+mod/customcert|https://github.com/mdjnelson/moodle-mod_customcert.git|main
+mod/flashcard|https://github.com/vfremaux/moodle-mod_flashcard.git|main
+mod/hvp|https://github.com/h5p/moodle-mod_hvp.git|main
+mod/journal|https://github.com/elearningsoftware/moodle-mod_journal.git|main
+mod/lightboxgallery|https://github.com/open-lms-open-source/moodle-mod_lightboxgallery.git|main
+mod/panoptosubmission|https://github.com/Panopto/moodle-mod_panoptosubmission.git|main
+mod/questionnaire|https://github.com/PoetOS/moodle-mod_questionnaire.git|main
+mod/quiz/report/downloadsubmissions|https://github.com/IITBombayWeb/moodle-quiz_downloadsubmissions.git|main
+mod/turnitintooltwo|https://github.com/turnitin/moodle-mod_turnitintooltwo.git|main
+plagiarism/turnitin|https://github.com/turnitin/moodle-plagiarism_turnitin.git|main
+question/behaviour/deferredfeedbackexplain|https://github.com/timhunt/moodle-qbehaviour_deferredfeedbackexplain.git|main
+question/behaviour/regexpadaptivewithhelp|https://github.com/rezeau/moodle-qbehaviour_regexpadaptivewithhelp.git|main
+question/behaviour/regexpadaptivewithhelpnopenalty|https://github.com/rezeau/moodle-qbehaviour_regexpadaptivewithhelpnopenalty.git|main
+question/format/wordtable|https://github.com/ecampbell/moodle-qformat_wordtable.git|main
+question/type/essayautograde|https://github.com/gbateson/moodle-qtype_essayautograde.git|main
+question/type/essaywiris|https://github.com/wiris/moodle-qtype_essaywiris.git|main
+question/type/gapfill|https://github.com/marcusgreen/moodle-qtype_gapfill.git|main
+question/type/matchwiris|https://github.com/wiris/moodle-qtype_matchwiris.git|main
+question/type/multianswerwiris|https://github.com/wiris/moodle-qtype_multianswerwiris.git|main
+question/type/multichoicewiris|https://github.com/wiris/moodle-qtype_multichoicewiris.git|main
+question/type/oumultiresponse|https://github.com/moodleou/moodle-qtype_oumultiresponse.git|main
+question/type/regexp|https://github.com/rezeau/moodle-qtype_regexp.git|main
+question/type/shortanswerwiris|https://github.com/wiris/moodle-qtype_shortanswerwiris.git|main
+question/type/truefalsewiris|https://github.com/wiris/moodle-qtype_truefalsewiris.git|main
+question/type/wq|https://github.com/wiris/moodle-qtype_wq.git|main
+report/allylti|https://github.com/anthology-ally/moodle-report_allylti.git|main
+report/componentgrades|https://github.com/marcusgreen/moodle-report_componentgrades.git|main
+report/coursesize|https://github.com/lsuonline/moodle-report_coursesize.git|main
+report/customsql|https://github.com/lsuonline/lsuce-report_customsql.git|main
+report/editdates|https://github.com/moodleou/moodle-report_editdates.git|main
+report/lpmonitoring|https://github.com/StudiUM/moodle-report_lpmonitoring.git|main
+report/lsusql|https://github.com/lsuonline/moodle-report_lsusql.git|main
+theme/snap|https://github.com/lsuonline/lsuce-theme_snap.git|main
+
+# --- Monorepos: one clone contains multiple plugin roots; scripts cannot map 1:1 ---
+# https://github.com/kaltura/moodle_plugin.git
+#   filter/kaltura
+#   lib/editor/atto/plugins/kalturamedia
+#   mod/kalvidassign
+#   mod/kalvidres
+
+# https://github.com/kaltura/moodle-local_kalturamediagallery.git
+#   blocks/kalturamediagallery
+#   local/kalturamediagallery
+
+# https://github.com/lsuits/lsu-enrol_ues.git
+#   enrol/ues
+#   local/azure
+#   local/lsu
+#   local/online
+
+# https://github.com/Microsoft/o365-moodle.git
+#   auth/oidc
+#   blocks/microsoft
+#   local/o365
+#   local/onenote
+#   mod/assign/feedback/onenote
+#   mod/assign/submission/onenote
+#   repository/office365
+
+# --- No submodule clone (bad or missing upstream) ---
+# local/ml (local_ml) — inventory used moodlehq/moodle-local_wstemplate; GitHub returns 404 and that
+#   repo is local_wstemplate, not local_ml. Keep plugin vendored or set a real remote when known.
+
+# --- No https clone URL in CSV (internal, private, defunct, or unset) ---
+# mod/library (mod_library)
+# mod/mylabmastering (mod_mylabmastering)
+# mod/respondusws (mod_respondusws)
+# mod/turningptintegration (mod_turningptintegration)
+# blocks/cps (block_cps)
+# blocks/csv_profile (block_csv_profile)
+# blocks/evaluation_kit_sso (block_evaluation_kit_sso)
+# blocks/iseek (block_iseek)
+# blocks/lsu_libraries_research_link (block_lsu_libraries_research_link)
+# blocks/my_picture (block_my_picture)
+# blocks/mylabmastering (block_mylabmastering)
+# blocks/post_grades (block_post_grades)
+# blocks/rollsheet (block_rollsheet)
+# filter/tidy (filter_tidy)
+# grade/import/kioskpearsonjson (gradeimport_kioskpearsonjson)
+# grade/import/pearson (gradeimport_pearson)
+# local/aws_sdk (local_aws_sdk)
+# local/mylabmastering (local_mylabmastering)
+# local/mymedia (local_mymedia)
+# local/natsane (local_natsane)
