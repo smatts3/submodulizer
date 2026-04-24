@@ -157,24 +157,25 @@ repository/office365|https://github.com/Microsoft/o365-moodle.git|main|repositor
 # local/ml (local_ml) — inventory used moodlehq/moodle-local_wstemplate; GitHub returns 404 and that
 #   repo is local_wstemplate, not local_ml. Keep plugin vendored or set a real remote when known.
 
-# --- No https clone URL in CSV (internal, private, defunct, or unset) ---
-# mod/library (mod_library)
-# mod/mylabmastering (mod_mylabmastering)
-# mod/respondusws (mod_respondusws)
-# mod/turningptintegration (mod_turningptintegration)
-# blocks/cps (block_cps)
-# blocks/csv_profile (block_csv_profile)
-# blocks/evaluation_kit_sso (block_evaluation_kit_sso)
-# blocks/iseek (block_iseek)
-# blocks/lsu_libraries_research_link (block_lsu_libraries_research_link)
-# blocks/my_picture (block_my_picture)
-# blocks/mylabmastering (block_mylabmastering)
-# blocks/post_grades (block_post_grades)
-# blocks/rollsheet (block_rollsheet)
-# filter/tidy (filter_tidy)
-# grade/import/kioskpearsonjson (gradeimport_kioskpearsonjson)
-# grade/import/pearson (gradeimport_pearson)
-# local/aws_sdk (local_aws_sdk)
-# local/mylabmastering (local_mylabmastering)
-# local/mymedia (local_mymedia)
-# local/natsane (local_natsane)
+# --- Legacy plugins (monorepo: no separate public upstream; sparse = tree path) ---
+
+blocks/cps|https://github.com/smatts3/lsuce-legacy-plugins.git|master|blocks/cps
+blocks/csv_profile|https://github.com/smatts3/lsuce-legacy-plugins.git|master|blocks/csv_profile
+blocks/evaluation_kit_sso|https://github.com/smatts3/lsuce-legacy-plugins.git|master|blocks/evaluation_kit_sso
+blocks/iseek|https://github.com/smatts3/lsuce-legacy-plugins.git|master|blocks/iseek
+blocks/lsu_libraries_research_link|https://github.com/smatts3/lsuce-legacy-plugins.git|master|blocks/lsu_libraries_research_link
+blocks/my_picture|https://github.com/smatts3/lsuce-legacy-plugins.git|master|blocks/my_picture
+blocks/mylabmastering|https://github.com/smatts3/lsuce-legacy-plugins.git|master|blocks/mylabmastering
+blocks/post_grades|https://github.com/smatts3/lsuce-legacy-plugins.git|master|blocks/post_grades
+blocks/rollsheet|https://github.com/smatts3/lsuce-legacy-plugins.git|master|blocks/rollsheet
+filter/tidy|https://github.com/smatts3/lsuce-legacy-plugins.git|master|filter/tidy
+grade/import/kioskpearsonjson|https://github.com/smatts3/lsuce-legacy-plugins.git|master|grade/import/kioskpearsonjson
+grade/import/pearson|https://github.com/smatts3/lsuce-legacy-plugins.git|master|grade/import/pearson
+local/aws_sdk|https://github.com/smatts3/lsuce-legacy-plugins.git|master|local/aws_sdk
+local/mylabmastering|https://github.com/smatts3/lsuce-legacy-plugins.git|master|local/mylabmastering
+local/mymedia|https://github.com/smatts3/lsuce-legacy-plugins.git|master|local/mymedia
+local/natsane|https://github.com/smatts3/lsuce-legacy-plugins.git|master|local/natsane
+mod/library|https://github.com/smatts3/lsuce-legacy-plugins.git|master|mod/library
+mod/mylabmastering|https://github.com/smatts3/lsuce-legacy-plugins.git|master|mod/mylabmastering
+mod/respondusws|https://github.com/smatts3/lsuce-legacy-plugins.git|master|mod/respondusws
+mod/turningptintegration|https://github.com/smatts3/lsuce-legacy-plugins.git|master|mod/turningptintegration

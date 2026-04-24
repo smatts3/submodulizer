@@ -49,19 +49,46 @@ submodulizer_plugin_tree_at_commit() {
   fi
 }
 
+# Sorted path/blob (and submodule target) lines — ignores file mode so Windows
+# vendoring (100644 vs 100755 for the same blob) still matches upstream commits.
+submodulizer_tree_path_object_fingerprint() {
+  local repo="$1" tree="$2"
+  git -C "$repo" ls-tree -r "$tree" 2>/dev/null \
+    | awk '$2 == "blob" || $2 == "commit" { print $3 "\t" $4 }' \
+    | LC_ALL=C sort
+}
+
 submodulizer_find_plugin_commit_for_tree() {
   local pdir="$1" want_tree="$2" in_path="${3:-}"
-  local c t t2
+  local want_repo="${4:-}"
+  local c t t2 want_fp tr_fp
+  if [[ -n "$(submodulizer_trim "${want_repo:-}")" ]] && git -C "$want_repo" cat-file -e "$want_tree" 2>/dev/null; then
+    want_fp="$(submodulizer_tree_path_object_fingerprint "$want_repo" "$want_tree")" || want_fp=""
+  else
+    want_fp=""
+  fi
   while IFS= read -r c; do
     if [[ -z "$(submodulizer_trim "${in_path:-}")" ]]; then
       t="$(submodulizer_plugin_tree_at_commit "$pdir" "$c" "")" || continue
       [[ "$t" == "$want_tree" ]] && { printf '%s\n' "$c"; return 0; }
+      if [[ -n "$want_fp" ]]; then
+        tr_fp="$(submodulizer_tree_path_object_fingerprint "$pdir" "$t")" || continue
+        [[ "$tr_fp" == "$want_fp" ]] && { printf '%s\n' "$c"; return 0; }
+      fi
     else
       if t="$(submodulizer_plugin_tree_at_commit "$pdir" "$c" "$in_path")" 2>/dev/null; then
         [[ "$t" == "$want_tree" ]] && { printf '%s\n' "$c"; return 0; }
+        if [[ -n "$want_fp" ]]; then
+          tr_fp="$(submodulizer_tree_path_object_fingerprint "$pdir" "$t")" || continue
+          [[ "$tr_fp" == "$want_fp" ]] && { printf '%s\n' "$c"; return 0; }
+        fi
       fi
       t2="$(submodulizer_plugin_tree_at_commit "$pdir" "$c" "")" || continue
       [[ "$t2" == "$want_tree" ]] && { printf '%s\n' "$c"; return 0; }
+      if [[ -n "$want_fp" ]]; then
+        tr_fp="$(submodulizer_tree_path_object_fingerprint "$pdir" "$t2")" || continue
+        [[ "$tr_fp" == "$want_fp" ]] && { printf '%s\n' "$c"; return 0; }
+      fi
     fi
   done < <(git -C "$pdir" rev-list --first-parent --reverse --all)
   return 1
@@ -487,7 +514,7 @@ unsubmodulize_replay_mode() {
         echo "No tree at $SOURCE_BRANCH:$P (source tip)" >&2
         exit 1
       fi
-      to_sha="$(submodulizer_find_plugin_commit_for_tree "$PDIR" "$tr_end" "${M_TREE[$i]}")" || {
+      to_sha="$(submodulizer_find_plugin_commit_for_tree "$PDIR" "$tr_end" "${M_TREE[$i]}" "$REPO_ROOT")" || {
         echo "Could not match plugin commit to vendored tree at $SOURCE_BRANCH:$P" >&2
         exit 1
       }
@@ -506,7 +533,7 @@ unsubmodulize_replay_mode() {
         echo "No tree at $FROM_REF:$P" >&2
         exit 1
       fi
-      from_sha="$(submodulizer_find_plugin_commit_for_tree "$PDIR" "$tr_sha" "${M_TREE[$i]}")" || {
+      from_sha="$(submodulizer_find_plugin_commit_for_tree "$PDIR" "$tr_sha" "${M_TREE[$i]}" "$REPO_ROOT")" || {
         echo "Could not find plugin commit matching tree at $FROM_REF:$P" >&2
         exit 1
       }
