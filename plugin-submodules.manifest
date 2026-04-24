@@ -1,5 +1,7 @@
 # Moodle plugin paths → separate git repos (submodule layout).
-# Format: relative_path|clone_url|branch
+# Format: relative_path|clone_url|branch [| sparse_paths [| in_repo_tree_path]]
+#   sparse_paths — comma-separated dirs inside the upstream repo (monorepo / fat checkout).
+#   in_repo_tree_path — optional; tree for replay + unsub archive (defaults to first sparse segment).
 # Lines starting with # are ignored. Branch defaults to main if empty; submodulize/unsubmodulize
 # fall back to the remote default branch when that branch does not exist (e.g. master-only repos).
 #
@@ -128,31 +130,28 @@ report/lpmonitoring|https://github.com/StudiUM/moodle-report_lpmonitoring.git|ma
 report/lsusql|https://github.com/lsuonline/moodle-report_lsusql.git|main
 theme/snap|https://github.com/lsuonline/lsuce-theme_snap.git|main
 
-# --- Monorepos: one clone contains multiple plugin roots; scripts cannot map 1:1 ---
-# https://github.com/kaltura/moodle_plugin.git
-#   filter/kaltura
-#   lib/editor/atto/plugins/kalturamedia
-#   mod/kalvidassign
-#   mod/kalvidres
+# --- Monorepos (sparse_paths = directory inside upstream; see README) ---
 
-# https://github.com/kaltura/moodle-local_kalturamediagallery.git
-#   blocks/kalturamediagallery
-#   local/kalturamediagallery
+filter/kaltura|https://github.com/kaltura/moodle_plugin.git|main|filter/kaltura
+lib/editor/atto/plugins/kalturamedia|https://github.com/kaltura/moodle_plugin.git|main|lib/editor/atto/plugins/kalturamedia
+mod/kalvidassign|https://github.com/kaltura/moodle_plugin.git|main|mod/kalvidassign
+mod/kalvidres|https://github.com/kaltura/moodle_plugin.git|main|mod/kalvidres
 
-# https://github.com/lsuits/lsu-enrol_ues.git
-#   enrol/ues
-#   local/azure
-#   local/lsu
-#   local/online
+blocks/kalturamediagallery|https://github.com/kaltura/moodle-local_kalturamediagallery.git|main|blocks/kalturamediagallery
+local/kalturamediagallery|https://github.com/kaltura/moodle-local_kalturamediagallery.git|main|local/kalturamediagallery
 
-# https://github.com/Microsoft/o365-moodle.git
-#   auth/oidc
-#   blocks/microsoft
-#   local/o365
-#   local/onenote
-#   mod/assign/feedback/onenote
-#   mod/assign/submission/onenote
-#   repository/office365
+enrol/ues|https://github.com/lsuits/lsu-enrol_ues.git|main|enrol/ues
+local/azure|https://github.com/lsuits/lsu-enrol_ues.git|main|local/azure
+local/lsu|https://github.com/lsuits/lsu-enrol_ues.git|main|local/lsu
+local/online|https://github.com/lsuits/lsu-enrol_ues.git|main|local/online
+
+auth/oidc|https://github.com/Microsoft/o365-moodle.git|main|auth/oidc
+blocks/microsoft|https://github.com/Microsoft/o365-moodle.git|main|blocks/microsoft
+local/o365|https://github.com/Microsoft/o365-moodle.git|main|local/o365
+local/onenote|https://github.com/Microsoft/o365-moodle.git|main|local/onenote
+mod/assign/feedback/onenote|https://github.com/Microsoft/o365-moodle.git|main|mod/assign/feedback/onenote
+mod/assign/submission/onenote|https://github.com/Microsoft/o365-moodle.git|main|mod/assign/submission/onenote
+repository/office365|https://github.com/Microsoft/o365-moodle.git|main|repository/office365
 
 # --- No submodule clone (bad or missing upstream) ---
 # local/ml (local_ml) — inventory used moodlehq/moodle-local_wstemplate; GitHub returns 404 and that

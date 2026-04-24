@@ -29,6 +29,74 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+# Manifest / monorepo helpers (sparse checkout, tree match, archive extract).
+submodulizer_trim() {
+  local s="$1"
+  s="${s#"${s%%[![:space:]]*}"}"
+  s="${s%"${s##*[![:space:]]}"}"
+  printf '%s\n' "$s"
+}
+
+submodulizer_sparse_default_tree_path() {
+  local csv="$1" first
+  first="${csv%%,*}"
+  submodulizer_trim "$first"
+}
+
+submodulizer_plugin_tree_at_commit() {
+  local pdir="$1" commit="$2" in_path="${3:-}"
+  if [[ -z "$(submodulizer_trim "$in_path")" ]]; then
+    git -C "$pdir" rev-parse "${commit}^{tree}" 2>/dev/null || return 1
+  else
+    git -C "$pdir" rev-parse "${commit}:${in_path}" 2>/dev/null || return 1
+  fi
+}
+
+submodulizer_find_plugin_commit_for_tree() {
+  local pdir="$1" want_tree="$2" in_path="${3:-}"
+  local c t t2
+  while IFS= read -r c; do
+    if [[ -z "$(submodulizer_trim "${in_path:-}")" ]]; then
+      t="$(submodulizer_plugin_tree_at_commit "$pdir" "$c" "")" || continue
+      [[ "$t" == "$want_tree" ]] && { printf '%s\n' "$c"; return 0; }
+    else
+      if t="$(submodulizer_plugin_tree_at_commit "$pdir" "$c" "$in_path")" 2>/dev/null; then
+        [[ "$t" == "$want_tree" ]] && { printf '%s\n' "$c"; return 0; }
+      fi
+      t2="$(submodulizer_plugin_tree_at_commit "$pdir" "$c" "")" || continue
+      [[ "$t2" == "$want_tree" ]] && { printf '%s\n' "$c"; return 0; }
+    fi
+  done < <(git -C "$pdir" rev-list --first-parent --reverse --all)
+  return 1
+}
+
+submodulizer_sparse_apply_in_worktree() {
+  local root="${1:?}" rel="${2:?}" csv="$3"
+  csv="$(submodulizer_trim "$csv")"
+  [[ -n "$csv" ]] || return 0
+  local sm="$root/$rel"
+  [[ -e "$sm/.git" ]] || {
+    echo "submodulizer_sparse_apply_in_worktree: not a git worktree: $sm" >&2
+    return 1
+  }
+  local -a cones=()
+  local seg rest="$csv,"
+  while [[ -n "$rest" ]]; do
+    seg="${rest%%,*}"
+    rest="${rest#"$seg"}"
+    rest="${rest#,}"
+    seg="$(submodulizer_trim "$seg")"
+    [[ -n "$seg" ]] && cones+=("$seg")
+  done
+  ((${#cones[@]} > 0)) || return 0
+  if git -C "$sm" sparse-checkout init --cone 2>/dev/null; then
+    git -C "$sm" sparse-checkout set -- "${cones[@]}"
+  else
+    git -C "$sm" sparse-checkout init 2>/dev/null || true
+    git -C "$sm" sparse-checkout set -- "${cones[@]}"
+  fi
+}
+
 MANIFEST=""
 MANIFEST_EXPLICIT=false
 DRY_RUN=false
@@ -79,7 +147,7 @@ Options:
   --dry-run       Print actions without changing the repo
   --no-commit     Stage submodule changes but do not commit (bootstrap still commits the submodule layout so unsub replay can run)
   --ssh           Use git@github.com URLs for github.com HTTPS entries
-  --manifest PATH Plugin manifest (default: ROOT/plugin-submodules.manifest). If that file sits at the repo root, one-shot/bootstrap also stages it on the submodule branch so master/unsubmodulized can keep it untracked.
+  --manifest PATH Plugin manifest (default: ROOT/plugin-submodules.manifest). Optional fields: path|url|branch|sparse_paths|in_repo_tree_path (see README). If that file sits at the repo root, one-shot/bootstrap also stages it on the submodule branch so master/unsubmodulized can keep it untracked.
   --repo ROOT     Moodle git root (explicit form of a bare ROOT; overrides an earlier bare ROOT; a bare path after --repo is an error)
 
 Bootstrap (from vendored tree + manifest → submodulized + unsubmodulized):
@@ -463,20 +531,31 @@ submodulize_sync_from_unsubmodulized() {
     exit 1
   fi
 
-  declare -a S_PATHS=() S_URLS=() S_BRANCHES=()
-  while IFS='|' read -r raw_path raw_url raw_branch; do
+  declare -a S_PATHS=() S_URLS=() S_BRANCHES=() S_SPARSE=() S_TREE=()
+  while IFS='|' read -r raw_path raw_url raw_branch raw_sparse raw_tree || [[ -n "${raw_path:-}" ]]; do
     path="${raw_path#"${raw_path%%[![:space:]]*}"}"
     path="${path%"${path##*[![:space:]]}"}"
     url="${raw_url#"${raw_url%%[![:space:]]*}"}"
     url="${url%"${url##*[![:space:]]}"}"
     branch="${raw_branch#"${raw_branch%%[![:space:]]*}"}"
     branch="${branch%"${branch##*[![:space:]]}"}"
+    sparse="$(submodulizer_trim "${raw_sparse:-}")"
+    tree="$(submodulizer_trim "${raw_tree:-}")"
     [[ -z "$path" || "$path" =~ ^# ]] && continue
     [[ -z "$url" ]] && { echo "Manifest: missing URL for path $path" >&2; exit 1; }
     [[ -z "$branch" ]] && branch="main"
+    if [[ -n "$tree" && -z "$sparse" ]]; then
+      echo "Manifest: in-repo tree path (5th field) requires sparse paths (4th field): $path" >&2
+      exit 1
+    fi
+    if [[ -z "$tree" && -n "$sparse" ]]; then
+      tree="$(submodulizer_sparse_default_tree_path "$sparse")"
+    fi
     S_PATHS+=("$path")
     S_URLS+=("$(rewrite_github_url_to_ssh "$url")")
     S_BRANCHES+=("$branch")
+    S_SPARSE+=("$sparse")
+    S_TREE+=("$tree")
   done < "$MANIFEST"
 
   ((${#S_PATHS[@]} > 0)) || { echo "No manifest entries." >&2; exit 1; }
@@ -489,15 +568,6 @@ submodulize_sync_from_unsubmodulized() {
       fi
     done
     printf '%s\n' "$best"
-  }
-
-  find_plugin_commit_for_tree_sync() {
-    local pdir="$1" want_tree="$2" c t
-    while IFS= read -r c; do
-      t="$(git -C "$pdir" rev-parse "$c^{tree}" 2>/dev/null || true)"
-      [[ "$t" == "$want_tree" ]] && { echo "$c"; return 0; }
-    done < <(git -C "$pdir" rev-list --first-parent --reverse --all)
-    return 1
   }
 
   # Create (or extend) branch unsubmodulized_sync in the plugin bare clone from vendored tree at U:r, push to origin.
@@ -679,7 +749,7 @@ submodulize_sync_from_unsubmodulized() {
         fi
         want_tr="$(git rev-parse "$U:$r" 2>/dev/null)"
         upstream_br="${S_BRANCHES[$j]}"
-        if newsha="$(find_plugin_commit_for_tree_sync "$pdir" "$want_tr")"; then
+        if newsha="$(submodulizer_find_plugin_commit_for_tree "$pdir" "$want_tr" "${S_TREE[$j]}")"; then
           :
         elif replay_vendored_into_plugin_unsub_sync_branch "$pdir" "$upstream_br" "$U" "$r" "$want_tr"; then
           newsha="$(tr -d '\r\n' <"$TMPD/last_plugin_replay_sha")"
@@ -733,17 +803,23 @@ run() {
 
 submodulize_one_shot_apply_manifest() {
   manifest_entries=0
-  while IFS='|' read -r raw_path raw_url raw_branch; do
+  while IFS='|' read -r raw_path raw_url raw_branch raw_sparse raw_tree || [[ -n "${raw_path:-}" ]]; do
     path="${raw_path#"${raw_path%%[![:space:]]*}"}"
     path="${path%"${path##*[![:space:]]}"}"
     url="${raw_url#"${raw_url%%[![:space:]]*}"}"
     url="${url%"${url##*[![:space:]]}"}"
     branch="${raw_branch#"${raw_branch%%[![:space:]]*}"}"
     branch="${branch%"${branch##*[![:space:]]}"}"
+    sparse="$(submodulizer_trim "${raw_sparse:-}")"
+    tree="$(submodulizer_trim "${raw_tree:-}")"
 
     [[ -z "$path" || "$path" =~ ^# ]] && continue
     [[ -z "$url" ]] && { echo "Manifest: missing URL for path $path" >&2; exit 1; }
     [[ -z "$branch" ]] && branch="main"
+    if [[ -n "$tree" && -z "$sparse" ]]; then
+      echo "Manifest: in-repo tree path (5th field) requires sparse paths (4th field): $path" >&2
+      exit 1
+    fi
     url="$(rewrite_github_url_to_ssh "$url")"
 
     ((++manifest_entries)) || true
@@ -766,7 +842,7 @@ submodulize_one_shot_apply_manifest() {
       fi
     fi
 
-    echo "Submodulizing: $path ← $url (branch $branch)"
+    echo "Submodulizing: $path ← $url (branch $branch)${sparse:+ (sparse: $sparse)}"
 
     parent="$(dirname "$path")"
     if [[ "$parent" != "." ]]; then
@@ -785,6 +861,7 @@ submodulize_one_shot_apply_manifest() {
 
     if $DRY_RUN; then
       printf '[dry-run] git submodule add -f (-b %q if exists on remote, else default branch) -- %q %q\n' "$branch" "$url" "$path"
+      [[ -n "$sparse" ]] && printf '[dry-run] sparse-checkout in submodule %q: %q\n' "$path" "$sparse"
     else
       submod_args=(-f)
       if [[ -n "$branch" ]] && GIT_TERMINAL_PROMPT=0 git "${git_github_pat_c[@]}" ls-remote --heads "$url" "refs/heads/$branch" 2>/dev/null | grep -q .; then
@@ -797,6 +874,9 @@ submodulize_one_shot_apply_manifest() {
         echo "  If the repo is private: configure HTTPS credentials, or re-run with --ssh (needs GitHub SSH access)." >&2
         echo "  After a failed add you may need: git submodule deinit -f -- $path 2>/dev/null; rm -rf .git/modules/$path $path" >&2
         exit 1
+      fi
+      if [[ -n "$sparse" ]]; then
+        submodulizer_sparse_apply_in_worktree "$REPO_ROOT" "$path" "$sparse" || exit 1
       fi
     fi
   done < "$MANIFEST"
@@ -890,30 +970,32 @@ submodulize_replay_mode() {
     return 1
   }
 
-  find_plugin_commit_for_tree() {
-    local pdir="$1" want_tree="$2" c t
-    while IFS= read -r c; do
-      t="$(git -C "$pdir" rev-parse "$c^{tree}" 2>/dev/null || true)"
-      [[ "$t" == "$want_tree" ]] && { echo "$c"; return 0; }
-    done < <(git -C "$pdir" rev-list --first-parent --reverse --all)
-    return 1
-  }
+  declare -a M_PATHS=() M_URLS=() M_BRANCHES=() M_SPARSE=() M_TREE=()
 
-  declare -a M_PATHS=() M_URLS=() M_BRANCHES=()
-
-  while IFS='|' read -r raw_path raw_url raw_branch; do
+  while IFS='|' read -r raw_path raw_url raw_branch raw_sparse raw_tree || [[ -n "${raw_path:-}" ]]; do
     path="${raw_path#"${raw_path%%[![:space:]]*}"}"
     path="${path%"${path##*[![:space:]]}"}"
     url="${raw_url#"${raw_url%%[![:space:]]*}"}"
     url="${url%"${url##*[![:space:]]}"}"
     branch="${raw_branch#"${raw_branch%%[![:space:]]*}"}"
     branch="${branch%"${branch##*[![:space:]]}"}"
+    sparse="$(submodulizer_trim "${raw_sparse:-}")"
+    tree="$(submodulizer_trim "${raw_tree:-}")"
     [[ -z "$path" || "$path" =~ ^# ]] && continue
     [[ -z "$url" ]] && { echo "Manifest: missing URL for $path" >&2; exit 1; }
     [[ -z "$branch" ]] && branch="main"
+    if [[ -n "$tree" && -z "$sparse" ]]; then
+      echo "Manifest: in-repo tree path (5th field) requires sparse paths (4th field): $path" >&2
+      exit 1
+    fi
+    if [[ -z "$tree" && -n "$sparse" ]]; then
+      tree="$(submodulizer_sparse_default_tree_path "$sparse")"
+    fi
     M_PATHS+=("$path")
     M_URLS+=("$url")
     M_BRANCHES+=("$branch")
+    M_SPARSE+=("$sparse")
+    M_TREE+=("$tree")
   done < "$MANIFEST"
 
   [[ ${#M_PATHS[@]} -gt 0 ]] || { echo "No manifest entries." >&2; exit 1; }
@@ -951,7 +1033,7 @@ submodulize_replay_mode() {
         echo "No tree at $SOURCE_BRANCH:$P (source tip)" >&2
         exit 1
       fi
-      to_sha="$(find_plugin_commit_for_tree "$PDIR" "$tr_end")" || {
+      to_sha="$(submodulizer_find_plugin_commit_for_tree "$PDIR" "$tr_end" "${M_TREE[$i]}")" || {
         echo "Could not match plugin commit to vendored tree at $SOURCE_BRANCH:$P" >&2
         exit 1
       }
@@ -969,7 +1051,7 @@ submodulize_replay_mode() {
           echo "No tree at $FORK_POINT:$P" >&2
           exit 1
         fi
-        from_sha="$(find_plugin_commit_for_tree "$PDIR" "$tr_sha")" || {
+        from_sha="$(submodulizer_find_plugin_commit_for_tree "$PDIR" "$tr_sha" "${M_TREE[$i]}")" || {
           echo "Could not find plugin commit matching tree at $FORK_POINT:$P" >&2
           exit 1
         }
