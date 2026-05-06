@@ -192,7 +192,7 @@ Options:
 Replay (default — one superproject commit per plugin-repo commit on --target):
   --no-replay           One-shot mode: convert submodules per manifest (no branch replay)
   --replay              Replay mode (default; explicit if you toggled --no-replay earlier on the command line)
-  --fork-point BASE     Superproject where replay starts (default: local master, else main, when omitted — see docs)
+  --fork-point BASE     Superproject where replay starts (default: current branch if it is a local branch, else master, else main)
   --source BR           Submodule/vendored tip to replay from (default: submodulized, else unsubmodulized, else master, else main)
   --target BR           Branch to create/update (default: unsubmodulized)
   --order NAME          Only chronological (committer date, then path, then SHA)
@@ -318,19 +318,22 @@ fi
 
 cd "$REPO_ROOT"
 
-# When --fork-point is omitted in replay mode, default to local master (else main) if safe; see resolve below.
+# When --fork-point is omitted in replay mode, default to the checked-out local branch, else master, else main.
 if $REPLAY && [[ -z "$FORK_POINT" ]]; then
   base_ref=""
-  if git show-ref --verify --quiet refs/heads/master; then
+  cur_br="$(git symbolic-ref -q --short HEAD 2>/dev/null || true)"
+  if [[ -n "$cur_br" ]] && git show-ref --verify --quiet "refs/heads/$cur_br"; then
+    base_ref="$cur_br"
+  elif git show-ref --verify --quiet refs/heads/master; then
     base_ref=master
   elif git show-ref --verify --quiet refs/heads/main; then
     base_ref=main
   else
-    echo "Replay needs --fork-point (no local master or main branch to use as default)." >&2
+    echo "Replay needs --fork-point (not on a local branch, and no local master or main to fall back to)." >&2
     exit 1
   fi
   head_sha="$(git rev-parse HEAD)"
-  master_sha="$(git rev-parse "${base_ref}^{commit}")"
+  base_sha="$(git rev-parse "${base_ref}^{commit}")"
   target_exists=false
   git show-ref --verify --quiet "refs/heads/$TARGET_BRANCH" && target_exists=true
   if ! $target_exists; then
@@ -338,7 +341,7 @@ if $REPLAY && [[ -z "$FORK_POINT" ]]; then
     echo "Default --fork-point $FORK_POINT ($TARGET_BRANCH does not exist yet)." >&2
   else
     target_sha="$(git rev-parse "$TARGET_BRANCH^{commit}")"
-    if [[ "$head_sha" == "$master_sha" ]] || [[ "$head_sha" == "$target_sha" ]]; then
+    if [[ "$head_sha" == "$base_sha" ]] || [[ "$head_sha" == "$target_sha" ]]; then
       FORK_POINT="$base_ref"
       echo "Default --fork-point $FORK_POINT (HEAD is ${base_ref} or $TARGET_BRANCH)." >&2
     else
