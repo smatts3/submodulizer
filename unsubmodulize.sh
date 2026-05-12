@@ -17,6 +17,9 @@
 #   -c url.https://TOKEN@github.com/.insteadOf=https://github.com/
 # (same as submodulize.sh). Or use --ssh.
 #
+# --plain-log (or SUBMODULIZER_PLAIN_LOG=1): replay commits use only the plugin commit message (no Replayed-from
+# footers); one-shot uses "Update plugin trees" instead of chore/submodule wording.
+#
 # Requires bash (arrays, pipefail). Do not run as `sh this-script.sh`; use `bash` or execute directly.
 
 if [ -z "${BASH_VERSION:-}" ]; then
@@ -158,6 +161,8 @@ FORCE_REPLAY=false
 REPLAY_SOURCE_EXPLICIT=false
 REPLAY_TARGET_EXPLICIT=false
 REPLAY_ORDER_EXPLICIT=false
+PLAIN_LOG=false
+[[ "${SUBMODULIZER_PLAIN_LOG:-}" =~ ^(1|true|yes)$ ]] && PLAIN_LOG=true
 declare -a PLUGIN_BASE_OVERRIDES=()
 
 usage() {
@@ -198,6 +203,8 @@ Replay (default — one superproject commit per plugin-repo commit on --target):
   --order NAME          Only chronological (committer date, then path, then SHA)
   --force               Replay only: delete and rebuild --target from --fork-point (omit for incremental update when --target exists)
   --plugin-base P=S     Optional start SHA for manifest path P (e.g. when BASE has no gitlink)
+  --plain-log           Replay: only plugin commit messages (no Replayed-from / Plugin-path footers).
+                        One-shot: message "Update plugin trees". Env: SUBMODULIZER_PLAIN_LOG=1.
 
 Requires: git, and clean submodule working trees for paths being converted (no uncommitted changes inside submodules).
 
@@ -239,6 +246,10 @@ while [[ $# -gt 0 ]]; do
     --plugin-base)
       PLUGIN_BASE_OVERRIDES+=("${2:?}")
       shift 2
+      ;;
+    --plain-log)
+      PLAIN_LOG=true
+      shift
       ;;
     --manifest)
       MANIFEST="${2:?}"
@@ -318,18 +329,22 @@ fi
 
 cd "$REPO_ROOT"
 
-# When --fork-point is omitted in replay mode, default to the checked-out local branch, else master, else main.
+# When --fork-point is omitted in replay mode, default to a vendored base branch.
+# If currently on --target, prefer master/main over current branch so accidental gitlink state
+# on target does not become the replay root.
 if $REPLAY && [[ -z "$FORK_POINT" ]]; then
   base_ref=""
   cur_br="$(git symbolic-ref -q --short HEAD 2>/dev/null || true)"
-  if [[ -n "$cur_br" ]] && git show-ref --verify --quiet "refs/heads/$cur_br"; then
+  if [[ -n "$cur_br" && "$cur_br" != "$TARGET_BRANCH" ]] && git show-ref --verify --quiet "refs/heads/$cur_br"; then
     base_ref="$cur_br"
   elif git show-ref --verify --quiet refs/heads/master; then
     base_ref=master
   elif git show-ref --verify --quiet refs/heads/main; then
     base_ref=main
+  elif [[ -n "$cur_br" ]] && git show-ref --verify --quiet "refs/heads/$cur_br"; then
+    base_ref="$cur_br"
   else
-    echo "Replay needs --fork-point (not on a local branch, and no local master or main to fall back to)." >&2
+    echo "Replay needs --fork-point (no local vendored base branch found)." >&2
     exit 1
   fi
   head_sha="$(git rev-parse HEAD)"
@@ -466,6 +481,7 @@ unsubmodulize_replay_mode() {
   SOURCE_TIP="$(git rev-parse "$SOURCE_BRANCH^{commit}")"
 
   INCREMENTAL=false
+  TARGET_REBUILD_FROM_FORK=false
   FROM_REF="$FORK_POINT"
   if git show-ref --verify --quiet "refs/heads/$TARGET_BRANCH" && ! $FORCE_REPLAY; then
     INCREMENTAL=true
@@ -475,12 +491,17 @@ unsubmodulize_replay_mode() {
       _ms="$(ls_path_mode_sha "$FROM_REF" "$_xp")"
       _mode="${_ms%%$'\t'*}"
       if [[ "$_mode" != "040000" ]]; then
-        echo "unsubmodulize: $TARGET_BRANCH at $_xp is not a vendored directory (tree mode $_mode)." >&2
-        echo "  Use --force to delete $TARGET_BRANCH and rebuild from --fork-point $FORK_POINT." >&2
-        exit 1
+        echo "unsubmodulize: $TARGET_BRANCH is not vendored at $_xp (tree mode $_mode)." >&2
+        echo "  Auto-heal: rebuilding $TARGET_BRANCH from --fork-point $FORK_POINT to avoid gitlink/submodule history on unsubmodulized." >&2
+        INCREMENTAL=false
+        TARGET_REBUILD_FROM_FORK=true
+        FROM_REF="$FORK_POINT"
+        break
       fi
     done
-    echo "unsubmodulize: incremental update of $TARGET_BRANCH from $(git rev-parse --short "$FROM_REF") toward $SOURCE_BRANCH." >&2
+    if $INCREMENTAL; then
+      echo "unsubmodulize: incremental update of $TARGET_BRANCH from $(git rev-parse --short "$FROM_REF") toward $SOURCE_BRANCH." >&2
+    fi
   fi
 
   TMPD="$(mktemp -d "${TMPDIR:-/tmp}/unsub-replay.XXXXXX")"
@@ -581,7 +602,7 @@ unsubmodulize_replay_mode() {
       echo "Branch $TARGET_BRANCH is already up to date with $SOURCE_BRANCH." >&2
       exit 0
     fi
-    if $FORCE_REPLAY && git show-ref --verify --quiet "refs/heads/$TARGET_BRANCH"; then
+    if ($FORCE_REPLAY || $TARGET_REBUILD_FROM_FORK) && git show-ref --verify --quiet "refs/heads/$TARGET_BRANCH"; then
       git branch -D "$TARGET_BRANCH" 2>/dev/null || true
     fi
     git branch "$TARGET_BRANCH" "$FORK_POINT"
@@ -652,6 +673,14 @@ unsubmodulize_replay_mode() {
     fi
   }
 
+  if ! $INCREMENTAL; then
+    cur_br_now="$(git symbolic-ref -q --short HEAD 2>/dev/null || true)"
+    if [[ "$cur_br_now" == "$TARGET_BRANCH" ]]; then
+      # Git cannot reset a branch with `worktree add -B` while that branch is checked out.
+      git checkout --detach -q
+    fi
+  fi
+
   if $INCREMENTAL; then
     GIT_TERMINAL_PROMPT=0 git "${git_github_pat_c[@]}" worktree add -f "$WT" "$TARGET_BRANCH"
   else
@@ -671,11 +700,18 @@ unsubmodulize_replay_mode() {
     ae="$(git -C "$pdir" show -s --format=%ae "$csha")"
     adate="$(git -C "$pdir" show -s --format=%ai "$csha")"
     body="$(git -C "$pdir" show -s --format=%B "$csha")"
-    {
-      printf '%s\n\n' "$body"
-      printf 'Replayed-from: %s\n' "$csha"
-      printf 'Plugin-path: %s\n' "$P"
-    } >"$TMPD/commitmsg.txt"
+    if $PLAIN_LOG; then
+      {
+        printf '%s' "$body"
+        [[ "$body" != *$'\n' ]] && printf '\n'
+      } >"$TMPD/commitmsg.txt"
+    else
+      {
+        printf '%s\n\n' "$body"
+        printf 'Replayed-from: %s\n' "$csha"
+        printf 'Plugin-path: %s\n' "$P"
+      } >"$TMPD/commitmsg.txt"
+    fi
 
     git -C "$WT" add -A
     GIT_AUTHOR_NAME="$an" GIT_AUTHOR_EMAIL="$ae" GIT_AUTHOR_DATE="$adate" \
@@ -780,7 +816,11 @@ if ! $NO_COMMIT; then
   if git diff --cached --quiet 2>/dev/null; then
     echo "Nothing staged; skipping commit."
   else
-    git commit -m "chore: vendor plugin trees (remove submodules per manifest)"
+    if $PLAIN_LOG; then
+      git commit -m "Update plugin trees"
+    else
+      git commit -m "chore: vendor plugin trees (remove submodules per manifest)"
+    fi
   fi
 fi
 

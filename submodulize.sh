@@ -18,6 +18,9 @@
 # for ls-remote / submodule add (parent repo url.insteadOf is not always applied to submodule clone).
 # Or use --ssh. In Docker with no TTY you see: "could not read Username for 'https://github.com'".
 #
+# --plain-log (or SUBMODULIZER_PLAIN_LOG=1): omit tooling footers in replay/sync commits and use neutral
+# messages for manifest layout commits so history reads like ordinary plugin work.
+#
 # Requires bash (arrays, pipefail). Do not run as `sh this-script.sh`; use `bash` or execute directly.
 
 if [ -z "${BASH_VERSION:-}" ]; then
@@ -144,6 +147,8 @@ BOOTSTRAP=false
 BOOTSTRAP_EXPLICIT=false
 SYNC_UNSUB=false
 NO_SYNC_FROM_UNSUB=false
+PLAIN_LOG=false
+[[ "${SUBMODULIZER_PLAIN_LOG:-}" =~ ^(1|true|yes)$ ]] && PLAIN_LOG=true
 declare -a PLUGIN_BASE_OVERRIDES=()
 
 usage() {
@@ -192,6 +197,9 @@ Replay (default — one superproject commit per plugin-repo commit on --target):
   --plugin-base P=S     Optional start SHA for manifest path P
   --sync-unsub          Force the unsub→submodulized sync step (even if merge-base already equals unsub tip). Normally automatic when both branches exist and unsub is ahead.
   --no-sync-from-unsub  After manifest one-shot: do not replay unsubmodulized onto submodulized (overrides automatic sync).
+  --plain-log           Replay/sync: use only upstream commit messages (no Replayed-from / Synced-from-unsub footers).
+                        Manifest one-shot: commit message "Update plugin trees" instead of chore/submodule wording.
+                        Bootstrap passes this through to unsubmodulize replay. Env: SUBMODULIZER_PLAIN_LOG=1.
 
 Requires: git, and a clean enough working tree (commit or stash if plugin paths are dirty).
 
@@ -249,6 +257,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     --no-sync-from-unsub)
       NO_SYNC_FROM_UNSUB=true
+      shift
+      ;;
+    --plain-log)
+      PLAIN_LOG=true
       shift
       ;;
     --manifest)
@@ -664,10 +676,18 @@ submodulize_sync_from_unsubmodulized() {
     fi
 
     msgf="$TMPD/replay_msg_${path_r//\//_}.$U"
-    {
-      git -C "$REPO_ROOT" show -s --format=%B "$U"
-      printf '\nReplayed-from-unsub: %s\nPlugin-path: %s\nSync-branch: %s\n' "$U" "$path_r" "$sync_br"
-    } >"$msgf"
+    if $PLAIN_LOG; then
+      {
+        b="$(git -C "$REPO_ROOT" show -s --format=%B "$U")"
+        printf '%s' "$b"
+        [[ "$b" != *$'\n' ]] && printf '\n'
+      } >"$msgf"
+    else
+      {
+        git -C "$REPO_ROOT" show -s --format=%B "$U"
+        printf '\nReplayed-from-unsub: %s\nPlugin-path: %s\nSync-branch: %s\n' "$U" "$path_r" "$sync_br"
+      } >"$msgf"
+    fi
     an="$(git -C "$REPO_ROOT" show -s --format=%an "$U")"
     ae="$(git -C "$REPO_ROOT" show -s --format=%ae "$U")"
     ad="$(git -C "$REPO_ROOT" show -s --format=%ai "$U")"
@@ -806,10 +826,18 @@ submodulize_sync_from_unsubmodulized() {
     fi
 
     msgf="$TMPD/commitmsg.$U.txt"
-    {
-      git show -s --format=%B "$U"
-      printf '\nSynced-from-unsub: %s\n' "$U"
-    } >"$msgf"
+    if $PLAIN_LOG; then
+      {
+        b="$(git show -s --format=%B "$U")"
+        printf '%s' "$b"
+        [[ "$b" != *$'\n' ]] && printf '\n'
+      } >"$msgf"
+    else
+      {
+        git show -s --format=%B "$U"
+        printf '\nSynced-from-unsub: %s\n' "$U"
+      } >"$msgf"
+    fi
     nc="$(git commit-tree "$new_tree" -p HEAD -F "$msgf")"
     git update-ref "refs/heads/$TARGET_BRANCH" "$nc"
     git reset --hard -q "$nc"
@@ -929,7 +957,11 @@ submodulize_one_shot_apply_manifest() {
     if git diff --cached --quiet 2>/dev/null; then
       echo "Nothing staged; skipping commit."
     else
-      git commit -m "chore: add plugin submodules per plugin-submodules.manifest"
+      if $PLAIN_LOG; then
+        git commit -m "Update plugin trees"
+      else
+        git commit -m "chore: add plugin submodules per plugin-submodules.manifest"
+      fi
     fi
   fi
 
@@ -973,6 +1005,7 @@ submodulize_bootstrap_pipeline() {
 
   unsub_args=(--repo "$REPO_ROOT" --fork-point "$vend_tip" --source submodulized --target unsubmodulized)
   $FORCE_REPLAY && unsub_args+=(--force)
+  $PLAIN_LOG && unsub_args+=(--plain-log)
 
   bash "$SCRIPT_DIR/unsubmodulize.sh" "${unsub_args[@]}"
   echo "Bootstrap complete: submodulized (submodules) and unsubmodulized (vendored replay) are ready." >&2
@@ -1167,12 +1200,19 @@ submodulize_replay_mode() {
     ae="$(git -C "$pdir" show -s --format=%ae "$csha")"
     adate="$(git -C "$pdir" show -s --format=%ai "$csha")"
     body="$(git -C "$pdir" show -s --format=%B "$csha")"
-    {
-      printf '%s\n\n' "$body"
-      printf 'Replayed-from: %s\n' "$csha"
-      printf 'Plugin-path: %s\n' "$P"
-      printf 'gitlink: submodulize.sh (replay)\n'
-    } >"$TMPD/commitmsg.txt"
+    if $PLAIN_LOG; then
+      {
+        printf '%s' "$body"
+        [[ "$body" != *$'\n' ]] && printf '\n'
+      } >"$TMPD/commitmsg.txt"
+    else
+      {
+        printf '%s\n\n' "$body"
+        printf 'Replayed-from: %s\n' "$csha"
+        printf 'Plugin-path: %s\n' "$P"
+        printf 'gitlink: submodulize.sh (replay)\n'
+      } >"$TMPD/commitmsg.txt"
+    fi
 
     GIT_AUTHOR_NAME="$an" GIT_AUTHOR_EMAIL="$ae" GIT_AUTHOR_DATE="$adate" \
       GIT_COMMITTER_NAME="$an" GIT_COMMITTER_EMAIL="$ae" GIT_COMMITTER_DATE="$adate" \
