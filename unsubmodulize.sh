@@ -478,7 +478,43 @@ unsubmodulize_replay_mode() {
     exit 1
   fi
 
+  # Vendored = none of the manifest paths are 160000 (gitlinks) at the given commit.
+  _commit_has_gitlinks_in_manifest() {
+    local commit="$1" _p _mode
+    for _p in "${M_PATHS[@]}"; do
+      _mode="$(git ls-tree "$commit" -- "$_p" 2>/dev/null | awk '{print $1; exit}')"
+      [[ "$_mode" == "160000" ]] && return 0
+    done
+    return 1
+  }
+  # Walk first-parent ancestors of $1 until a commit without gitlinks at manifest paths is found.
+  _walk_back_to_vendored_ancestor() {
+    local start="$1" c
+    while IFS= read -r c; do
+      if ! _commit_has_gitlinks_in_manifest "$c"; then
+        printf '%s\n' "$c"
+        return 0
+      fi
+    done < <(git rev-list --first-parent "$start" 2>/dev/null)
+    return 1
+  }
+
   SOURCE_TIP="$(git rev-parse "$SOURCE_BRANCH^{commit}")"
+
+  # FORK_POINT must be vendored (no gitlinks at manifest paths). If the chosen anchor lives on
+  # submodulized history (e.g. defaulted there, or was a polluted unsubmodulized tip), step back
+  # along SOURCE history until we find the pre-submodulize vendored commit. Otherwise unsubmodulized
+  # could end up sharing the "add plugin submodules" layout commit, which we never want.
+  if _commit_has_gitlinks_in_manifest "$FORK_POINT"; then
+    echo "unsubmodulize: --fork-point $(git rev-parse --short "$FORK_POINT") contains gitlinks at manifest paths; searching for vendored ancestor on $SOURCE_BRANCH." >&2
+    if _vendored_anchor="$(_walk_back_to_vendored_ancestor "$SOURCE_TIP")" && [[ -n "$_vendored_anchor" ]]; then
+      FORK_POINT="$_vendored_anchor"
+      echo "unsubmodulize: using --fork-point $(git rev-parse --short "$FORK_POINT") (last vendored commit before submodulize)." >&2
+    else
+      echo "unsubmodulize: no vendored ancestor found on $SOURCE_BRANCH; pass --fork-point explicitly (commit where manifest paths are plain directories)." >&2
+      exit 1
+    fi
+  fi
 
   INCREMENTAL=false
   TARGET_REBUILD_FROM_FORK=false
