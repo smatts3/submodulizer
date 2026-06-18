@@ -57,13 +57,12 @@ git -C "$PLUGIN_STD" archive "$STD0" | tar -x -C "$MOODLE/mod/onestd"
 git -C "$PLUGIN_MONO" archive "$MONO0:plugins/mono_a" | tar -x -C "$MOODLE/blocks/mono_a"
 git -C "$PLUGIN_MONO" archive "$MONO0:plugins/mono_b" | tar -x -C "$MOODLE/blocks/mono_b"
 
-{
-  printf 'mod/onestd|%s|main\n' "../plugin_std"
-  printf 'blocks/mono_a|%s|main|plugins/mono_a\n' "../plugin_mono"
-  printf 'blocks/mono_b|%s|main|plugins/mono_b\n' "../plugin_mono"
-} >"$MOODLE/plugin-submodules.manifest"
+write_submodulizer_json "$MOODLE/submodulizer.json" \
+  'mod/onestd|../plugin_std|main' \
+  'blocks/mono_a|../plugin_mono|main|plugins/mono_a' \
+  'blocks/mono_b|../plugin_mono|main|plugins/mono_b'
 
-git -C "$MOODLE" add mod/onestd blocks/mono_a blocks/mono_b plugin-submodules.manifest
+git -C "$MOODLE" add mod/onestd blocks/mono_a blocks/mono_b submodulizer.json
 git -C "$MOODLE" commit -q -m "vendored plugins + manifest"
 git -C "$MOODLE" push origin master
 

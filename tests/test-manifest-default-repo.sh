@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Default manifest path: ROOT/plugin-submodules.manifest when --manifest is omitted.
+# Default manifest path: ROOT/submodulizer.json when --manifest is omitted.
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=lib.sh
@@ -18,7 +18,7 @@ echo "core" >"$MOODLE/README.txt"
 git -C "$MOODLE" add README.txt
 git -C "$MOODLE" commit -q -m "init"
 
-# No plugin-submodules.manifest at repo root → scripts fail
+# No submodulizer.json at repo root → scripts fail
 if "$CLEANDEV/submodulize.sh" --repo "$MOODLE" --dry-run 2>/dev/null; then
   fail "expected submodulize to fail when default manifest is missing"
 fi
@@ -37,4 +37,4 @@ set -e
 echo "$sub_out" | grep -Fq "Manifest not found" || fail "expected submodulize stderr to mention Manifest not found"
 echo "$red_out" | grep -Fq "Manifest not found" || fail "expected redundant stderr to mention Manifest not found"
 
-ok "default manifest path requires ROOT/plugin-submodules.manifest when --manifest omitted"
+ok "default manifest path requires ROOT/submodulizer.json when --manifest omitted"

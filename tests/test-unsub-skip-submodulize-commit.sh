@@ -31,7 +31,7 @@ git -C "$MOODLE" add README.md mod/foo
 git -C "$MOODLE" commit -q -m "vendored base"
 VENDORED_TIP="$(git -C "$MOODLE" rev-parse HEAD)"
 
-printf 'mod/foo|%s|main\n' "$PLUGIN" > "$MOODLE/plugin-submodules.manifest"
+write_submodulizer_json "$MOODLE/submodulizer.json" "mod/foo|$PLUGIN|main"
 
 # Bootstrap creates submodulized (layout commit) and unsubmodulized.
 "$CLEANDEV/submodulize.sh" --repo "$MOODLE"
@@ -80,12 +80,12 @@ git -C "$MOODLE2" config -f .gitmodules submodule.mod/foo.url "$PLUGIN2"
 git -C "$MOODLE2" add .gitmodules
 git -C "$MOODLE2" rm -rf --cached mod/foo
 git -C "$MOODLE2" update-index --add --cacheinfo "160000,$PC1,mod/foo"
-git -C "$MOODLE2" commit -q -m "chore: add plugin submodules per plugin-submodules.manifest"
+git -C "$MOODLE2" commit -q -m "chore: add plugin submodules per submodulizer.json"
 LAYOUT_SHA="$(git -C "$MOODLE2" rev-parse HEAD)"
 git -C "$MOODLE2" reset --hard -q HEAD
 rm -rf "$MOODLE2/mod/foo"
 
-printf 'mod/foo|%s|main\n' "$PLUGIN2" > "$MOODLE2/plugin-submodules.manifest"
+write_submodulizer_json "$MOODLE2/submodulizer.json" "mod/foo|$PLUGIN2|main"
 
 # Run unsubmodulize while checked out on submodulized (the user's scenario).
 "$CLEANDEV/unsubmodulize.sh" --repo "$MOODLE2" --target unsubmodulized

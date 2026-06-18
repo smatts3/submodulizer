@@ -29,7 +29,7 @@ git -C "$PLUGIN" archive HEAD | tar -x -C "$MOODLE/mod/testplugin"
 git -C "$MOODLE" add mod/testplugin
 git -C "$MOODLE" commit -q -m "vendored plugin"
 
-printf '%s\n' 'mod/testplugin|../plugin-upstream|main' > "$MOODLE/plugin-submodules.manifest"
+write_submodulizer_json "$MOODLE/submodulizer.json" 'mod/testplugin|../plugin-upstream|main'
 
 # No local submodulized branch → auto-bootstrap (same as explicit --bootstrap)
 "$CLEANDEV/submodulize.sh" --repo "$MOODLE" --no-commit
@@ -37,10 +37,10 @@ printf '%s\n' 'mod/testplugin|../plugin-upstream|main' > "$MOODLE/plugin-submodu
 git -C "$MOODLE" show-ref --verify --quiet refs/heads/submodulized || fail "expected submodulized branch"
 git -C "$MOODLE" show-ref --verify --quiet refs/heads/unsubmodulized || fail "expected unsubmodulized branch"
 git -C "$MOODLE" ls-tree submodulized mod/testplugin | grep -q '^160000' || fail "expected gitlink (submodule) at mod/testplugin on submodulized"
-git -C "$MOODLE" ls-tree -r submodulized --name-only | grep -q '^plugin-submodules.manifest$' || fail "expected tracked plugin-submodules.manifest on submodulized"
+git -C "$MOODLE" ls-tree -r submodulized --name-only | grep -q '^submodulizer.json$' || fail "expected tracked submodulizer.json on submodulized"
 git -C "$MOODLE" ls-tree -r unsubmodulized --name-only | grep -q '^mod/testplugin/version.txt$' || fail "expected vendored file on unsubmodulized"
-if git -C "$MOODLE" ls-tree -r unsubmodulized --name-only | grep -q '^plugin-submodules.manifest$'; then
-  fail "did not expect plugin-submodules.manifest on unsubmodulized"
+if git -C "$MOODLE" ls-tree -r unsubmodulized --name-only | grep -q '^submodulizer.json$'; then
+  fail "did not expect submodulizer.json on unsubmodulized"
 fi
 
 ok "submodulize bootstrap (auto when submodulized missing)"

@@ -27,7 +27,7 @@ echo "vendored-only" > "$MOODLE/mod/testplugin/local.txt"
 git -C "$MOODLE" add mod/testplugin
 git -C "$MOODLE" commit -q -m "vendored plugin"
 
-printf '%s\n' 'mod/testplugin|../plugin-upstream|main' > "$MOODLE/plugin-submodules.manifest"
+write_submodulizer_json "$MOODLE/submodulizer.json" 'mod/testplugin|../plugin-upstream|main'
 
 # --- dry-run must not convert ---
 "$CLEANDEV/submodulize.sh" --no-replay --repo "$MOODLE" --dry-run
@@ -57,4 +57,4 @@ git -C "$MOODLE" ls-files --error-unmatch mod/testplugin/version.txt >/dev/null 
 ! git -C "$MOODLE" submodule status 2>/dev/null | grep -q 'mod/testplugin' \
   || fail "expected mod/testplugin not to remain a submodule after unsubmodulize"
 
-ok "submodulize <-> unsubmodulize round-trip (default ROOT/plugin-submodules.manifest)"
+ok "submodulize <-> unsubmodulize round-trip (default ROOT/submodulizer.json)"

@@ -36,10 +36,10 @@ git -C "$MOODLE" commit -q -m "vendored base"
 M0="$(git -C "$MOODLE" rev-parse HEAD)"
 
 git -C "$MOODLE" checkout -q -b submodulized
-printf 'mod/foo|%s|main\n' "$PLUGIN" > "$MOODLE/plugin-submodules.manifest"
+write_submodulizer_json "$MOODLE/submodulizer.json" "mod/foo|$PLUGIN|main"
 git -C "$MOODLE" config -f .gitmodules submodule.mod/foo.path mod/foo
 git -C "$MOODLE" config -f .gitmodules submodule.mod/foo.url "$PLUGIN"
-git -C "$MOODLE" add .gitmodules plugin-submodules.manifest
+git -C "$MOODLE" add .gitmodules submodulizer.json
 git -C "$MOODLE" rm -rf --cached mod/foo
 git -C "$MOODLE" update-index --add --cacheinfo "160000,$C0,mod/foo"
 git -C "$MOODLE" commit -q -m "sub at c0"
@@ -94,10 +94,10 @@ git -C "$MOODLE2" commit -q -m "vendored base"
 M0b="$(git -C "$MOODLE2" rev-parse HEAD)"
 
 git -C "$MOODLE2" checkout -q -b submodulized
-printf 'mod/foo|%s|main\n' "$PLUGIN2" > "$MOODLE2/plugin-submodules.manifest"
+write_submodulizer_json "$MOODLE2/submodulizer.json" "mod/foo|$PLUGIN2|main"
 git -C "$MOODLE2" config -f .gitmodules submodule.mod/foo.path mod/foo
 git -C "$MOODLE2" config -f .gitmodules submodule.mod/foo.url "$PLUGIN2"
-git -C "$MOODLE2" add .gitmodules plugin-submodules.manifest
+git -C "$MOODLE2" add .gitmodules submodulizer.json
 git -C "$MOODLE2" rm -rf --cached mod/foo
 git -C "$MOODLE2" update-index --add --cacheinfo "160000,$C0b,mod/foo"
 git -C "$MOODLE2" commit -q -m "sub at c0"

@@ -48,7 +48,7 @@ rm -rf "$MOODLE/mod/foo"
 # Polluted unsub branch: points at submodulized commit (bad state we want to heal).
 git -C "$MOODLE" branch -q unsubmodulized "$SUB_SHA"
 git -C "$MOODLE" checkout -q unsubmodulized
-printf 'mod/foo|%s|main\n' "$PLUGIN" > "$MOODLE/plugin-submodules.manifest"
+write_submodulizer_json "$MOODLE/submodulizer.json" "mod/foo|$PLUGIN|main"
 
 "$CLEANDEV/unsubmodulize.sh" --repo "$MOODLE" --target unsubmodulized
 

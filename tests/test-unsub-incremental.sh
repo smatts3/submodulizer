@@ -50,8 +50,8 @@ git -C "$MOODLE" checkout -q -b submodulized
 git -C "$MOODLE" update-index --add --cacheinfo "160000,$C1,mod/foo"
 git -C "$MOODLE" commit -q -m "sub at c1"
 
-MANIFEST="$MOODLE/plugin-submodules.manifest"
-printf 'mod/foo|%s|main\n' "$PLUGIN" > "$MANIFEST"
+MANIFEST="$MOODLE/submodulizer.json"
+write_submodulizer_json "$MANIFEST" "mod/foo|$PLUGIN|main"
 
 # Initial build (force ok); submodulized tip is still C1 so replay is c0..c1 only.
 "$CLEANDEV/unsubmodulize.sh" --repo "$MOODLE" --fork-point "$BASE" --source submodulized \

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Replace git submodules with plain tracked directories (vendored plugins), matching lsuce-moodle
 # develop style. For the submodule-layout Moodle superproject: manifest and .gitmodules live in that
-# repo; this script reads plugin-submodules.manifest at the superproject root unless --manifest is set.
+# repo; this script reads submodulizer.json at the superproject root unless --manifest is set.
 # Clones each plugin repo at the given branch, drops nested .git, and adds files to the parent.
 # Run from inside the clone, or pass the clone path as ROOT / --repo.
 # Default mode is replay: builds branch unsubmodulized with one superproject commit per plugin-repo commit.
@@ -29,6 +29,8 @@ fi
 
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 # Manifest / monorepo helpers (sparse checkout, tree match, archive extract).
 submodulizer_trim() {
   local s="$1"
@@ -37,10 +39,106 @@ submodulizer_trim() {
   printf '%s\n' "$s"
 }
 
+# Fail with a useful message if jq is not on PATH; required to read submodulizer.json.
+submodulizer_require_jq() {
+  if ! command -v jq >/dev/null 2>&1; then
+    echo "jq is required to read submodulizer.json. Install with your package manager (e.g. 'apt install jq', 'brew install jq')." >&2
+    return 1
+  fi
+}
+
 submodulizer_sparse_default_tree_path() {
   local csv="$1" first
   first="${csv%%,*}"
   submodulizer_trim "$first"
+}
+
+# Read submodulizer.json at $1 and append one entry per (non-disabled) plugin
+# to the caller's arrays M_PATHS / M_URLS / M_BRANCHES / M_SPARSE / M_TREE.
+# Validates the schema strictly: unknown top-level keys, unknown defaults keys,
+# or unknown per-entry keys cause a hard error. Defaults branch to
+# .defaults.branch (or "main"), derives tree from the first sparse_paths entry
+# when sparse is set but tree is not, and propagates M_SPARSE as a
+# comma-separated string for downstream sparse-checkout consumers.
+# Returns 1 (and prints to stderr) on any failure. The caller is responsible
+# for `declare -a M_PATHS=() ...` before the call so array-name collisions
+# across functions are explicit.
+submodulizer_load_manifest() {
+  local manifest="${1:?manifest path required}"
+  if [[ ! -f "$manifest" ]]; then
+    echo "Manifest not found: $manifest" >&2
+    return 1
+  fi
+  submodulizer_require_jq || return 1
+  local jq_filter
+  jq_filter='
+    def chk_entry($i):
+      . as $p
+      | (($p | keys) - ["path","url","branch","sparse_paths","tree","group","disabled","note"]) as $extra
+      | if ($extra | length) > 0 then error("submodulizer.json: entry #\($i) (path \($p.path // "?")) has unknown key(s): \($extra | join(", "))") else . end
+      | if ($p.path // null) == null or ($p.path | type) != "string" then error("submodulizer.json: entry #\($i) missing string \"path\"") else . end
+      | if ($p.url // null) != null and ($p.url | type) != "string" then error("submodulizer.json: entry \($p.path) \"url\" must be a string") else . end
+      | if ($p.branch // null) != null and ($p.branch | type) != "string" then error("submodulizer.json: entry \($p.path) \"branch\" must be a string") else . end
+      | if ($p.sparse_paths // null) != null and (($p.sparse_paths | type) != "array" or (($p.sparse_paths | map(type == "string") | all) | not)) then error("submodulizer.json: entry \($p.path) \"sparse_paths\" must be array of strings") else . end
+      | if ($p.tree // null) != null and ($p.tree | type) != "string" then error("submodulizer.json: entry \($p.path) \"tree\" must be a string") else . end
+      | if ($p.group // null) != null and ($p.group | type) != "string" then error("submodulizer.json: entry \($p.path) \"group\" must be a string") else . end
+      | if ($p.disabled // null) != null and ($p.disabled | type) != "boolean" then error("submodulizer.json: entry \($p.path) \"disabled\" must be boolean") else . end
+      | if ($p.note // null) != null and ($p.note | type) != "string" then error("submodulizer.json: entry \($p.path) \"note\" must be a string") else . end
+      ;
+    def validate:
+      (keys - ["version","defaults","plugins"]) as $extra
+      | if ($extra | length) > 0 then error("submodulizer.json: unknown top-level key(s): \($extra | join(", "))") else . end
+      | if has("version") and (.version != 1) then error("submodulizer.json: unsupported version \(.version) (expected 1)") else . end
+      | if (.plugins // null) == null then error("submodulizer.json: missing \"plugins\" array") else . end
+      | if (.plugins | type) != "array" then error("submodulizer.json: \"plugins\" must be an array") else . end
+      | ((.defaults // {}) | keys - ["branch"]) as $dextra
+      | if ($dextra | length) > 0 then error("submodulizer.json: unknown defaults key(s): \($dextra | join(", "))") else . end
+      | if ((.defaults.branch // null) != null) and (((.defaults.branch) | type) != "string") then error("submodulizer.json: defaults.branch must be a string") else . end
+      | .plugins as $plugins
+      | ($plugins | to_entries | map(. as $e | $e.value | chk_entry($e.key)) | length) as $_
+      | .
+      ;
+    def extract:
+      (.defaults.branch // "main") as $defbr
+      | .plugins[]
+      | select(.disabled != true)
+      | [
+          (.path // ""),
+          (.url // ""),
+          (.branch // $defbr),
+          ((.sparse_paths // []) | join(",")),
+          (.tree // "")
+        ]
+      | join("\u001f")
+      ;
+    validate | extract
+  '
+  local tsv path url branch sparse tree
+  # Use ASCII Unit Separator (\x1f) instead of tab so consecutive empty fields
+  # don't collapse under bash's IFS-whitespace rules. Strip \r too because jq
+  # emits CRLF line endings on MSYS / Git for Windows.
+  if ! tsv="$(jq -r "$jq_filter" "$manifest" | tr -d '\r')"; then
+    return 1
+  fi
+  while IFS=$'\x1f' read -r path url branch sparse tree; do
+    [[ -z "$path" ]] && continue
+    if [[ -z "$url" ]]; then
+      echo "submodulizer.json: missing url for path $path" >&2
+      return 1
+    fi
+    if [[ -n "$tree" && -z "$sparse" ]]; then
+      echo "submodulizer.json: \"tree\" requires \"sparse_paths\" for $path" >&2
+      return 1
+    fi
+    if [[ -z "$tree" && -n "$sparse" ]]; then
+      tree="$(submodulizer_sparse_default_tree_path "$sparse")"
+    fi
+    M_PATHS+=("$path")
+    M_URLS+=("$url")
+    M_BRANCHES+=("$branch")
+    M_SPARSE+=("$sparse")
+    M_TREE+=("$tree")
+  done <<< "$tsv"
 }
 
 submodulizer_plugin_tree_at_commit() {
@@ -170,7 +268,7 @@ usage() {
 Replace git submodules listed in the manifest with plain tracked directories (vendored plugins).
 For each entry: clones the plugin at the manifest branch, removes nested .git, deinits the submodule,
 and stages the tree in the parent Moodle superproject (cleandev-style). The manifest normally lives
-at the superproject root as plugin-submodules.manifest.
+at the superproject root as submodulizer.json.
 
 Moodle root defaults to the current directory’s git superproject (git rev-parse --show-toplevel), unless you set it explicitly.
 
@@ -191,7 +289,7 @@ Options:
   --dry-run       Print what would happen without changing the repo
   --no-commit     Stage vendored trees but do not commit
   --ssh           Use git@github.com URLs for github.com HTTPS entries
-  --manifest PATH Plugin manifest (default: ROOT/plugin-submodules.manifest); optional 4th/5th fields for monorepo sparse (see README)
+  --manifest PATH Plugin manifest (default: ROOT/submodulizer.json; JSON schema documented in README). Requires jq. A legacy ROOT/plugin-submodules.manifest is auto-migrated on first run.
   --repo ROOT     Moodle git root (explicit form of a bare ROOT; overrides an earlier bare ROOT; a bare path after --repo is an error)
 
 Replay (default — one superproject commit per plugin-repo commit on --target):
@@ -287,7 +385,16 @@ if [[ -z "$REPO_ROOT" ]]; then
 fi
 
 if ! $MANIFEST_EXPLICIT; then
-  MANIFEST="${REPO_ROOT%/}/plugin-submodules.manifest"
+  MANIFEST="${REPO_ROOT%/}/submodulizer.json"
+  if [[ ! -f "$MANIFEST" && -f "${REPO_ROOT%/}/plugin-submodules.manifest" ]]; then
+    echo "unsubmodulize: auto-migrating ${REPO_ROOT%/}/plugin-submodules.manifest -> submodulizer.json" >&2
+    if ! bash "$SCRIPT_DIR/tools/convert-manifest.sh" \
+      --in "${REPO_ROOT%/}/plugin-submodules.manifest" \
+      --out "$MANIFEST"; then
+      echo "unsubmodulize: auto-migration failed; convert the manifest manually or pass --manifest." >&2
+      exit 1
+    fi
+  fi
 fi
 
 if [[ ! -f "$MANIFEST" ]]; then
@@ -441,37 +548,8 @@ unsubmodulize_replay_mode() {
     return 1
   }
 
-  declare -a M_PATHS=()
-  declare -a M_URLS=()
-  declare -a M_BRANCHES=()
-  declare -a M_SPARSE=()
-  declare -a M_TREE=()
-
-  while IFS='|' read -r raw_path raw_url raw_branch raw_sparse raw_tree || [[ -n "${raw_path:-}" ]]; do
-    path="${raw_path#"${raw_path%%[![:space:]]*}"}"
-    path="${path%"${path##*[![:space:]]}"}"
-    url="${raw_url#"${raw_url%%[![:space:]]*}"}"
-    url="${url%"${url##*[![:space:]]}"}"
-    branch="${raw_branch#"${raw_branch%%[![:space:]]*}"}"
-    branch="${branch%"${branch##*[![:space:]]}"}"
-    sparse="$(submodulizer_trim "${raw_sparse:-}")"
-    tree="$(submodulizer_trim "${raw_tree:-}")"
-    [[ -z "$path" || "$path" =~ ^# ]] && continue
-    [[ -z "$url" ]] && { echo "Manifest: missing URL for path $path" >&2; exit 1; }
-    [[ -z "$branch" ]] && branch="main"
-    if [[ -n "$tree" && -z "$sparse" ]]; then
-      echo "Manifest: in-repo tree path (5th field) requires sparse paths (4th field): $path" >&2
-      exit 1
-    fi
-    if [[ -z "$tree" && -n "$sparse" ]]; then
-      tree="$(submodulizer_sparse_default_tree_path "$sparse")"
-    fi
-    M_PATHS+=("$path")
-    M_URLS+=("$url")
-    M_BRANCHES+=("$branch")
-    M_SPARSE+=("$sparse")
-    M_TREE+=("$tree")
-  done < "$MANIFEST"
+  declare -a M_PATHS=() M_URLS=() M_BRANCHES=() M_SPARSE=() M_TREE=()
+  submodulizer_load_manifest "$MANIFEST" || exit 1
 
   if [[ ${#M_PATHS[@]} -eq 0 ]]; then
     echo "No manifest entries." >&2
@@ -764,28 +842,16 @@ if $REPLAY; then
   exit 0
 fi
 
-manifest_entries=0
-while IFS='|' read -r raw_path raw_url raw_branch raw_sparse raw_tree || [[ -n "${raw_path:-}" ]]; do
-  path="${raw_path#"${raw_path%%[![:space:]]*}"}"
-  path="${path%"${path##*[![:space:]]}"}"
-  url="${raw_url#"${raw_url%%[![:space:]]*}"}"
-  url="${url%"${url##*[![:space:]]}"}"
-  branch="${raw_branch#"${raw_branch%%[![:space:]]*}"}"
-  branch="${branch%"${branch##*[![:space:]]}"}"
-  sparse="$(submodulizer_trim "${raw_sparse:-}")"
-  tree="$(submodulizer_trim "${raw_tree:-}")"
+declare -a M_PATHS=() M_URLS=() M_BRANCHES=() M_SPARSE=() M_TREE=()
+submodulizer_load_manifest "$MANIFEST" || exit 1
 
-  [[ -z "$path" || "$path" =~ ^# ]] && continue
-  [[ -z "$url" ]] && { echo "Manifest: missing URL for path $path" >&2; exit 1; }
-  [[ -z "$branch" ]] && branch="main"
-  if [[ -n "$tree" && -z "$sparse" ]]; then
-    echo "Manifest: in-repo tree path (5th field) requires sparse paths (4th field): $path" >&2
-    exit 1
-  fi
-  if [[ -z "$tree" && -n "$sparse" ]]; then
-    tree="$(submodulizer_sparse_default_tree_path "$sparse")"
-  fi
-  url="$(rewrite_github_url_to_ssh "$url")"
+manifest_entries=0
+for _i in "${!M_PATHS[@]}"; do
+  path="${M_PATHS[$_i]}"
+  url="$(rewrite_github_url_to_ssh "${M_URLS[$_i]}")"
+  branch="${M_BRANCHES[$_i]}"
+  sparse="${M_SPARSE[$_i]}"
+  tree="${M_TREE[$_i]}"
 
   ((++manifest_entries)) || true
 
@@ -836,7 +902,7 @@ while IFS='|' read -r raw_path raw_url raw_branch raw_sparse raw_tree || [[ -n "
   rm -rf "$tmp"
 
   git -c core.sparseCheckout=false -c index.sparse=false add -- "$path"
-done < "$MANIFEST"
+done
 
 if [[ "$manifest_entries" -eq 0 ]]; then
   echo "No entries in manifest." >&2

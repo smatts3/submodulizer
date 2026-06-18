@@ -31,7 +31,7 @@ git -C "$MOODLE" commit -q -m "init"
 git -C "$MOODLE" sparse-checkout init --cone
 git -C "$MOODLE" sparse-checkout set mod
 
-printf '%s\n' 'mod/testplugin|../plugin-upstream|main' > "$MOODLE/plugin-submodules.manifest"
+write_submodulizer_json "$MOODLE/submodulizer.json" 'mod/testplugin|../plugin-upstream|main'
 
 "$CLEANDEV/submodulize.sh" --no-replay --repo "$MOODLE" --no-commit
 

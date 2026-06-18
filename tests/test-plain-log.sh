@@ -45,7 +45,7 @@ git -C "$MOODLE" checkout -q -b submodulized
 git -C "$MOODLE" update-index --add --cacheinfo "160000,$(git -C "$PLUGIN" rev-parse HEAD),mod/foo"
 git -C "$MOODLE" commit -q -m "sub at c1"
 
-printf 'mod/foo|%s|main\n' "$PLUGIN" > "$MOODLE/plugin-submodules.manifest"
+write_submodulizer_json "$MOODLE/submodulizer.json" "mod/foo|$PLUGIN|main"
 
 "$CLEANDEV/unsubmodulize.sh" --repo "$MOODLE" --fork-point "$BASE" --source submodulized \
   --target unsubmodulized --force --plugin-base "mod/foo=$C0" --plain-log

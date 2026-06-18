@@ -37,7 +37,7 @@ git -C "$PLUGIN1" archive HEAD | tar -x -C "$MOODLE/mod/p1"
 git -C "$MOODLE" add mod/p1
 git -C "$MOODLE" commit -q -m "vendored p1"
 
-printf '%s\n' "mod/p1|../plugin1|main" > "$MOODLE/plugin-submodules.manifest"
+write_submodulizer_json "$MOODLE/submodulizer.json" "mod/p1|../plugin1|main"
 
 "$CLEANDEV/submodulize.sh" --repo "$MOODLE"
 
@@ -50,10 +50,9 @@ git -C "$PLUGIN2" archive HEAD | tar -x -C "$MOODLE/mod/p2"
 git -C "$MOODLE" add mod/p2
 git -C "$MOODLE" commit -q -m "vendored p2 for submod"
 
-{
-  echo "mod/p1|../plugin1|main"
-  echo "mod/p2|../plugin2|main"
-} > "$MOODLE/plugin-submodules.manifest"
+write_submodulizer_json "$MOODLE/submodulizer.json" \
+  "mod/p1|../plugin1|main" \
+  "mod/p2|../plugin2|main"
 
 "$CLEANDEV/submodulize.sh" --repo "$MOODLE"
 

@@ -32,10 +32,9 @@ git -C "$MONO" archive HEAD:mods/p2 | tar -x -C "$MOODLE/local/p2"
 git -C "$MOODLE" add local/p1 local/p2
 git -C "$MOODLE" commit -q -m "vendored from mono"
 
-{
-  printf 'local/p1|%s|main|mods/p1\n' "$MONO"
-  printf 'local/p2|%s|main|mods/p2\n' "$MONO"
-} >"$MOODLE/plugin-submodules.manifest"
+write_submodulizer_json "$MOODLE/submodulizer.json" \
+  "local/p1|$MONO|main|mods/p1" \
+  "local/p2|$MONO|main|mods/p2"
 
 "$CLEANDEV/submodulize.sh" --no-replay --repo "$MOODLE"
 
