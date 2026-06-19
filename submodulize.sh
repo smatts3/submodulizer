@@ -142,6 +142,248 @@ submodulizer_load_manifest() {
   done <<< "$tsv"
 }
 
+# Read submodulizer-moodle.json at $1 and append one entry per version row to
+# the caller's parallel arrays MV_PATHS / MV_DATES / MV_SOURCES /
+# MV_SOURCETYPES / MV_VERSIONS / MV_COMMITHASHES / MV_CURRENT.
+# Cross-validates plugin keys against the non-disabled paths in the main
+# manifest at $2 (submodulizer.json). Strict schema:
+#   - Top-level only allows "plugins".
+#   - Per-plugin keys: only "versions" (non-empty array of objects).
+#   - Per-entry keys: only date / source / sourcetype / version / commithash / current.
+#   - sourcetype in {directory, github, gitlab, bitbucket, url}.
+#   - source / sourcetype required per entry.
+#   - At most one current=true per plugin.
+#   - current=true entries must have commithash or version (resolution-time check
+#     verifies that the value resolves on the remote).
+#   - Plugin keys must exist (and not be disabled) in the main manifest.
+# If the file at $1 doesn't exist, the helper returns 0 with empty arrays (the
+# file is optional; absence means "no pins, use submodulizer.json branch tips").
+# Returns 1 on any failure. The caller is responsible for `declare -a MV_PATHS=() ...`
+# before the call.
+submodulizer_load_moodle_versions() {
+  local moodle_file="${1:?moodle-versions path required}"
+  local main_manifest="${2:?main manifest path required}"
+  if [[ ! -f "$moodle_file" ]]; then
+    return 0
+  fi
+  if [[ ! -f "$main_manifest" ]]; then
+    echo "submodulizer-moodle.json: cannot cross-validate without main manifest ($main_manifest)" >&2
+    return 1
+  fi
+  submodulizer_require_jq || return 1
+  local valid_paths_json
+  if ! valid_paths_json="$(jq -c '[.plugins[] | select(.disabled != true) | .path]' "$main_manifest")"; then
+    echo "submodulizer-moodle.json: failed to read plugin paths from $main_manifest" >&2
+    return 1
+  fi
+  local jq_filter
+  jq_filter='
+    def chk_entry($plugin; $i):
+      . as $e
+      | (($e | keys) - ["date","source","sourcetype","version","commithash","current"]) as $extra
+      | if ($extra | length) > 0 then error("submodulizer-moodle.json: plugin \($plugin) entry #\($i) has unknown key(s): \($extra | join(", "))") else . end
+      | if ($e.source // null) == null or ($e.source | type) != "string" or ($e.source | length) == 0 then error("submodulizer-moodle.json: plugin \($plugin) entry #\($i) missing non-empty \"source\"") else . end
+      | if ($e.sourcetype // null) == null then error("submodulizer-moodle.json: plugin \($plugin) entry #\($i) missing \"sourcetype\"") else . end
+      | if (["directory","github","gitlab","bitbucket","url"] | index($e.sourcetype) == null) then error("submodulizer-moodle.json: plugin \($plugin) entry #\($i) sourcetype \"\($e.sourcetype)\" not in {directory, github, gitlab, bitbucket, url}") else . end
+      | if ($e.date // null) != null and ($e.date | type) != "string" then error("submodulizer-moodle.json: plugin \($plugin) entry #\($i) \"date\" must be a string") else . end
+      | if ($e.version // null) != null and ($e.version | type) != "string" then error("submodulizer-moodle.json: plugin \($plugin) entry #\($i) \"version\" must be a string") else . end
+      | if ($e.commithash // null) != null and ($e.commithash | type) != "string" then error("submodulizer-moodle.json: plugin \($plugin) entry #\($i) \"commithash\" must be a string") else . end
+      | if ($e.current // null) != null and ($e.current | type) != "boolean" then error("submodulizer-moodle.json: plugin \($plugin) entry #\($i) \"current\" must be boolean") else . end
+      ;
+    def chk_plugin($plugin):
+      . as $pdata
+      | (($pdata | keys) - ["versions"]) as $extra
+      | if ($extra | length) > 0 then error("submodulizer-moodle.json: plugin \($plugin) has unknown key(s): \($extra | join(", "))") else . end
+      | if ($pdata.versions // null) == null then error("submodulizer-moodle.json: plugin \($plugin) missing \"versions\" array") else . end
+      | if ($pdata.versions | type) != "array" then error("submodulizer-moodle.json: plugin \($plugin) \"versions\" must be an array") else . end
+      | if ($pdata.versions | length) == 0 then error("submodulizer-moodle.json: plugin \($plugin) \"versions\" is empty") else . end
+      | ($pdata.versions | to_entries | map(. as $e | $e.value | chk_entry($plugin; $e.key)) | length) as $_
+      | ($pdata.versions | map(select(.current == true))) as $cur
+      | if ($cur | length) > 1 then error("submodulizer-moodle.json: plugin \($plugin) has \($cur | length) entries with current=true (at most one allowed)") else . end
+      | if ($cur | length) == 1 then
+          ($cur[0]) as $c
+          | if (($c.commithash // null) == null) and (($c.version // null) == null) then error("submodulizer-moodle.json: plugin \($plugin) current=true entry must have commithash or version") else . end
+        else . end
+      ;
+    def validate($valid_paths):
+      (keys - ["plugins"]) as $extra
+      | if ($extra | length) > 0 then error("submodulizer-moodle.json: unknown top-level key(s): \($extra | join(", "))") else . end
+      | if (.plugins // null) == null then error("submodulizer-moodle.json: missing \"plugins\" object") else . end
+      | if (.plugins | type) != "object" then error("submodulizer-moodle.json: \"plugins\" must be an object") else . end
+      | ((.plugins | keys) - $valid_paths) as $orphans
+      | if ($orphans | length) > 0 then error("submodulizer-moodle.json: plugin path(s) not in submodulizer.json (or disabled there): \($orphans | join(", "))") else . end
+      | (.plugins | to_entries | map(. as $p | $p.value | chk_plugin($p.key)) | length) as $_
+      | .
+      ;
+    def extract:
+      .plugins
+      | to_entries
+      | .[]
+      | .key as $plugin
+      | .value.versions
+      | to_entries
+      | .[]
+      | .key as $idx
+      | .value
+      | [
+          $plugin,
+          (.date // ""),
+          (.source // ""),
+          (.sourcetype // ""),
+          (.version // ""),
+          (.commithash // ""),
+          (if .current == true then "true" else "false" end)
+        ]
+      | join("\u001f")
+      ;
+    validate($valid_paths) | extract
+  '
+  local tsv plugin date source sourcetype version commithash current
+  if ! tsv="$(jq -r --argjson valid_paths "$valid_paths_json" "$jq_filter" "$moodle_file" | tr -d '\r')"; then
+    return 1
+  fi
+  [[ -z "$tsv" ]] && return 0
+  while IFS=$'\x1f' read -r plugin date source sourcetype version commithash current; do
+    [[ -z "$plugin" ]] && continue
+    MV_PATHS+=("$plugin")
+    MV_DATES+=("$date")
+    MV_SOURCES+=("$source")
+    MV_SOURCETYPES+=("$sourcetype")
+    MV_VERSIONS+=("$version")
+    MV_COMMITHASHES+=("$commithash")
+    MV_CURRENT+=("$current")
+  done <<< "$tsv"
+}
+
+# Resolve the pin commit for plugin $1 against remote URL $2, using the entries
+# already loaded into MV_* arrays by submodulizer_load_moodle_versions.
+# Prints the resolved commit SHA to stdout on success.
+# Returns 0 with no output when the plugin has no entries (caller falls back to branch tip).
+# Returns 1 on resolution failure (missing tag, missing commit on remote, etc.).
+# A pin entry is selected by:
+#   1. The unique current=true entry, if any.
+#   2. Otherwise, the entry with the most recent "date" (string compare).
+#   3. Ties / missing dates: fetch commit timestamps from the remote and pick
+#      the chronologically latest.
+# The resolved entry must produce a commit either via commithash (used as-is)
+# or via version (resolved as a tag on the remote URL). The commit must exist
+# on the remote — verified by fetching it into a probe bare repo at
+# ${SUBMODULIZER_MOODLE_PROBE_DIR:-$TMPDIR/submodulizer-moodle-probe}/<plugin>/.git.
+submodulizer_resolve_moodle_pin() {
+  local plugin="${1:?plugin path required}"
+  local url="${2:?remote url required}"
+  local -a idxs=()
+  local i
+  for i in "${!MV_PATHS[@]}"; do
+    [[ "${MV_PATHS[$i]}" == "$plugin" ]] && idxs+=("$i")
+  done
+  ((${#idxs[@]} > 0)) || return 0
+  local probe_root="${SUBMODULIZER_MOODLE_PROBE_DIR:-${TMPDIR:-/tmp}/submodulizer-moodle-probe}"
+  local probe="$probe_root/${plugin//\//_}"
+  mkdir -p "$probe"
+  if [[ ! -d "$probe/.git" && ! -f "$probe/HEAD" ]]; then
+    git init --bare -q "$probe" 2>/dev/null || true
+  fi
+  # Fetch a specific ref (commit or tag) from $url into the probe.
+  # Echoes the resulting SHA on stdout on success.
+  # Capture the global PAT array safely under set -u (resolver may be called
+  # from contexts that don't define it, e.g. the lint test loading helpers).
+  local -a _smv_pat_c=()
+  if declare -p git_github_pat_c >/dev/null 2>&1; then
+    _smv_pat_c=("${git_github_pat_c[@]}")
+  fi
+  _smv_fetch_ref() {
+    local ref="$1" sha=""
+    if git -C "$probe" cat-file -e "$ref" 2>/dev/null; then
+      sha="$(git -C "$probe" rev-parse "$ref" 2>/dev/null)"
+      [[ -n "$sha" ]] && { printf '%s\n' "$sha"; return 0; }
+    fi
+    # Try fetching as a commit first.
+    if GIT_TERMINAL_PROMPT=0 git "${_smv_pat_c[@]}" -C "$probe" fetch --depth=1 -q -- "$url" "$ref" 2>/dev/null; then
+      sha="$(git -C "$probe" rev-parse FETCH_HEAD 2>/dev/null)"
+      [[ -n "$sha" ]] && { printf '%s\n' "$sha"; return 0; }
+    fi
+    # Try as a tag.
+    if GIT_TERMINAL_PROMPT=0 git "${_smv_pat_c[@]}" -C "$probe" fetch --depth=1 -q -- "$url" "refs/tags/${ref}:refs/tags/${ref}" 2>/dev/null; then
+      sha="$(git -C "$probe" rev-parse "$ref" 2>/dev/null)"
+      [[ -n "$sha" ]] && { printf '%s\n' "$sha"; return 0; }
+    fi
+    return 1
+  }
+  _smv_entry_sha() {
+    local idx="$1"
+    if [[ -n "${MV_COMMITHASHES[$idx]}" ]]; then
+      _smv_fetch_ref "${MV_COMMITHASHES[$idx]}"
+    elif [[ -n "${MV_VERSIONS[$idx]}" ]]; then
+      _smv_fetch_ref "${MV_VERSIONS[$idx]}"
+    else
+      return 1
+    fi
+  }
+  # Step 1: find current=true.
+  local pin_idx=""
+  for i in "${idxs[@]}"; do
+    if [[ "${MV_CURRENT[$i]}" == "true" ]]; then
+      pin_idx="$i"
+      break
+    fi
+  done
+  # Step 2/3: no current=true → latest date, with remote tiebreak.
+  if [[ -z "$pin_idx" ]]; then
+    local best_date=""
+    local -a tied=()
+    for i in "${idxs[@]}"; do
+      local d="${MV_DATES[$i]}"
+      if [[ -z "$d" ]]; then
+        continue
+      fi
+      if [[ -z "$best_date" || "$d" > "$best_date" ]]; then
+        best_date="$d"
+        tied=("$i")
+      elif [[ "$d" == "$best_date" ]]; then
+        tied+=("$i")
+      fi
+    done
+    if [[ -z "$best_date" ]]; then
+      tied=("${idxs[@]}")
+    fi
+    if (( ${#tied[@]} == 1 )); then
+      pin_idx="${tied[0]}"
+    else
+      # Fetch commit timestamps for each tied entry, pick the latest.
+      local best_cdate="" best_idx=""
+      for i in "${tied[@]}"; do
+        local sha cdate
+        sha="$(_smv_entry_sha "$i" 2>/dev/null)" || continue
+        cdate="$(git -C "$probe" show -s --format=%cI "$sha" 2>/dev/null)" || continue
+        if [[ -z "$best_cdate" || "$cdate" > "$best_cdate" ]]; then
+          best_cdate="$cdate"
+          best_idx="$i"
+        fi
+      done
+      pin_idx="$best_idx"
+    fi
+  fi
+  if [[ -z "$pin_idx" ]]; then
+    echo "submodulizer-moodle.json: could not determine pin entry for $plugin" >&2
+    return 1
+  fi
+  # Resolve the chosen entry to a commit, verifying remote existence.
+  local sha=""
+  if ! sha="$(_smv_entry_sha "$pin_idx" 2>/dev/null)"; then
+    if [[ -n "${MV_COMMITHASHES[$pin_idx]}" ]]; then
+      echo "submodulizer-moodle.json: $plugin: commithash ${MV_COMMITHASHES[$pin_idx]} not on remote $url" >&2
+    elif [[ -n "${MV_VERSIONS[$pin_idx]}" ]]; then
+      echo "submodulizer-moodle.json: $plugin: cannot resolve version '${MV_VERSIONS[$pin_idx]}' as a tag or commit on $url" >&2
+    else
+      echo "submodulizer-moodle.json: $plugin: pin entry has neither commithash nor version" >&2
+    fi
+    return 1
+  fi
+  [[ -n "$sha" ]] || { echo "submodulizer-moodle.json: $plugin: empty SHA from resolver" >&2; return 1; }
+  printf '%s\n' "$sha"
+}
+
 submodulizer_plugin_tree_at_commit() {
   local pdir="$1" commit="$2" in_path="${3:-}"
   if [[ -z "$(submodulizer_trim "$in_path")" ]]; then
@@ -225,6 +467,7 @@ submodulizer_sparse_apply_in_worktree() {
 
 MANIFEST=""
 MANIFEST_EXPLICIT=false
+MOODLE_VERSIONS_FILE=""
 DRY_RUN=false
 NO_COMMIT=false
 USE_SSH=false
@@ -406,6 +649,7 @@ if ! $MANIFEST_EXPLICIT; then
     fi
   fi
 fi
+MOODLE_VERSIONS_FILE="${REPO_ROOT%/}/submodulizer-moodle.json"
 
 if [[ ! -f "$MANIFEST" ]]; then
   if $MANIFEST_EXPLICIT; then
@@ -664,6 +908,49 @@ submodulize_stage_root_manifest() {
   if git ls-files --error-unmatch -- "$legacy" >/dev/null 2>&1 || [[ -e "$legacy" ]]; then
     git rm -f --ignore-unmatch -- "$legacy" >/dev/null 2>&1 || true
   fi
+  local moodle="${rtop%/}/submodulizer-moodle.json"
+  if [[ -f "$moodle" ]]; then
+    if git check-ignore -q -- "$moodle" 2>/dev/null; then
+      git add -f -- "$moodle" || true
+    else
+      git add -- "$moodle" || true
+    fi
+  fi
+}
+
+# Apply the moodle-versions pin (if any) to the submodule at $1 (cloned from $2).
+# Resolves the pin commit via submodulizer_resolve_moodle_pin, fetches it into the
+# submodule clone, checks out that commit, and re-stages the gitlink so the
+# superproject commit records the pinned SHA instead of the branch tip.
+# A hard error from the resolver propagates up.
+submodulize_apply_moodle_pin() {
+  local sm_path="${1:?submodule path required}"
+  local sm_url="${2:?submodule url required}"
+  ((${#MV_PATHS[@]} > 0)) || return 0
+  local pin_sha
+  if ! pin_sha="$(submodulizer_resolve_moodle_pin "$sm_path" "$sm_url")"; then
+    return 1
+  fi
+  [[ -n "$pin_sha" ]] || return 0
+  local current_sha
+  current_sha="$(git -C "$sm_path" rev-parse HEAD 2>/dev/null || true)"
+  if [[ "$current_sha" == "$pin_sha" ]]; then
+    return 0
+  fi
+  if ! git -C "$sm_path" cat-file -e "$pin_sha" 2>/dev/null; then
+    GIT_TERMINAL_PROMPT=0 git "${git_github_pat_c[@]}" -C "$sm_path" fetch -q origin "$pin_sha" 2>/dev/null \
+      || GIT_TERMINAL_PROMPT=0 git "${git_github_pat_c[@]}" -C "$sm_path" fetch -q --depth=1 origin "$pin_sha" 2>/dev/null \
+      || GIT_TERMINAL_PROMPT=0 git "${git_github_pat_c[@]}" -C "$sm_path" fetch -q origin 2>/dev/null \
+      || true
+  fi
+  if ! git -C "$sm_path" cat-file -e "$pin_sha" 2>/dev/null; then
+    echo "submodulizer-moodle.json: $sm_path: commit $pin_sha could not be fetched from $sm_url" >&2
+    return 1
+  fi
+  echo "submodulizer-moodle.json: pinning $sm_path -> $(git -C "$sm_path" rev-parse --short "$pin_sha")"
+  git -C "$sm_path" -c advice.detachedHead=false checkout -q "$pin_sha"
+  git update-index --cacheinfo "160000,$pin_sha,$sm_path"
+  return 0
 }
 
 # Replay commits on unsubmodulized (since merge-base with TARGET_BRANCH) onto TARGET_BRANCH: each commit
@@ -956,6 +1243,8 @@ run() {
 submodulize_one_shot_apply_manifest() {
   declare -a M_PATHS=() M_URLS=() M_BRANCHES=() M_SPARSE=() M_TREE=()
   submodulizer_load_manifest "$MANIFEST" || exit 1
+  declare -a MV_PATHS=() MV_DATES=() MV_SOURCES=() MV_SOURCETYPES=() MV_VERSIONS=() MV_COMMITHASHES=() MV_CURRENT=()
+  submodulizer_load_moodle_versions "$MOODLE_VERSIONS_FILE" "$MANIFEST" || exit 1
   manifest_entries=0
   local _i
   for _i in "${!M_PATHS[@]}"; do
@@ -1021,6 +1310,7 @@ submodulize_one_shot_apply_manifest() {
       if [[ -n "$sparse" ]]; then
         submodulizer_sparse_apply_in_worktree "$REPO_ROOT" "$path" "$sparse" || exit 1
       fi
+      submodulize_apply_moodle_pin "$path" "$url" || exit 1
     fi
   done
 
@@ -1120,6 +1410,8 @@ submodulize_replay_mode() {
 
   declare -a M_PATHS=() M_URLS=() M_BRANCHES=() M_SPARSE=() M_TREE=()
   submodulizer_load_manifest "$MANIFEST" || exit 1
+  declare -a MV_PATHS=() MV_DATES=() MV_SOURCES=() MV_SOURCETYPES=() MV_VERSIONS=() MV_COMMITHASHES=() MV_CURRENT=()
+  submodulizer_load_moodle_versions "$MOODLE_VERSIONS_FILE" "$MANIFEST" || exit 1
 
   [[ ${#M_PATHS[@]} -gt 0 ]] || { echo "No manifest entries." >&2; exit 1; }
 
@@ -1162,6 +1454,27 @@ submodulize_replay_mode() {
       }
     else
       echo "Path $P: source tip must be gitlink or vendored directory for end SHA" >&2
+      exit 1
+    fi
+
+    # submodulizer-moodle.json pin override (if any): re-target to_sha to the
+    # resolved pin commit, fetching it into the bare clone first so downstream
+    # replay can see it.
+    if pin_sha="$(submodulizer_resolve_moodle_pin "$P" "$URL")"; then
+      if [[ -n "$pin_sha" && "$pin_sha" != "$to_sha" ]]; then
+        if ! git -C "$PDIR" cat-file -e "$pin_sha" 2>/dev/null; then
+          GIT_TERMINAL_PROMPT=0 git "${git_github_pat_c[@]}" -C "$PDIR" fetch -q --depth=1 "$URL" "$pin_sha" 2>/dev/null \
+            || GIT_TERMINAL_PROMPT=0 git "${git_github_pat_c[@]}" -C "$PDIR" fetch -q "$URL" "$pin_sha" 2>/dev/null \
+            || true
+        fi
+        if ! git -C "$PDIR" cat-file -e "$pin_sha" 2>/dev/null; then
+          echo "submodulizer-moodle.json: replay: $P pin $pin_sha not fetchable from $URL" >&2
+          exit 1
+        fi
+        echo "submodulizer-moodle.json: replay pins $P -> $(git -C "$PDIR" rev-parse --short "$pin_sha")" >&2
+        to_sha="$pin_sha"
+      fi
+    else
       exit 1
     fi
 

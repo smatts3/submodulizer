@@ -5,17 +5,19 @@ Convert messy repos with copied-in files from other repos into a submodulized re
 ## Usage
 
 1. Clone the messy repo, separate from any other instances.
-1. Create a plugin manifest file.
-1. Run `submodulize.sh <PATH>`
-1. Do all your work on the `submodulized` branch or a descendent of it
+2. Create a plugin manifest file.
+3. Run `submodulize.sh <PATH>`
+4. Do all your work on the `submodulized` branch or a descendent of it
 
 ### If there are changes to the submodules and you want to update the superproject
+
 1. Run `unsubmodulize.sh <PATH>`
-1. Push the `unsubmodulized` branch upstream
+2. Push the `unsubmodulized` branch upstream
 
 ### If there are changes to the superproject and you want to update the submodulized repo
+
 1. Fetch the master branch or whatever branch submodulize branched from
-1. Run `submodulize.sh <PATH>`
+2. Run `submodulize.sh <PATH>`
 
 ## Plugin Manifest Files
 
@@ -61,12 +63,6 @@ Per-entry fields:
 
 Unknown top-level keys, unknown `defaults` keys, and unknown per-entry keys are rejected. Duplicate clone URLs are only allowed when every entry with that URL has a non-empty `sparse_paths` (monorepo rule).
 
-### Migrating from the legacy `plugin-submodules.manifest`
+## Pinning plugin versions
 
-The pipe-delimited `plugin-submodules.manifest` is auto-migrated on the first run of `submodulize.sh` or `unsubmodulize.sh`: the script invokes `tools/convert-manifest.sh`, writes `submodulizer.json`, and `git rm`s the legacy file when staging on the `submodulized` branch (the old file stays in history). To run the converter standalone:
-
-```bash
-bash tools/convert-manifest.sh --in plugin-submodules.manifest --out submodulizer.json
-```
-
-The converter assigns `group` based on the legacy section-header comments (`# --- Monorepos ---`, `# --- Legacy plugins ---`, `# --- No submodule clone ---`). Commented-out "broken upstream" lines aren't parseable; add them by hand as `{ "group": "no_clone", "disabled": true, "note": "..." }` entries if you want them preserved.
+An optional sidecar file `submodulizer-moodle.json` at the Moodle root pins specific plugin commits across upstreams that don't reliably update `version.php`. See [README-moodle.md](README-moodle.md) for the schema and how `submodulize.sh` consumes it.
