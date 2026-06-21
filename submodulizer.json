@@ -27,7 +27,9 @@
     {
       "path": "admin/tool/s3_fs",
       "url": "https://github.com/lsuonline/moodle-tool_s3_fs.git",
-      "group": "standard"
+      "group": "no_clone",
+      "disabled": true,
+      "note": "upstream https://github.com/lsuonline/moodle-tool_s3_fs.git returns 404 as of 2026-06-21; pin generation skipped this entry"
     },
     {
       "path": "auth/basic",
