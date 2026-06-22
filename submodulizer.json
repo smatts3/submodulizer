@@ -6,22 +6,22 @@
   "plugins": [
     {
       "path": "admin/tool/ally",
-      "url": "https://github.com/anthology-ally/moodle-tool_ally.git",
+      "url": "https://github.com/smatts3/moodle-tool_ally.git",
       "group": "standard"
     },
     {
       "path": "admin/tool/crawler",
-      "url": "https://github.com/catalyst/moodle-tool_crawler.git",
+      "url": "https://github.com/smatts3/moodle-tool_crawler.git",
       "group": "standard"
     },
     {
       "path": "admin/tool/mergeusers",
-      "url": "https://github.com/jpahullo/moodle-tool_mergeusers.git",
+      "url": "https://github.com/smatts3/moodle-tool_mergeusers.git",
       "group": "standard"
     },
     {
       "path": "admin/tool/migratehvp2h5p",
-      "url": "https://github.com/moodlehq/moodle-tool_migratehvp2h5p.git",
+      "url": "https://github.com/smatts3/moodle-tool_migratehvp2h5p.git",
       "group": "standard"
     },
     {
@@ -33,22 +33,22 @@
     },
     {
       "path": "auth/basic",
-      "url": "https://github.com/catalyst/moodle-auth_basic.git",
+      "url": "https://github.com/smatts3/moodle-auth_basic.git",
       "group": "standard"
     },
     {
       "path": "availability/condition/password",
-      "url": "https://github.com/moodle-an-hochschulen/moodle-availability_password.git",
+      "url": "https://github.com/smatts3/moodle-availability_password.git",
       "group": "standard"
     },
     {
       "path": "availability/condition/relativedate",
-      "url": "https://github.com/ewallah/moodle-availability_relativedate.git",
+      "url": "https://github.com/smatts3/moodle-availability_relativedate.git",
       "group": "standard"
     },
     {
       "path": "blocks/backadel",
-      "url": "https://github.com/lsuits/lsu-block_backadel.git",
+      "url": "https://github.com/smatts3/lsu-block_backadel.git",
       "group": "standard"
     },
     {
@@ -58,7 +58,7 @@
     },
     {
       "path": "blocks/configurable_reports",
-      "url": "https://github.com/ULCC/moodle-block_configurable_reports.git",
+      "url": "https://github.com/smatts3/moodle-block_configurable_reports.git",
       "group": "standard"
     },
     {
@@ -73,7 +73,7 @@
     },
     {
       "path": "blocks/helpdesk",
-      "url": "https://github.com/lsuits/lsu-block_helpdesk.git",
+      "url": "https://github.com/smatts3/lsu-block_helpdesk.git",
       "group": "standard"
     },
     {
@@ -93,12 +93,12 @@
     },
     {
       "path": "blocks/material_download",
-      "url": "https://github.com/TUM-MZ/moodle-block_material-download.git",
+      "url": "https://github.com/smatts3/moodle-block_material-download.git",
       "group": "standard"
     },
     {
       "path": "blocks/mhaairs",
-      "url": "https://github.com/itamart/moodle-block_mhaairs.git",
+      "url": "https://github.com/smatts3/moodle-block_mhaairs.git",
       "group": "standard"
     },
     {
@@ -108,7 +108,7 @@
     },
     {
       "path": "blocks/panopto",
-      "url": "https://github.com/Panopto/Moodle-2.0-plugin-for-Panopto.git",
+      "url": "https://github.com/smatts3/Moodle-2.0-plugin-for-Panopto.git",
       "group": "standard"
     },
     {
@@ -123,32 +123,32 @@
     },
     {
       "path": "blocks/quiz_results",
-      "url": "https://github.com/moodlehq/moodle-block_quiz_results.git",
+      "url": "https://github.com/smatts3/moodle-block_quiz_results.git",
       "group": "standard"
     },
     {
       "path": "blocks/simple_restore",
-      "url": "https://github.com/lsuits/lsu-block_simple_restore.git",
+      "url": "https://github.com/smatts3/lsu-block_simple_restore.git",
       "group": "standard"
     },
     {
       "path": "blocks/student_gradeviewer",
-      "url": "https://github.com/lsuits/lsu-block_student_gradeviewer.git",
+      "url": "https://github.com/smatts3/lsu-block_student_gradeviewer.git",
       "group": "standard"
     },
     {
       "path": "blocks/ues_logs",
-      "url": "https://github.com/lsuits/lsu-block_ues_logs.git",
+      "url": "https://github.com/smatts3/lsu-block_ues_logs.git",
       "group": "standard"
     },
     {
       "path": "blocks/ues_meta_viewer",
-      "url": "https://github.com/lsuits/lsu-block_ues_meta_viewer.git",
+      "url": "https://github.com/smatts3/lsu-block_ues_meta_viewer.git",
       "group": "standard"
     },
     {
       "path": "blocks/ues_reprocess",
-      "url": "https://github.com/lsuits/lsu-block_ues_reprocess.git",
+      "url": "https://github.com/smatts3/lsu-block_ues_reprocess.git",
       "group": "standard"
     },
     {
@@ -168,12 +168,12 @@
     },
     {
       "path": "cache/stores/rediscluster",
-      "url": "https://github.com/open-lms-open-source/moodle-cachestore_rediscluster.git",
+      "url": "https://github.com/smatts3/moodle-cachestore_rediscluster.git",
       "group": "standard"
     },
     {
       "path": "dataformat/xml",
-      "url": "https://github.com/paulholden/moodle-dataformat_xml.git",
+      "url": "https://github.com/smatts3/moodle-dataformat_xml.git",
       "group": "standard"
     },
     {
@@ -208,12 +208,12 @@
     },
     {
       "path": "filter/ally",
-      "url": "https://github.com/anthology-ally/moodle-filter_ally.git",
+      "url": "https://github.com/smatts3/moodle-filter_ally.git",
       "group": "standard"
     },
     {
       "path": "filter/wiris",
-      "url": "https://github.com/wiris/moodle-filter_wiris.git",
+      "url": "https://github.com/smatts3/moodle-filter_wiris.git",
       "group": "standard"
     },
     {
@@ -223,62 +223,62 @@
     },
     {
       "path": "grade/report/forecast",
-      "url": "https://github.com/lsuits/lsu-gradereport_forecast.git",
+      "url": "https://github.com/smatts3/lsu-gradereport_forecast.git",
       "group": "standard"
     },
     {
       "path": "grade/report/grade_breakdown",
-      "url": "https://github.com/lsuits/lsu-gradereport_grade_breakdown.git",
+      "url": "https://github.com/smatts3/lsu-gradereport_grade_breakdown.git",
       "group": "standard"
     },
     {
       "path": "grade/report/gradebook_builder",
-      "url": "https://github.com/lsuits/lsu-gradereport_gradebook_builder.git",
+      "url": "https://github.com/smatts3/lsu-gradereport_gradebook_builder.git",
       "group": "standard"
     },
     {
       "path": "grade/report/rubrics",
-      "url": "https://github.com/brickfield/moodle-gradereport_rubrics.git",
+      "url": "https://github.com/smatts3/moodle-gradereport_rubrics.git",
       "group": "standard"
     },
     {
       "path": "lib/editor/atto/plugins/cloze",
-      "url": "https://github.com/dthies/moodle-atto_cloze.git",
+      "url": "https://github.com/smatts3/moodle-atto_cloze.git",
       "group": "standard"
     },
     {
       "path": "lib/editor/atto/plugins/count",
-      "url": "https://github.com/damyon/moodle-atto_count.git",
+      "url": "https://github.com/smatts3/moodle-atto_count.git",
       "group": "standard"
     },
     {
       "path": "lib/editor/atto/plugins/fontfamily",
-      "url": "https://github.com/projectestac/moodle-atto_fontfamily.git",
+      "url": "https://github.com/smatts3/moodle-atto_fontfamily.git",
       "group": "standard"
     },
     {
       "path": "lib/editor/atto/plugins/fontsize",
-      "url": "https://github.com/andrewnicols/moodle-atto_fontsize.git",
+      "url": "https://github.com/smatts3/moodle-atto_fontsize.git",
       "group": "standard"
     },
     {
       "path": "lib/editor/atto/plugins/fullscreen",
-      "url": "https://github.com/dthies/moodle-atto_fullscreen.git",
+      "url": "https://github.com/smatts3/moodle-atto_fullscreen.git",
       "group": "standard"
     },
     {
       "path": "lib/editor/atto/plugins/morefontcolors",
-      "url": "https://github.com/ndunand/moodle-atto_morefontcolors.git",
+      "url": "https://github.com/smatts3/moodle-atto_morefontcolors.git",
       "group": "standard"
     },
     {
       "path": "lib/editor/atto/plugins/panoptobutton",
-      "url": "https://github.com/lucisgit/moodle-repository_panopto.git",
+      "url": "https://github.com/smatts3/moodle-repository_panopto.git",
       "group": "standard"
     },
     {
       "path": "lib/editor/atto/plugins/panoptoltibutton",
-      "url": "https://github.com/lucisgit/moodle-block_panopto.git",
+      "url": "https://github.com/smatts3/moodle-block_panopto.git",
       "group": "standard"
     },
     {
@@ -288,77 +288,77 @@
     },
     {
       "path": "lib/editor/atto/plugins/teamsmeeting",
-      "url": "https://github.com/enovation/moodle-atto_teamsmeeting.git",
+      "url": "https://github.com/smatts3/moodle-atto_teamsmeeting.git",
       "group": "standard"
     },
     {
       "path": "lib/editor/atto/plugins/vidgridbutton",
-      "url": "https://github.com/ilosvideos/moodleAttoPlugin.git",
+      "url": "https://github.com/smatts3/moodleAttoPlugin.git",
       "group": "standard"
     },
     {
       "path": "lib/editor/atto/plugins/wiris",
-      "url": "https://github.com/wiris/moodle-atto_wiris.git",
+      "url": "https://github.com/smatts3/moodle-atto_wiris.git",
       "group": "standard"
     },
     {
       "path": "lib/editor/atto/plugins/wordimport",
-      "url": "https://github.com/ecampbell/moodle-atto_wordimport.git",
+      "url": "https://github.com/smatts3/moodle-atto_wordimport.git",
       "group": "standard"
     },
     {
       "path": "lib/editor/tiny/plugins/cloze",
-      "url": "https://github.com/srobotta/moodle-tiny_cloze.git",
+      "url": "https://github.com/smatts3/moodle-tiny_cloze.git",
       "group": "standard"
     },
     {
       "path": "lib/editor/tiny/plugins/fontcolor",
-      "url": "https://github.com/bfh/moodle-tiny_fontcolor.git",
+      "url": "https://github.com/smatts3/moodle-tiny_fontcolor.git",
       "group": "standard"
     },
     {
       "path": "lib/editor/tiny/plugins/fontfamily",
-      "url": "https://github.com/finspire-fi/moodle-tiny_fontfamily.git",
+      "url": "https://github.com/smatts3/moodle-tiny_fontfamily.git",
       "group": "standard"
     },
     {
       "path": "lib/editor/tiny/plugins/fontsize",
-      "url": "https://github.com/finspire-fi/moodle-tiny_fontsize.git",
+      "url": "https://github.com/smatts3/moodle-tiny_fontsize.git",
       "group": "standard"
     },
     {
       "path": "lib/editor/tiny/plugins/kalturamedia",
-      "url": "https://github.com/kaltura/moodle-tinymce_kalturamedia.git",
+      "url": "https://github.com/smatts3/moodle-tinymce_kalturamedia.git",
       "group": "standard"
     },
     {
       "path": "lib/editor/tiny/plugins/panoptoltibutton",
-      "url": "https://github.com/Panopto/moodle-tiny_panoptoltibutton.git",
+      "url": "https://github.com/smatts3/moodle-tiny_panoptoltibutton.git",
       "group": "standard"
     },
     {
       "path": "lib/editor/tiny/plugins/wiris",
-      "url": "https://github.com/wiris/moodle-tiny_wiris.git",
+      "url": "https://github.com/smatts3/moodle-tiny_wiris.git",
       "group": "standard"
     },
     {
       "path": "lib/editor/tiny/plugins/wordimport",
-      "url": "https://codeberg.org/linos/moodle-tiny_wordimport.git",
+      "url": "https://github.com/smatts3/moodle-tiny_wordimport.git",
       "group": "standard"
     },
     {
       "path": "lib/editor/tiny/plugins/wordlimit",
-      "url": "https://codeberg.org/linos/moodle-tiny_wordlimit.git",
+      "url": "https://github.com/smatts3/moodle-tiny_wordlimit.git",
       "group": "standard"
     },
     {
       "path": "local/adminer",
-      "url": "https://github.com/adminerevo/adminerevo.git",
+      "url": "https://github.com/smatts3/adminerevo.git",
       "group": "standard"
     },
     {
       "path": "local/bulkenrol",
-      "url": "https://github.com/moodle-an-hochschulen/moodle-local_bulkenrol.git",
+      "url": "https://github.com/smatts3/moodle-local_bulkenrol.git",
       "group": "standard"
     },
     {
@@ -368,7 +368,7 @@
     },
     {
       "path": "local/honorlockproctoring",
-      "url": "https://github.com/HonorLock/moodle-local_honorlockproctoring.git",
+      "url": "https://github.com/smatts3/moodle-local_honorlockproctoring.git",
       "group": "standard"
     },
     {
@@ -378,7 +378,7 @@
     },
     {
       "path": "local/kaltura",
-      "url": "https://github.com/kaltura/moodle-local_kaltura.git",
+      "url": "https://github.com/smatts3/moodle-local_kaltura.git",
       "group": "standard"
     },
     {
@@ -388,17 +388,17 @@
     },
     {
       "path": "local/redislock",
-      "url": "https://github.com/open-lms-open-source/moodle-local_redislock.git",
+      "url": "https://github.com/smatts3/moodle-local_redislock.git",
       "group": "standard"
     },
     {
       "path": "local/reminders",
-      "url": "https://github.com/isuru89/moodle-local_reminders.git",
+      "url": "https://github.com/smatts3/moodle-local_reminders.git",
       "group": "standard"
     },
     {
       "path": "local/remote_courses",
-      "url": "https://github.com/LafColITS/moodle-local_remote_courses.git",
+      "url": "https://github.com/smatts3/moodle-local_remote_courses.git",
       "group": "standard"
     },
     {
@@ -408,162 +408,162 @@
     },
     {
       "path": "local/wirisquizzes",
-      "url": "https://github.com/wiris/moodle-local_wirisquizzes.git",
+      "url": "https://github.com/smatts3/moodle-local_wirisquizzes.git",
       "group": "standard"
     },
     {
       "path": "mod/attendance",
-      "url": "https://github.com/danmarsden/moodle-mod_attendance.git",
+      "url": "https://github.com/smatts3/moodle-mod_attendance.git",
       "group": "standard"
     },
     {
       "path": "mod/board",
-      "url": "https://github.com/brickfield/moodle-mod_board.git",
+      "url": "https://github.com/smatts3/moodle-mod_board.git",
       "group": "standard"
     },
     {
       "path": "mod/book/tool/wordimport",
-      "url": "https://github.com/ecampbell/moodle-booktool_wordimport.git",
+      "url": "https://github.com/smatts3/moodle-booktool_wordimport.git",
       "group": "standard"
     },
     {
       "path": "mod/choicegroup",
-      "url": "https://github.com/ndunand/moodle-mod_choicegroup.git",
+      "url": "https://github.com/smatts3/moodle-mod_choicegroup.git",
       "group": "standard"
     },
     {
       "path": "mod/customcert",
-      "url": "https://github.com/mdjnelson/moodle-mod_customcert.git",
+      "url": "https://github.com/smatts3/moodle-mod_customcert.git",
       "group": "standard"
     },
     {
       "path": "mod/flashcard",
-      "url": "https://github.com/vfremaux/moodle-mod_flashcard.git",
+      "url": "https://github.com/smatts3/moodle-mod_flashcard.git",
       "group": "standard"
     },
     {
       "path": "mod/hvp",
-      "url": "https://github.com/h5p/moodle-mod_hvp.git",
+      "url": "https://github.com/smatts3/moodle-mod_hvp.git",
       "group": "standard"
     },
     {
       "path": "mod/journal",
-      "url": "https://github.com/elearningsoftware/moodle-mod_journal.git",
+      "url": "https://github.com/smatts3/moodle-mod_journal.git",
       "group": "standard"
     },
     {
       "path": "mod/lightboxgallery",
-      "url": "https://github.com/open-lms-open-source/moodle-mod_lightboxgallery.git",
+      "url": "https://github.com/smatts3/moodle-mod_lightboxgallery.git",
       "group": "standard"
     },
     {
       "path": "mod/panoptosubmission",
-      "url": "https://github.com/Panopto/moodle-mod_panoptosubmission.git",
+      "url": "https://github.com/smatts3/moodle-mod_panoptosubmission.git",
       "group": "standard"
     },
     {
       "path": "mod/questionnaire",
-      "url": "https://github.com/PoetOS/moodle-mod_questionnaire.git",
+      "url": "https://github.com/smatts3/moodle-mod_questionnaire.git",
       "group": "standard"
     },
     {
       "path": "mod/quiz/report/downloadsubmissions",
-      "url": "https://github.com/IITBombayWeb/moodle-quiz_downloadsubmissions.git",
+      "url": "https://github.com/smatts3/moodle-quiz_downloadsubmissions.git",
       "group": "standard"
     },
     {
       "path": "mod/turnitintooltwo",
-      "url": "https://github.com/turnitin/moodle-mod_turnitintooltwo.git",
+      "url": "https://github.com/smatts3/moodle-mod_turnitintooltwo.git",
       "group": "standard"
     },
     {
       "path": "plagiarism/turnitin",
-      "url": "https://github.com/turnitin/moodle-plagiarism_turnitin.git",
+      "url": "https://github.com/smatts3/moodle-plagiarism_turnitin.git",
       "group": "standard"
     },
     {
       "path": "question/behaviour/deferredfeedbackexplain",
-      "url": "https://github.com/timhunt/moodle-qbehaviour_deferredfeedbackexplain.git",
+      "url": "https://github.com/smatts3/moodle-qbehaviour_deferredfeedbackexplain.git",
       "group": "standard"
     },
     {
       "path": "question/behaviour/regexpadaptivewithhelp",
-      "url": "https://github.com/rezeau/moodle-qbehaviour_regexpadaptivewithhelp.git",
+      "url": "https://github.com/smatts3/moodle-qbehaviour_regexpadaptivewithhelp.git",
       "group": "standard"
     },
     {
       "path": "question/behaviour/regexpadaptivewithhelpnopenalty",
-      "url": "https://github.com/rezeau/moodle-qbehaviour_regexpadaptivewithhelpnopenalty.git",
+      "url": "https://github.com/smatts3/moodle-qbehaviour_regexpadaptivewithhelpnopenalty.git",
       "group": "standard"
     },
     {
       "path": "question/format/wordtable",
-      "url": "https://github.com/ecampbell/moodle-qformat_wordtable.git",
+      "url": "https://github.com/smatts3/moodle-qformat_wordtable.git",
       "group": "standard"
     },
     {
       "path": "question/type/essayautograde",
-      "url": "https://github.com/gbateson/moodle-qtype_essayautograde.git",
+      "url": "https://github.com/smatts3/moodle-qtype_essayautograde.git",
       "group": "standard"
     },
     {
       "path": "question/type/essaywiris",
-      "url": "https://github.com/wiris/moodle-qtype_essaywiris.git",
+      "url": "https://github.com/smatts3/moodle-qtype_essaywiris.git",
       "group": "standard"
     },
     {
       "path": "question/type/gapfill",
-      "url": "https://github.com/marcusgreen/moodle-qtype_gapfill.git",
+      "url": "https://github.com/smatts3/moodle-qtype_gapfill.git",
       "group": "standard"
     },
     {
       "path": "question/type/matchwiris",
-      "url": "https://github.com/wiris/moodle-qtype_matchwiris.git",
+      "url": "https://github.com/smatts3/moodle-qtype_matchwiris.git",
       "group": "standard"
     },
     {
       "path": "question/type/multianswerwiris",
-      "url": "https://github.com/wiris/moodle-qtype_multianswerwiris.git",
+      "url": "https://github.com/smatts3/moodle-qtype_multianswerwiris.git",
       "group": "standard"
     },
     {
       "path": "question/type/multichoicewiris",
-      "url": "https://github.com/wiris/moodle-qtype_multichoicewiris.git",
+      "url": "https://github.com/smatts3/moodle-qtype_multichoicewiris.git",
       "group": "standard"
     },
     {
       "path": "question/type/oumultiresponse",
-      "url": "https://github.com/moodleou/moodle-qtype_oumultiresponse.git",
+      "url": "https://github.com/smatts3/moodle-qtype_oumultiresponse.git",
       "group": "standard"
     },
     {
       "path": "question/type/regexp",
-      "url": "https://github.com/rezeau/moodle-qtype_regexp.git",
+      "url": "https://github.com/smatts3/moodle-qtype_regexp.git",
       "group": "standard"
     },
     {
       "path": "question/type/shortanswerwiris",
-      "url": "https://github.com/wiris/moodle-qtype_shortanswerwiris.git",
+      "url": "https://github.com/smatts3/moodle-qtype_shortanswerwiris.git",
       "group": "standard"
     },
     {
       "path": "question/type/truefalsewiris",
-      "url": "https://github.com/wiris/moodle-qtype_truefalsewiris.git",
+      "url": "https://github.com/smatts3/moodle-qtype_truefalsewiris.git",
       "group": "standard"
     },
     {
       "path": "question/type/wq",
-      "url": "https://github.com/wiris/moodle-qtype_wq.git",
+      "url": "https://github.com/smatts3/moodle-qtype_wq.git",
       "group": "standard"
     },
     {
       "path": "report/allylti",
-      "url": "https://github.com/anthology-ally/moodle-report_allylti.git",
+      "url": "https://github.com/smatts3/moodle-report_allylti.git",
       "group": "standard"
     },
     {
       "path": "report/componentgrades",
-      "url": "https://github.com/marcusgreen/moodle-report_componentgrades.git",
+      "url": "https://github.com/smatts3/moodle-report_componentgrades.git",
       "group": "standard"
     },
     {
@@ -578,12 +578,12 @@
     },
     {
       "path": "report/editdates",
-      "url": "https://github.com/moodleou/moodle-report_editdates.git",
+      "url": "https://github.com/smatts3/moodle-report_editdates.git",
       "group": "standard"
     },
     {
       "path": "report/lpmonitoring",
-      "url": "https://github.com/StudiUM/moodle-report_lpmonitoring.git",
+      "url": "https://github.com/smatts3/moodle-report_lpmonitoring.git",
       "group": "standard"
     },
     {
@@ -598,7 +598,7 @@
     },
     {
       "path": "filter/kaltura",
-      "url": "https://github.com/kaltura/moodle_plugin.git",
+      "url": "https://github.com/smatts3/moodle_plugin.git",
       "sparse_paths": [
         "filter/kaltura"
       ],
@@ -606,7 +606,7 @@
     },
     {
       "path": "lib/editor/atto/plugins/kalturamedia",
-      "url": "https://github.com/kaltura/moodle_plugin.git",
+      "url": "https://github.com/smatts3/moodle_plugin.git",
       "sparse_paths": [
         "lib/editor/atto/plugins/kalturamedia"
       ],
@@ -614,7 +614,7 @@
     },
     {
       "path": "mod/kalvidassign",
-      "url": "https://github.com/kaltura/moodle_plugin.git",
+      "url": "https://github.com/smatts3/moodle_plugin.git",
       "sparse_paths": [
         "mod/kalvidassign"
       ],
@@ -622,7 +622,7 @@
     },
     {
       "path": "mod/kalvidres",
-      "url": "https://github.com/kaltura/moodle_plugin.git",
+      "url": "https://github.com/smatts3/moodle_plugin.git",
       "sparse_paths": [
         "mod/kalvidres"
       ],
@@ -630,7 +630,7 @@
     },
     {
       "path": "blocks/kalturamediagallery",
-      "url": "https://github.com/kaltura/moodle-local_kalturamediagallery.git",
+      "url": "https://github.com/smatts3/moodle-local_kalturamediagallery.git",
       "sparse_paths": [
         "blocks/kalturamediagallery"
       ],
@@ -638,7 +638,7 @@
     },
     {
       "path": "local/kalturamediagallery",
-      "url": "https://github.com/kaltura/moodle-local_kalturamediagallery.git",
+      "url": "https://github.com/smatts3/moodle-local_kalturamediagallery.git",
       "sparse_paths": [
         "local/kalturamediagallery"
       ],
@@ -646,7 +646,7 @@
     },
     {
       "path": "enrol/ues",
-      "url": "https://github.com/lsuits/lsu-enrol_ues.git",
+      "url": "https://github.com/smatts3/lsu-enrol_ues.git",
       "sparse_paths": [
         "enrol/ues"
       ],
@@ -654,7 +654,7 @@
     },
     {
       "path": "local/azure",
-      "url": "https://github.com/lsuits/lsu-enrol_ues.git",
+      "url": "https://github.com/smatts3/lsu-enrol_ues.git",
       "sparse_paths": [
         "local/azure"
       ],
@@ -662,7 +662,7 @@
     },
     {
       "path": "local/lsu",
-      "url": "https://github.com/lsuits/lsu-enrol_ues.git",
+      "url": "https://github.com/smatts3/lsu-enrol_ues.git",
       "sparse_paths": [
         "local/lsu"
       ],
@@ -670,7 +670,7 @@
     },
     {
       "path": "local/online",
-      "url": "https://github.com/lsuits/lsu-enrol_ues.git",
+      "url": "https://github.com/smatts3/lsu-enrol_ues.git",
       "sparse_paths": [
         "local/online"
       ],
@@ -678,7 +678,7 @@
     },
     {
       "path": "auth/oidc",
-      "url": "https://github.com/Microsoft/o365-moodle.git",
+      "url": "https://github.com/smatts3/o365-moodle.git",
       "sparse_paths": [
         "auth/oidc"
       ],
@@ -686,7 +686,7 @@
     },
     {
       "path": "blocks/microsoft",
-      "url": "https://github.com/Microsoft/o365-moodle.git",
+      "url": "https://github.com/smatts3/o365-moodle.git",
       "sparse_paths": [
         "blocks/microsoft"
       ],
@@ -694,7 +694,7 @@
     },
     {
       "path": "local/o365",
-      "url": "https://github.com/Microsoft/o365-moodle.git",
+      "url": "https://github.com/smatts3/o365-moodle.git",
       "sparse_paths": [
         "local/o365"
       ],
@@ -702,7 +702,7 @@
     },
     {
       "path": "local/onenote",
-      "url": "https://github.com/Microsoft/o365-moodle.git",
+      "url": "https://github.com/smatts3/o365-moodle.git",
       "sparse_paths": [
         "local/onenote"
       ],
@@ -710,7 +710,7 @@
     },
     {
       "path": "mod/assign/feedback/onenote",
-      "url": "https://github.com/Microsoft/o365-moodle.git",
+      "url": "https://github.com/smatts3/o365-moodle.git",
       "sparse_paths": [
         "mod/assign/feedback/onenote"
       ],
@@ -718,7 +718,7 @@
     },
     {
       "path": "mod/assign/submission/onenote",
-      "url": "https://github.com/Microsoft/o365-moodle.git",
+      "url": "https://github.com/smatts3/o365-moodle.git",
       "sparse_paths": [
         "mod/assign/submission/onenote"
       ],
@@ -726,7 +726,7 @@
     },
     {
       "path": "repository/office365",
-      "url": "https://github.com/Microsoft/o365-moodle.git",
+      "url": "https://github.com/smatts3/o365-moodle.git",
       "sparse_paths": [
         "repository/office365"
       ],
