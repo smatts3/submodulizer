@@ -12,12 +12,16 @@
     {
       "path": "admin/tool/crawler",
       "url": "https://github.com/catalyst/moodle-tool_crawler.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "admin/tool/mergeusers",
       "url": "https://github.com/jpahullo/moodle-tool_mergeusers.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "admin/tool/migratehvp2h5p",
@@ -26,13 +30,16 @@
     },
     {
       "path": "admin/tool/s3_fs",
-      "url": "https://github.com/lsuonline/moodle-tool_s3_fs.git",
-      "group": "standard"
+      "group": "no_clone",
+      "disabled": true,
+      "note": "https://github.com/lsuonline/moodle-tool_s3_fs.git returns 'Repository not found' (missing/private). Excluded from submodulize; plugin stays vendored. Re-enable with a real remote (e.g. catalyst/moodle-tool_objectfs) when confirmed."
     },
     {
       "path": "auth/basic",
       "url": "https://github.com/catalyst/moodle-auth_basic.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "availability/condition/password",
@@ -42,12 +49,16 @@
     {
       "path": "availability/condition/relativedate",
       "url": "https://github.com/ewallah/moodle-availability_relativedate.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "blocks/backadel",
       "url": "https://github.com/lsuits/lsu-block_backadel.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "blocks/ce_enrollinfo",
@@ -57,12 +68,16 @@
     {
       "path": "blocks/configurable_reports",
       "url": "https://github.com/ULCC/moodle-block_configurable_reports.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored version in MOODLE_405_MAIN does not match any upstream commit (locally patched or defunct/wrong upstream). Kept vendored to preserve the working 4.5 version; re-point/re-enable when a matching remote commit is known."
     },
     {
       "path": "blocks/course_hider",
       "url": "https://github.com/lsuonline/moodle-block-course_hider.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "blocks/etextbook",
@@ -72,37 +87,51 @@
     {
       "path": "blocks/helpdesk",
       "url": "https://github.com/lsuits/lsu-block_helpdesk.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored version in MOODLE_405_MAIN does not match any upstream commit (locally patched or defunct/wrong upstream). Kept vendored to preserve the working 4.5 version; re-point/re-enable when a matching remote commit is known."
     },
     {
       "path": "blocks/link_logins",
       "url": "https://github.com/lsuonline/moodle-block_link_logins.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "blocks/lsu_people",
       "url": "https://github.com/lsuonline/moodle-block_lsu_people.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "blocks/lsuxe",
       "url": "https://github.com/lsuonline/moodle-block_lsuxe.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "blocks/material_download",
       "url": "https://github.com/TUM-MZ/moodle-block_material-download.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "blocks/mhaairs",
       "url": "https://github.com/itamart/moodle-block_mhaairs.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "blocks/migrate_users",
       "url": "https://github.com/lsuonline/lsuce-block_migrate_users.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored version in MOODLE_405_MAIN does not match any upstream commit (locally patched or defunct/wrong upstream). Kept vendored to preserve the working 4.5 version; re-point/re-enable when a matching remote commit is known."
     },
     {
       "path": "blocks/panopto",
@@ -112,97 +141,135 @@
     {
       "path": "blocks/pu",
       "url": "https://github.com/lsuonline/block_pu.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "blocks/quickmail",
       "url": "https://github.com/lsuonline/lsuce-block_quickmail.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "blocks/quiz_results",
       "url": "https://github.com/moodlehq/moodle-block_quiz_results.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "blocks/simple_restore",
       "url": "https://github.com/lsuits/lsu-block_simple_restore.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "blocks/student_gradeviewer",
       "url": "https://github.com/lsuits/lsu-block_student_gradeviewer.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "blocks/ues_logs",
       "url": "https://github.com/lsuits/lsu-block_ues_logs.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored version in MOODLE_405_MAIN does not match any upstream commit (locally patched or defunct/wrong upstream). Kept vendored to preserve the working 4.5 version; re-point/re-enable when a matching remote commit is known."
     },
     {
       "path": "blocks/ues_meta_viewer",
       "url": "https://github.com/lsuits/lsu-block_ues_meta_viewer.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "blocks/ues_reprocess",
       "url": "https://github.com/lsuits/lsu-block_ues_reprocess.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored version in MOODLE_405_MAIN does not match any upstream commit (locally patched or defunct/wrong upstream). Kept vendored to preserve the working 4.5 version; re-point/re-enable when a matching remote commit is known."
     },
     {
       "path": "blocks/wds_postgrades",
       "url": "https://github.com/lsuonline/moodle-block_wds_postgrades.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "blocks/wds_sportsgrades",
       "url": "https://github.com/lsuonline/moodle-block_wds_sportsgrades.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "blocks/wdsprefs",
       "url": "https://github.com/lsuonline/moodle-block_wdsprefs.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "cache/stores/rediscluster",
       "url": "https://github.com/open-lms-open-source/moodle-cachestore_rediscluster.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "dataformat/xml",
       "url": "https://github.com/paulholden/moodle-dataformat_xml.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "enrol/arlo",
       "url": "https://github.com/lsuonline/moodle-enrol_arlo.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "enrol/d1",
       "url": "https://github.com/lsuonline/moodle-enrol_d1.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "enrol/reenroller",
       "url": "https://github.com/lsuonline/moodle-enrol_reenroller.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "enrol/studentstaff",
       "url": "https://github.com/lsuonline/moodle-enrol_studentstaff.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "enrol/workdayhrm",
       "url": "https://github.com/lsuonline/moodle-enrol_workdayhrm.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "enrol/workdaystudent",
       "url": "https://github.com/lsuonline/moodle-enrol_workdaystudent.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored version in MOODLE_405_MAIN does not match any upstream commit (locally patched or defunct/wrong upstream). Kept vendored to preserve the working 4.5 version; re-point/re-enable when a matching remote commit is known."
     },
     {
       "path": "filter/ally",
@@ -212,27 +279,37 @@
     {
       "path": "filter/wiris",
       "url": "https://github.com/wiris/moodle-filter_wiris.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "grade/import/smart",
       "url": "https://github.com/lsuonline/moodle-grade_import_smart.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "grade/report/forecast",
       "url": "https://github.com/lsuits/lsu-gradereport_forecast.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "grade/report/grade_breakdown",
       "url": "https://github.com/lsuits/lsu-gradereport_grade_breakdown.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "grade/report/gradebook_builder",
       "url": "https://github.com/lsuits/lsu-gradereport_gradebook_builder.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "grade/report/rubrics",
@@ -267,22 +344,30 @@
     {
       "path": "lib/editor/atto/plugins/morefontcolors",
       "url": "https://github.com/ndunand/moodle-atto_morefontcolors.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "lib/editor/atto/plugins/panoptobutton",
       "url": "https://github.com/lucisgit/moodle-repository_panopto.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored version in MOODLE_405_MAIN does not match any upstream commit (locally patched or defunct/wrong upstream). Kept vendored to preserve the working 4.5 version; re-point/re-enable when a matching remote commit is known."
     },
     {
       "path": "lib/editor/atto/plugins/panoptoltibutton",
       "url": "https://github.com/lucisgit/moodle-block_panopto.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored version in MOODLE_405_MAIN does not match any upstream commit (locally patched or defunct/wrong upstream). Kept vendored to preserve the working 4.5 version; re-point/re-enable when a matching remote commit is known."
     },
     {
       "path": "lib/editor/atto/plugins/phonetic",
       "url": "https://github.com/lsuonline/moodle_atto_phonetic.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "lib/editor/atto/plugins/teamsmeeting",
@@ -292,27 +377,37 @@
     {
       "path": "lib/editor/atto/plugins/vidgridbutton",
       "url": "https://github.com/ilosvideos/moodleAttoPlugin.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "lib/editor/atto/plugins/wiris",
       "url": "https://github.com/wiris/moodle-atto_wiris.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "lib/editor/atto/plugins/wordimport",
       "url": "https://github.com/ecampbell/moodle-atto_wordimport.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "lib/editor/tiny/plugins/cloze",
       "url": "https://github.com/srobotta/moodle-tiny_cloze.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "lib/editor/tiny/plugins/fontcolor",
       "url": "https://github.com/bfh/moodle-tiny_fontcolor.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "lib/editor/tiny/plugins/fontfamily",
@@ -327,7 +422,9 @@
     {
       "path": "lib/editor/tiny/plugins/kalturamedia",
       "url": "https://github.com/kaltura/moodle-tinymce_kalturamedia.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "No 4.5.3-compatible upstream commit (repo targets newer Moodle / wrong editor generation). Kept vendored from MOODLE_405_MAIN (version 2024100700, requires 2024042200). Re-enable with a correct remote/commit when available."
     },
     {
       "path": "lib/editor/tiny/plugins/panoptoltibutton",
@@ -337,22 +434,30 @@
     {
       "path": "lib/editor/tiny/plugins/wiris",
       "url": "https://github.com/wiris/moodle-tiny_wiris.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "lib/editor/tiny/plugins/wordimport",
       "url": "https://codeberg.org/linos/moodle-tiny_wordimport.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "lib/editor/tiny/plugins/wordlimit",
       "url": "https://codeberg.org/linos/moodle-tiny_wordlimit.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "local/adminer",
       "url": "https://github.com/adminerevo/adminerevo.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored version in MOODLE_405_MAIN does not match any upstream commit (locally patched or defunct/wrong upstream). Kept vendored to preserve the working 4.5 version; re-point/re-enable when a matching remote commit is known."
     },
     {
       "path": "local/bulkenrol",
@@ -362,7 +467,9 @@
     {
       "path": "local/d1",
       "url": "https://github.com/lsuonline/moodle-local_d1.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "local/honorlockproctoring",
@@ -372,17 +479,23 @@
     {
       "path": "local/kalpanmaps",
       "url": "https://github.com/lsuonline/local_kalpanmaps.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "local/kaltura",
       "url": "https://github.com/kaltura/moodle-local_kaltura.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored version in MOODLE_405_MAIN does not match any upstream commit (locally patched or defunct/wrong upstream). Kept vendored to preserve the working 4.5 version; re-point/re-enable when a matching remote commit is known."
     },
     {
       "path": "local/lsucli",
       "url": "https://github.com/lsuonline/moodle_local-lsucli.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Not present in MOODLE_405_MAIN vendored tree (LSU does not ship it on 4.5). Left disabled so the submodulized tree matches the working vendored baseline."
     },
     {
       "path": "local/redislock",
@@ -402,7 +515,9 @@
     {
       "path": "local/syllabusuploader",
       "url": "https://github.com/lsuonline/moodle-local_syllabusuploader.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "local/wirisquizzes",
@@ -417,12 +532,16 @@
     {
       "path": "mod/board",
       "url": "https://github.com/brickfield/moodle-mod_board.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "mod/book/tool/wordimport",
       "url": "https://github.com/ecampbell/moodle-booktool_wordimport.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "mod/choicegroup",
@@ -437,12 +556,16 @@
     {
       "path": "mod/flashcard",
       "url": "https://github.com/vfremaux/moodle-mod_flashcard.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "mod/hvp",
       "url": "https://github.com/h5p/moodle-mod_hvp.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Upstream moodle-mod_hvp uses nested git submodules for the H5P library/editor/reporting code; a plain submodule checkout omits them (no library/h5p.classes.php). Kept vendored from MOODLE_405_MAIN, which bundles the matched H5P library."
     },
     {
       "path": "mod/journal",
@@ -457,12 +580,16 @@
     {
       "path": "mod/panoptosubmission",
       "url": "https://github.com/Panopto/moodle-mod_panoptosubmission.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "mod/questionnaire",
       "url": "https://github.com/PoetOS/moodle-mod_questionnaire.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "mod/quiz/report/downloadsubmissions",
@@ -477,7 +604,9 @@
     {
       "path": "plagiarism/turnitin",
       "url": "https://github.com/turnitin/moodle-plagiarism_turnitin.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "question/behaviour/deferredfeedbackexplain",
@@ -562,27 +691,37 @@
     {
       "path": "report/componentgrades",
       "url": "https://github.com/marcusgreen/moodle-report_componentgrades.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored version in MOODLE_405_MAIN does not match any upstream commit (locally patched or defunct/wrong upstream). Kept vendored to preserve the working 4.5 version; re-point/re-enable when a matching remote commit is known."
     },
     {
       "path": "report/coursesize",
       "url": "https://github.com/lsuonline/moodle-report_coursesize.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "report/customsql",
       "url": "https://github.com/lsuonline/lsuce-report_customsql.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "report/editdates",
       "url": "https://github.com/moodleou/moodle-report_editdates.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "report/lpmonitoring",
       "url": "https://github.com/StudiUM/moodle-report_lpmonitoring.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored content in MOODLE_405_MAIN differs from the upstream commit at this version (LSU local patches, recompiled assets, or added files). Cannot submodulize via --no-replay without losing LSU changes; kept vendored."
     },
     {
       "path": "report/lsusql",
@@ -592,7 +731,9 @@
     {
       "path": "theme/snap",
       "url": "https://github.com/lsuonline/lsuce-theme_snap.git",
-      "group": "standard"
+      "group": "standard",
+      "disabled": true,
+      "note": "Vendored version in MOODLE_405_MAIN does not match any upstream commit (locally patched or defunct/wrong upstream). Kept vendored to preserve the working 4.5 version; re-point/re-enable when a matching remote commit is known."
     },
     {
       "path": "filter/kaltura",
@@ -600,7 +741,9 @@
       "sparse_paths": [
         "filter/kaltura"
       ],
-      "group": "monorepo"
+      "group": "monorepo",
+      "disabled": true,
+      "note": "Monorepo/sparse plugin: submodulize.sh --no-replay cannot place it correctly (a submodule working tree is the entire upstream repo, so a plugin in a subdirectory nests instead of sitting at its path). Kept vendored from MOODLE_405_MAIN. Only standalone one-repo-per-path plugins are submodulized."
     },
     {
       "path": "lib/editor/atto/plugins/kalturamedia",
@@ -608,7 +751,9 @@
       "sparse_paths": [
         "lib/editor/atto/plugins/kalturamedia"
       ],
-      "group": "monorepo"
+      "group": "monorepo",
+      "disabled": true,
+      "note": "Monorepo/sparse plugin: submodulize.sh --no-replay cannot place it correctly (a submodule working tree is the entire upstream repo, so a plugin in a subdirectory nests instead of sitting at its path). Kept vendored from MOODLE_405_MAIN. Only standalone one-repo-per-path plugins are submodulized."
     },
     {
       "path": "mod/kalvidassign",
@@ -616,7 +761,9 @@
       "sparse_paths": [
         "mod/kalvidassign"
       ],
-      "group": "monorepo"
+      "group": "monorepo",
+      "disabled": true,
+      "note": "Monorepo/sparse plugin: submodulize.sh --no-replay cannot place it correctly (a submodule working tree is the entire upstream repo, so a plugin in a subdirectory nests instead of sitting at its path). Kept vendored from MOODLE_405_MAIN. Only standalone one-repo-per-path plugins are submodulized."
     },
     {
       "path": "mod/kalvidres",
@@ -624,7 +771,9 @@
       "sparse_paths": [
         "mod/kalvidres"
       ],
-      "group": "monorepo"
+      "group": "monorepo",
+      "disabled": true,
+      "note": "Monorepo/sparse plugin: submodulize.sh --no-replay cannot place it correctly (a submodule working tree is the entire upstream repo, so a plugin in a subdirectory nests instead of sitting at its path). Kept vendored from MOODLE_405_MAIN. Only standalone one-repo-per-path plugins are submodulized."
     },
     {
       "path": "blocks/kalturamediagallery",
@@ -632,7 +781,9 @@
       "sparse_paths": [
         "blocks/kalturamediagallery"
       ],
-      "group": "monorepo"
+      "group": "monorepo",
+      "disabled": true,
+      "note": "Monorepo/sparse plugin: submodulize.sh --no-replay cannot place it correctly (a submodule working tree is the entire upstream repo, so a plugin in a subdirectory nests instead of sitting at its path). Kept vendored from MOODLE_405_MAIN. Only standalone one-repo-per-path plugins are submodulized."
     },
     {
       "path": "local/kalturamediagallery",
@@ -640,7 +791,9 @@
       "sparse_paths": [
         "local/kalturamediagallery"
       ],
-      "group": "monorepo"
+      "group": "monorepo",
+      "disabled": true,
+      "note": "Monorepo/sparse plugin: submodulize.sh --no-replay cannot place it correctly (a submodule working tree is the entire upstream repo, so a plugin in a subdirectory nests instead of sitting at its path). Kept vendored from MOODLE_405_MAIN. Only standalone one-repo-per-path plugins are submodulized."
     },
     {
       "path": "enrol/ues",
@@ -648,7 +801,9 @@
       "sparse_paths": [
         "enrol/ues"
       ],
-      "group": "monorepo"
+      "group": "monorepo",
+      "disabled": true,
+      "note": "Monorepo/sparse plugin: submodulize.sh --no-replay cannot place it correctly (a submodule working tree is the entire upstream repo, so a plugin in a subdirectory nests instead of sitting at its path). Kept vendored from MOODLE_405_MAIN. Only standalone one-repo-per-path plugins are submodulized."
     },
     {
       "path": "local/azure",
@@ -656,7 +811,9 @@
       "sparse_paths": [
         "local/azure"
       ],
-      "group": "monorepo"
+      "group": "monorepo",
+      "disabled": true,
+      "note": "Monorepo/sparse plugin: submodulize.sh --no-replay cannot place it correctly (a submodule working tree is the entire upstream repo, so a plugin in a subdirectory nests instead of sitting at its path). Kept vendored from MOODLE_405_MAIN. Only standalone one-repo-per-path plugins are submodulized."
     },
     {
       "path": "local/lsu",
@@ -664,7 +821,9 @@
       "sparse_paths": [
         "local/lsu"
       ],
-      "group": "monorepo"
+      "group": "monorepo",
+      "disabled": true,
+      "note": "Monorepo/sparse plugin: submodulize.sh --no-replay cannot place it correctly (a submodule working tree is the entire upstream repo, so a plugin in a subdirectory nests instead of sitting at its path). Kept vendored from MOODLE_405_MAIN. Only standalone one-repo-per-path plugins are submodulized."
     },
     {
       "path": "local/online",
@@ -672,7 +831,9 @@
       "sparse_paths": [
         "local/online"
       ],
-      "group": "monorepo"
+      "group": "monorepo",
+      "disabled": true,
+      "note": "Monorepo/sparse plugin: submodulize.sh --no-replay cannot place it correctly (a submodule working tree is the entire upstream repo, so a plugin in a subdirectory nests instead of sitting at its path). Kept vendored from MOODLE_405_MAIN. Only standalone one-repo-per-path plugins are submodulized."
     },
     {
       "path": "auth/oidc",
@@ -680,7 +841,9 @@
       "sparse_paths": [
         "auth/oidc"
       ],
-      "group": "monorepo"
+      "group": "monorepo",
+      "disabled": true,
+      "note": "Monorepo/sparse plugin: submodulize.sh --no-replay cannot place it correctly (a submodule working tree is the entire upstream repo, so a plugin in a subdirectory nests instead of sitting at its path). Kept vendored from MOODLE_405_MAIN. Only standalone one-repo-per-path plugins are submodulized."
     },
     {
       "path": "blocks/microsoft",
@@ -688,7 +851,9 @@
       "sparse_paths": [
         "blocks/microsoft"
       ],
-      "group": "monorepo"
+      "group": "monorepo",
+      "disabled": true,
+      "note": "Monorepo/sparse plugin: submodulize.sh --no-replay cannot place it correctly (a submodule working tree is the entire upstream repo, so a plugin in a subdirectory nests instead of sitting at its path). Kept vendored from MOODLE_405_MAIN. Only standalone one-repo-per-path plugins are submodulized."
     },
     {
       "path": "local/o365",
@@ -696,7 +861,9 @@
       "sparse_paths": [
         "local/o365"
       ],
-      "group": "monorepo"
+      "group": "monorepo",
+      "disabled": true,
+      "note": "Monorepo/sparse plugin: submodulize.sh --no-replay cannot place it correctly (a submodule working tree is the entire upstream repo, so a plugin in a subdirectory nests instead of sitting at its path). Kept vendored from MOODLE_405_MAIN. Only standalone one-repo-per-path plugins are submodulized."
     },
     {
       "path": "local/onenote",
@@ -704,7 +871,9 @@
       "sparse_paths": [
         "local/onenote"
       ],
-      "group": "monorepo"
+      "group": "monorepo",
+      "disabled": true,
+      "note": "Monorepo/sparse plugin: submodulize.sh --no-replay cannot place it correctly (a submodule working tree is the entire upstream repo, so a plugin in a subdirectory nests instead of sitting at its path). Kept vendored from MOODLE_405_MAIN. Only standalone one-repo-per-path plugins are submodulized."
     },
     {
       "path": "mod/assign/feedback/onenote",
@@ -712,7 +881,9 @@
       "sparse_paths": [
         "mod/assign/feedback/onenote"
       ],
-      "group": "monorepo"
+      "group": "monorepo",
+      "disabled": true,
+      "note": "Monorepo/sparse plugin: submodulize.sh --no-replay cannot place it correctly (a submodule working tree is the entire upstream repo, so a plugin in a subdirectory nests instead of sitting at its path). Kept vendored from MOODLE_405_MAIN. Only standalone one-repo-per-path plugins are submodulized."
     },
     {
       "path": "mod/assign/submission/onenote",
@@ -720,7 +891,9 @@
       "sparse_paths": [
         "mod/assign/submission/onenote"
       ],
-      "group": "monorepo"
+      "group": "monorepo",
+      "disabled": true,
+      "note": "Monorepo/sparse plugin: submodulize.sh --no-replay cannot place it correctly (a submodule working tree is the entire upstream repo, so a plugin in a subdirectory nests instead of sitting at its path). Kept vendored from MOODLE_405_MAIN. Only standalone one-repo-per-path plugins are submodulized."
     },
     {
       "path": "repository/office365",
@@ -728,7 +901,9 @@
       "sparse_paths": [
         "repository/office365"
       ],
-      "group": "monorepo"
+      "group": "monorepo",
+      "disabled": true,
+      "note": "Monorepo/sparse plugin: submodulize.sh --no-replay cannot place it correctly (a submodule working tree is the entire upstream repo, so a plugin in a subdirectory nests instead of sitting at its path). Kept vendored from MOODLE_405_MAIN. Only standalone one-repo-per-path plugins are submodulized."
     },
     {
       "path": "blocks/cps",
@@ -737,7 +912,9 @@
       "sparse_paths": [
         "blocks/cps"
       ],
-      "group": "legacy"
+      "group": "legacy",
+      "disabled": true,
+      "note": "Monorepo/sparse plugin: submodulize.sh --no-replay cannot place it correctly (a submodule working tree is the entire upstream repo, so a plugin in a subdirectory nests instead of sitting at its path). Kept vendored from MOODLE_405_MAIN. Only standalone one-repo-per-path plugins are submodulized."
     },
     {
       "path": "blocks/csv_profile",
@@ -746,7 +923,9 @@
       "sparse_paths": [
         "blocks/csv_profile"
       ],
-      "group": "legacy"
+      "group": "legacy",
+      "disabled": true,
+      "note": "Monorepo/sparse plugin: submodulize.sh --no-replay cannot place it correctly (a submodule working tree is the entire upstream repo, so a plugin in a subdirectory nests instead of sitting at its path). Kept vendored from MOODLE_405_MAIN. Only standalone one-repo-per-path plugins are submodulized."
     },
     {
       "path": "blocks/evaluation_kit_sso",
@@ -755,7 +934,9 @@
       "sparse_paths": [
         "blocks/evaluation_kit_sso"
       ],
-      "group": "legacy"
+      "group": "legacy",
+      "disabled": true,
+      "note": "Monorepo/sparse plugin: submodulize.sh --no-replay cannot place it correctly (a submodule working tree is the entire upstream repo, so a plugin in a subdirectory nests instead of sitting at its path). Kept vendored from MOODLE_405_MAIN. Only standalone one-repo-per-path plugins are submodulized."
     },
     {
       "path": "blocks/iseek",
@@ -764,7 +945,9 @@
       "sparse_paths": [
         "blocks/iseek"
       ],
-      "group": "legacy"
+      "group": "legacy",
+      "disabled": true,
+      "note": "Monorepo/sparse plugin: submodulize.sh --no-replay cannot place it correctly (a submodule working tree is the entire upstream repo, so a plugin in a subdirectory nests instead of sitting at its path). Kept vendored from MOODLE_405_MAIN. Only standalone one-repo-per-path plugins are submodulized."
     },
     {
       "path": "blocks/lsu_libraries_research_link",
@@ -773,7 +956,9 @@
       "sparse_paths": [
         "blocks/lsu_libraries_research_link"
       ],
-      "group": "legacy"
+      "group": "legacy",
+      "disabled": true,
+      "note": "Monorepo/sparse plugin: submodulize.sh --no-replay cannot place it correctly (a submodule working tree is the entire upstream repo, so a plugin in a subdirectory nests instead of sitting at its path). Kept vendored from MOODLE_405_MAIN. Only standalone one-repo-per-path plugins are submodulized."
     },
     {
       "path": "blocks/my_picture",
@@ -782,7 +967,9 @@
       "sparse_paths": [
         "blocks/my_picture"
       ],
-      "group": "legacy"
+      "group": "legacy",
+      "disabled": true,
+      "note": "Monorepo/sparse plugin: submodulize.sh --no-replay cannot place it correctly (a submodule working tree is the entire upstream repo, so a plugin in a subdirectory nests instead of sitting at its path). Kept vendored from MOODLE_405_MAIN. Only standalone one-repo-per-path plugins are submodulized."
     },
     {
       "path": "blocks/mylabmastering",
@@ -791,7 +978,9 @@
       "sparse_paths": [
         "blocks/mylabmastering"
       ],
-      "group": "legacy"
+      "group": "legacy",
+      "disabled": true,
+      "note": "Monorepo/sparse plugin: submodulize.sh --no-replay cannot place it correctly (a submodule working tree is the entire upstream repo, so a plugin in a subdirectory nests instead of sitting at its path). Kept vendored from MOODLE_405_MAIN. Only standalone one-repo-per-path plugins are submodulized."
     },
     {
       "path": "blocks/post_grades",
@@ -800,7 +989,9 @@
       "sparse_paths": [
         "blocks/post_grades"
       ],
-      "group": "legacy"
+      "group": "legacy",
+      "disabled": true,
+      "note": "Monorepo/sparse plugin: submodulize.sh --no-replay cannot place it correctly (a submodule working tree is the entire upstream repo, so a plugin in a subdirectory nests instead of sitting at its path). Kept vendored from MOODLE_405_MAIN. Only standalone one-repo-per-path plugins are submodulized."
     },
     {
       "path": "blocks/rollsheet",
@@ -809,7 +1000,9 @@
       "sparse_paths": [
         "blocks/rollsheet"
       ],
-      "group": "legacy"
+      "group": "legacy",
+      "disabled": true,
+      "note": "Monorepo/sparse plugin: submodulize.sh --no-replay cannot place it correctly (a submodule working tree is the entire upstream repo, so a plugin in a subdirectory nests instead of sitting at its path). Kept vendored from MOODLE_405_MAIN. Only standalone one-repo-per-path plugins are submodulized."
     },
     {
       "path": "filter/tidy",
@@ -818,7 +1011,9 @@
       "sparse_paths": [
         "filter/tidy"
       ],
-      "group": "legacy"
+      "group": "legacy",
+      "disabled": true,
+      "note": "Monorepo/sparse plugin: submodulize.sh --no-replay cannot place it correctly (a submodule working tree is the entire upstream repo, so a plugin in a subdirectory nests instead of sitting at its path). Kept vendored from MOODLE_405_MAIN. Only standalone one-repo-per-path plugins are submodulized."
     },
     {
       "path": "grade/import/kioskpearsonjson",
@@ -827,7 +1022,9 @@
       "sparse_paths": [
         "grade/import/kioskpearsonjson"
       ],
-      "group": "legacy"
+      "group": "legacy",
+      "disabled": true,
+      "note": "Monorepo/sparse plugin: submodulize.sh --no-replay cannot place it correctly (a submodule working tree is the entire upstream repo, so a plugin in a subdirectory nests instead of sitting at its path). Kept vendored from MOODLE_405_MAIN. Only standalone one-repo-per-path plugins are submodulized."
     },
     {
       "path": "grade/import/pearson",
@@ -836,7 +1033,9 @@
       "sparse_paths": [
         "grade/import/pearson"
       ],
-      "group": "legacy"
+      "group": "legacy",
+      "disabled": true,
+      "note": "Monorepo/sparse plugin: submodulize.sh --no-replay cannot place it correctly (a submodule working tree is the entire upstream repo, so a plugin in a subdirectory nests instead of sitting at its path). Kept vendored from MOODLE_405_MAIN. Only standalone one-repo-per-path plugins are submodulized."
     },
     {
       "path": "local/aws_sdk",
@@ -845,7 +1044,9 @@
       "sparse_paths": [
         "local/aws_sdk"
       ],
-      "group": "legacy"
+      "group": "legacy",
+      "disabled": true,
+      "note": "Monorepo/sparse plugin: submodulize.sh --no-replay cannot place it correctly (a submodule working tree is the entire upstream repo, so a plugin in a subdirectory nests instead of sitting at its path). Kept vendored from MOODLE_405_MAIN. Only standalone one-repo-per-path plugins are submodulized."
     },
     {
       "path": "local/mylabmastering",
@@ -854,7 +1055,9 @@
       "sparse_paths": [
         "local/mylabmastering"
       ],
-      "group": "legacy"
+      "group": "legacy",
+      "disabled": true,
+      "note": "Monorepo/sparse plugin: submodulize.sh --no-replay cannot place it correctly (a submodule working tree is the entire upstream repo, so a plugin in a subdirectory nests instead of sitting at its path). Kept vendored from MOODLE_405_MAIN. Only standalone one-repo-per-path plugins are submodulized."
     },
     {
       "path": "local/mymedia",
@@ -863,7 +1066,9 @@
       "sparse_paths": [
         "local/mymedia"
       ],
-      "group": "legacy"
+      "group": "legacy",
+      "disabled": true,
+      "note": "Monorepo/sparse plugin: submodulize.sh --no-replay cannot place it correctly (a submodule working tree is the entire upstream repo, so a plugin in a subdirectory nests instead of sitting at its path). Kept vendored from MOODLE_405_MAIN. Only standalone one-repo-per-path plugins are submodulized."
     },
     {
       "path": "local/natsane",
@@ -872,7 +1077,9 @@
       "sparse_paths": [
         "local/natsane"
       ],
-      "group": "legacy"
+      "group": "legacy",
+      "disabled": true,
+      "note": "Monorepo/sparse plugin: submodulize.sh --no-replay cannot place it correctly (a submodule working tree is the entire upstream repo, so a plugin in a subdirectory nests instead of sitting at its path). Kept vendored from MOODLE_405_MAIN. Only standalone one-repo-per-path plugins are submodulized."
     },
     {
       "path": "mod/library",
@@ -881,7 +1088,9 @@
       "sparse_paths": [
         "mod/library"
       ],
-      "group": "legacy"
+      "group": "legacy",
+      "disabled": true,
+      "note": "Monorepo/sparse plugin: submodulize.sh --no-replay cannot place it correctly (a submodule working tree is the entire upstream repo, so a plugin in a subdirectory nests instead of sitting at its path). Kept vendored from MOODLE_405_MAIN. Only standalone one-repo-per-path plugins are submodulized."
     },
     {
       "path": "mod/mylabmastering",
@@ -890,7 +1099,9 @@
       "sparse_paths": [
         "mod/mylabmastering"
       ],
-      "group": "legacy"
+      "group": "legacy",
+      "disabled": true,
+      "note": "Monorepo/sparse plugin: submodulize.sh --no-replay cannot place it correctly (a submodule working tree is the entire upstream repo, so a plugin in a subdirectory nests instead of sitting at its path). Kept vendored from MOODLE_405_MAIN. Only standalone one-repo-per-path plugins are submodulized."
     },
     {
       "path": "mod/respondusws",
@@ -899,7 +1110,9 @@
       "sparse_paths": [
         "mod/respondusws"
       ],
-      "group": "legacy"
+      "group": "legacy",
+      "disabled": true,
+      "note": "Monorepo/sparse plugin: submodulize.sh --no-replay cannot place it correctly (a submodule working tree is the entire upstream repo, so a plugin in a subdirectory nests instead of sitting at its path). Kept vendored from MOODLE_405_MAIN. Only standalone one-repo-per-path plugins are submodulized."
     },
     {
       "path": "mod/turningptintegration",
@@ -908,7 +1121,9 @@
       "sparse_paths": [
         "mod/turningptintegration"
       ],
-      "group": "legacy"
+      "group": "legacy",
+      "disabled": true,
+      "note": "Monorepo/sparse plugin: submodulize.sh --no-replay cannot place it correctly (a submodule working tree is the entire upstream repo, so a plugin in a subdirectory nests instead of sitting at its path). Kept vendored from MOODLE_405_MAIN. Only standalone one-repo-per-path plugins are submodulized."
     },
     {
       "path": "local/ml",

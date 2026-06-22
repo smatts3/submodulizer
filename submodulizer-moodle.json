@@ -3,32 +3,10 @@
     "admin/tool/ally": {
       "versions": [
         {
-          "date": "2026-06-19",
+          "date": "2026-06-22",
           "source": "anthology-ally/moodle-tool_ally",
           "sourcetype": "github",
-          "commithash": "2a2413f7c2906af07530d0167d19ab727c747b36",
-          "current": true
-        }
-      ]
-    },
-    "admin/tool/crawler": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "catalyst/moodle-tool_crawler",
-          "sourcetype": "github",
-          "commithash": "2950d1faaa49d786a63313edd7033225339d42b2",
-          "current": true
-        }
-      ]
-    },
-    "admin/tool/mergeusers": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "jpahullo/moodle-tool_mergeusers",
-          "sourcetype": "github",
-          "commithash": "60c702dc771d902c4626c3cd756c4180410c1479",
+          "commithash": "451672bb6f7623d1e812a269967f175af04ecfe7",
           "current": true
         }
       ]
@@ -36,21 +14,10 @@
     "admin/tool/migratehvp2h5p": {
       "versions": [
         {
-          "date": "2026-06-19",
+          "date": "2026-06-22",
           "source": "moodlehq/moodle-tool_migratehvp2h5p",
           "sourcetype": "github",
-          "commithash": "12af4c527d62b104e441bb30fb3075f26897af3a",
-          "current": true
-        }
-      ]
-    },
-    "auth/basic": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "catalyst/moodle-auth_basic",
-          "sourcetype": "github",
-          "commithash": "3471352c284c5ae2cb10243add362e48a17250c3",
+          "commithash": "55458a556ed0a706f8ba31f085438defe5e0531b",
           "current": true
         }
       ]
@@ -58,32 +25,10 @@
     "availability/condition/password": {
       "versions": [
         {
-          "date": "2026-06-19",
+          "date": "2026-06-22",
           "source": "moodle-an-hochschulen/moodle-availability_password",
           "sourcetype": "github",
-          "commithash": "a7e7d1a09f003100086dd71248d142fa019be8c8",
-          "current": true
-        }
-      ]
-    },
-    "availability/condition/relativedate": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "ewallah/moodle-availability_relativedate",
-          "sourcetype": "github",
-          "commithash": "6bcb2b3fe0e7d3b9ccc8ef15cafb341666cdd6e2",
-          "current": true
-        }
-      ]
-    },
-    "blocks/backadel": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "lsuits/lsu-block_backadel",
-          "sourcetype": "github",
-          "commithash": "57e19e42294740a075994f2270b2a8fb7d596590",
+          "commithash": "b196f8bfa94b9164d511adfd3242dd8e3c8b9c8f",
           "current": true
         }
       ]
@@ -91,7 +36,7 @@
     "blocks/ce_enrollinfo": {
       "versions": [
         {
-          "date": "2026-06-19",
+          "date": "2026-06-22",
           "source": "lsuonline/moodle-block_ce_enrollinfo",
           "sourcetype": "github",
           "commithash": "d571e1d1cdd4fa97f075781d375687f9378d6ba4",
@@ -99,32 +44,10 @@
         }
       ]
     },
-    "blocks/configurable_reports": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "ULCC/moodle-block_configurable_reports",
-          "sourcetype": "github",
-          "commithash": "b1af291f520190d0e1c4bbf8139db3fbe00c21df",
-          "current": true
-        }
-      ]
-    },
-    "blocks/course_hider": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "lsuonline/moodle-block-course_hider",
-          "sourcetype": "github",
-          "commithash": "6779715635f440e394345aba3df5caa929578815",
-          "current": true
-        }
-      ]
-    },
     "blocks/etextbook": {
       "versions": [
         {
-          "date": "2026-06-19",
+          "date": "2026-06-22",
           "source": "lsuonline/moodle-block_etextbook",
           "sourcetype": "github",
           "commithash": "c23b88f359b2b615825655e25ec6055b23e7d0c6",
@@ -132,299 +55,13 @@
         }
       ]
     },
-    "blocks/helpdesk": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "lsuits/lsu-block_helpdesk",
-          "sourcetype": "github",
-          "commithash": "b33064de00cd430e1bbeb983cd01d18aee9ccf94",
-          "current": true
-        }
-      ]
-    },
-    "blocks/link_logins": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "lsuonline/moodle-block_link_logins",
-          "sourcetype": "github",
-          "commithash": "f8a3a00d1b6cf063c13eb5100115d5722f9e2d20",
-          "current": true
-        }
-      ]
-    },
-    "blocks/lsu_people": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "lsuonline/moodle-block_lsu_people",
-          "sourcetype": "github",
-          "commithash": "b7451bcfa42a0b479596d380a3b3df633b6fe10b",
-          "current": true
-        }
-      ]
-    },
-    "blocks/lsuxe": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "lsuonline/moodle-block_lsuxe",
-          "sourcetype": "github",
-          "commithash": "e36515244b670d08aa7c4b354c8678a1a71dccd5",
-          "current": true
-        }
-      ]
-    },
-    "blocks/material_download": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "TUM-MZ/moodle-block_material-download",
-          "sourcetype": "github",
-          "commithash": "1aca95f396c6d69a84734017c90d2540b4f7e297",
-          "current": true
-        }
-      ]
-    },
-    "blocks/mhaairs": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "itamart/moodle-block_mhaairs",
-          "sourcetype": "github",
-          "commithash": "e7f808e924b0b55a71130c5b882fb64e591b1540",
-          "current": true
-        }
-      ]
-    },
-    "blocks/migrate_users": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "lsuonline/lsuce-block_migrate_users",
-          "sourcetype": "github",
-          "commithash": "e34dd7592b87ddb94659967757d199fc94e58a63",
-          "current": true
-        }
-      ]
-    },
     "blocks/panopto": {
       "versions": [
         {
-          "date": "2026-06-19",
+          "date": "2026-06-22",
           "source": "Panopto/Moodle-2.0-plugin-for-Panopto",
           "sourcetype": "github",
-          "commithash": "04224798ad661d39d9990fd499563087d4cbb268",
-          "current": true
-        }
-      ]
-    },
-    "blocks/pu": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "lsuonline/block_pu",
-          "sourcetype": "github",
-          "commithash": "738444fe8a473f27574495386ce4cb92adb5d9db",
-          "current": true
-        }
-      ]
-    },
-    "blocks/quickmail": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "lsuonline/lsuce-block_quickmail",
-          "sourcetype": "github",
-          "commithash": "f668120f43a38cb3fd6d3c22a4f211d6bc438223",
-          "current": true
-        }
-      ]
-    },
-    "blocks/quiz_results": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "moodlehq/moodle-block_quiz_results",
-          "sourcetype": "github",
-          "commithash": "09792c32a6838fc424fd24e7e7e39af4a4534867",
-          "current": true
-        }
-      ]
-    },
-    "blocks/simple_restore": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "lsuits/lsu-block_simple_restore",
-          "sourcetype": "github",
-          "commithash": "2bfff0b1afdcf94a6add661ef71fe3c8aa7a2835",
-          "current": true
-        }
-      ]
-    },
-    "blocks/student_gradeviewer": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "lsuits/lsu-block_student_gradeviewer",
-          "sourcetype": "github",
-          "commithash": "b73f1b891981ba6f67e92ff95b1478b3decba731",
-          "current": true
-        }
-      ]
-    },
-    "blocks/ues_logs": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "lsuits/lsu-block_ues_logs",
-          "sourcetype": "github",
-          "commithash": "b1f093ecf8f69ae9e26323017d2510197c428e38",
-          "current": true
-        }
-      ]
-    },
-    "blocks/ues_meta_viewer": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "lsuits/lsu-block_ues_meta_viewer",
-          "sourcetype": "github",
-          "commithash": "ffeb00fb7391f995dd73e5b1f52489ac50db96fb",
-          "current": true
-        }
-      ]
-    },
-    "blocks/ues_reprocess": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "lsuits/lsu-block_ues_reprocess",
-          "sourcetype": "github",
-          "commithash": "d85ec8dd33fa82394fb83ef94bbe547cd0961e67",
-          "current": true
-        }
-      ]
-    },
-    "blocks/wds_postgrades": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "lsuonline/moodle-block_wds_postgrades",
-          "sourcetype": "github",
-          "commithash": "239ec59409ebe975e90527db0973ec5eb8c6fd86",
-          "current": true
-        }
-      ]
-    },
-    "blocks/wds_sportsgrades": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "lsuonline/moodle-block_wds_sportsgrades",
-          "sourcetype": "github",
-          "commithash": "4fe7596ae3cde33aeea406da362482fccfe026af",
-          "current": true
-        }
-      ]
-    },
-    "blocks/wdsprefs": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "lsuonline/moodle-block_wdsprefs",
-          "sourcetype": "github",
-          "commithash": "5096feb8f423240341143bbe1553fe91457d7bc8",
-          "current": true
-        }
-      ]
-    },
-    "cache/stores/rediscluster": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "open-lms-open-source/moodle-cachestore_rediscluster",
-          "sourcetype": "github",
-          "commithash": "a00d09c4824397dbfb15df4462d19275398989f0",
-          "current": true
-        }
-      ]
-    },
-    "dataformat/xml": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "paulholden/moodle-dataformat_xml",
-          "sourcetype": "github",
-          "commithash": "82640ac893b4f32ced1ab34dfb08ca7709f2afb0",
-          "current": true
-        }
-      ]
-    },
-    "enrol/arlo": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "lsuonline/moodle-enrol_arlo",
-          "sourcetype": "github",
-          "commithash": "205945f33fe2887716f983788f44cb3e145bf782",
-          "current": true
-        }
-      ]
-    },
-    "enrol/d1": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "lsuonline/moodle-enrol_d1",
-          "sourcetype": "github",
-          "commithash": "113c71b293ffb1be5d432d39af27cea0ab9191f9",
-          "current": true
-        }
-      ]
-    },
-    "enrol/reenroller": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "lsuonline/moodle-enrol_reenroller",
-          "sourcetype": "github",
-          "commithash": "9748205666c5e88722f7a66cffd8a422c818eae8",
-          "current": true
-        }
-      ]
-    },
-    "enrol/studentstaff": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "lsuonline/moodle-enrol_studentstaff",
-          "sourcetype": "github",
-          "commithash": "0ac7cedf92deb0e2f98d218e9b8a8efc0c28bbf8",
-          "current": true
-        }
-      ]
-    },
-    "enrol/workdayhrm": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "lsuonline/moodle-enrol_workdayhrm",
-          "sourcetype": "github",
-          "commithash": "ac060828f6148d5bdc4ba40b706d1835b62e204e",
-          "current": true
-        }
-      ]
-    },
-    "enrol/workdaystudent": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "lsuonline/moodle-enrol_workdaystudent",
-          "sourcetype": "github",
-          "commithash": "b3800d9b2c05b8ebd9001ba511500e2cbbef0d05",
+          "commithash": "6a2dc6a38f425efa94fe9bb6894d47d0bff5a6f3",
           "current": true
         }
       ]
@@ -432,65 +69,10 @@
     "filter/ally": {
       "versions": [
         {
-          "date": "2026-06-19",
+          "date": "2026-06-22",
           "source": "anthology-ally/moodle-filter_ally",
           "sourcetype": "github",
-          "commithash": "505733afdd449c6c9cf50cecffa9ceb7116f21eb",
-          "current": true
-        }
-      ]
-    },
-    "filter/wiris": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "wiris/moodle-filter_wiris",
-          "sourcetype": "github",
-          "commithash": "429cfbf297fed88a3932e294142d8413e992f9d1",
-          "current": true
-        }
-      ]
-    },
-    "grade/import/smart": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "lsuonline/moodle-grade_import_smart",
-          "sourcetype": "github",
-          "commithash": "030fc9002f436d536aaa9cc6cc114bbdd00924e0",
-          "current": true
-        }
-      ]
-    },
-    "grade/report/forecast": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "lsuits/lsu-gradereport_forecast",
-          "sourcetype": "github",
-          "commithash": "6e966b1c600bbd41077bc8840cf8d036dd78ad75",
-          "current": true
-        }
-      ]
-    },
-    "grade/report/grade_breakdown": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "lsuits/lsu-gradereport_grade_breakdown",
-          "sourcetype": "github",
-          "commithash": "4834a6fc0b38860563001c34e1720e85e0013af4",
-          "current": true
-        }
-      ]
-    },
-    "grade/report/gradebook_builder": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "lsuits/lsu-gradereport_gradebook_builder",
-          "sourcetype": "github",
-          "commithash": "5a20436e305206ecd57e5c9566bdc00d798ea5e9",
+          "commithash": "e1a23b1cbbe2a9f7bbf2dcfb84e5a5beee256611",
           "current": true
         }
       ]
@@ -498,10 +80,10 @@
     "grade/report/rubrics": {
       "versions": [
         {
-          "date": "2026-06-19",
+          "date": "2026-06-22",
           "source": "brickfield/moodle-gradereport_rubrics",
           "sourcetype": "github",
-          "commithash": "58a690e7d5564dc81bd27ab2eb86d6ab51c60acb",
+          "commithash": "fe42a54dcfbfa93917c616f016e8f82a0f81f661",
           "current": true
         }
       ]
@@ -509,10 +91,10 @@
     "lib/editor/atto/plugins/cloze": {
       "versions": [
         {
-          "date": "2026-06-19",
+          "date": "2026-06-22",
           "source": "dthies/moodle-atto_cloze",
           "sourcetype": "github",
-          "commithash": "6c87f92c2e7c79ea2121636144d5ebce4e9ea43a",
+          "commithash": "69394a3d9a0d1af5f0a8d2639c813fe8821edb75",
           "current": true
         }
       ]
@@ -520,10 +102,10 @@
     "lib/editor/atto/plugins/count": {
       "versions": [
         {
-          "date": "2026-06-19",
+          "date": "2026-06-22",
           "source": "damyon/moodle-atto_count",
           "sourcetype": "github",
-          "commithash": "a91997b6c249ded62f1f38da1beed05e4d66118a",
+          "commithash": "72ce3de1200e1624417a8ad96677b109e6ecadfc",
           "current": true
         }
       ]
@@ -531,7 +113,7 @@
     "lib/editor/atto/plugins/fontfamily": {
       "versions": [
         {
-          "date": "2026-06-19",
+          "date": "2026-06-22",
           "source": "projectestac/moodle-atto_fontfamily",
           "sourcetype": "github",
           "commithash": "ea6a85c284408b630302dd69425c98457e770cb4",
@@ -542,7 +124,7 @@
     "lib/editor/atto/plugins/fontsize": {
       "versions": [
         {
-          "date": "2026-06-19",
+          "date": "2026-06-22",
           "source": "andrewnicols/moodle-atto_fontsize",
           "sourcetype": "github",
           "commithash": "23858bb6670ab3fd02d8caab074b33df105cb559",
@@ -553,54 +135,10 @@
     "lib/editor/atto/plugins/fullscreen": {
       "versions": [
         {
-          "date": "2026-06-19",
+          "date": "2026-06-22",
           "source": "dthies/moodle-atto_fullscreen",
           "sourcetype": "github",
-          "commithash": "8d71af42f576650be041b470b8ea4bf38fe78f30",
-          "current": true
-        }
-      ]
-    },
-    "lib/editor/atto/plugins/morefontcolors": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "ndunand/moodle-atto_morefontcolors",
-          "sourcetype": "github",
-          "commithash": "872a60ca4f82c7c83854883bbe3b4e8dc5e2b56b",
-          "current": true
-        }
-      ]
-    },
-    "lib/editor/atto/plugins/panoptobutton": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "lucisgit/moodle-repository_panopto",
-          "sourcetype": "github",
-          "commithash": "1acfa2d30c4d3fa6a142a1ba166928a7be905cb6",
-          "current": true
-        }
-      ]
-    },
-    "lib/editor/atto/plugins/panoptoltibutton": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "lucisgit/moodle-block_panopto",
-          "sourcetype": "github",
-          "commithash": "7add7388c9b29d7dd3afb2767a6ab726e61d5bef",
-          "current": true
-        }
-      ]
-    },
-    "lib/editor/atto/plugins/phonetic": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "lsuonline/moodle_atto_phonetic",
-          "sourcetype": "github",
-          "commithash": "1b305876dec671c83338459020d174e50080ae9f",
+          "commithash": "a4d767f971fd350c4d4d5f015860178293ec6a96",
           "current": true
         }
       ]
@@ -608,7 +146,7 @@
     "lib/editor/atto/plugins/teamsmeeting": {
       "versions": [
         {
-          "date": "2026-06-19",
+          "date": "2026-06-22",
           "source": "enovation/moodle-atto_teamsmeeting",
           "sourcetype": "github",
           "commithash": "957dc7d72ab36f8f63abeca3e2b1058d0ea56973",
@@ -616,68 +154,13 @@
         }
       ]
     },
-    "lib/editor/atto/plugins/vidgridbutton": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "ilosvideos/moodleAttoPlugin",
-          "sourcetype": "github",
-          "commithash": "6d0c79d4e63487b674fcbbce2b92236647c6f62b",
-          "current": true
-        }
-      ]
-    },
-    "lib/editor/atto/plugins/wiris": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "wiris/moodle-atto_wiris",
-          "sourcetype": "github",
-          "commithash": "a2e963ad9564cdcde95e8f4d993a484493e99ee6",
-          "current": true
-        }
-      ]
-    },
-    "lib/editor/atto/plugins/wordimport": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "ecampbell/moodle-atto_wordimport",
-          "sourcetype": "github",
-          "commithash": "4b8d827d7957cb4ad083007b8d866d7955ce83a9",
-          "current": true
-        }
-      ]
-    },
-    "lib/editor/tiny/plugins/cloze": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "srobotta/moodle-tiny_cloze",
-          "sourcetype": "github",
-          "commithash": "d5173bc8541573a6d85d71269774f9d8925a8e0c",
-          "current": true
-        }
-      ]
-    },
-    "lib/editor/tiny/plugins/fontcolor": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "bfh/moodle-tiny_fontcolor",
-          "sourcetype": "github",
-          "commithash": "8aed8ea14a45b28c7b2f84736df6ea68d329e40c",
-          "current": true
-        }
-      ]
-    },
     "lib/editor/tiny/plugins/fontfamily": {
       "versions": [
         {
-          "date": "2026-06-19",
+          "date": "2026-06-22",
           "source": "finspire-fi/moodle-tiny_fontfamily",
           "sourcetype": "github",
-          "commithash": "8b24e78db62d8010077541f81a04485126b4e30f",
+          "commithash": "f49cc0cd079dd002deb9aa290f9795bab355bc06",
           "current": true
         }
       ]
@@ -685,21 +168,10 @@
     "lib/editor/tiny/plugins/fontsize": {
       "versions": [
         {
-          "date": "2026-06-19",
+          "date": "2026-06-22",
           "source": "finspire-fi/moodle-tiny_fontsize",
           "sourcetype": "github",
-          "commithash": "fe97a9ac1d267d6d28b16aff4439a758c098a6de",
-          "current": true
-        }
-      ]
-    },
-    "lib/editor/tiny/plugins/kalturamedia": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "kaltura/moodle-tinymce_kalturamedia",
-          "sourcetype": "github",
-          "commithash": "237cdf914d6034ee4c692f06b91d3c164bdc86d0",
+          "commithash": "f43f637317cef179e34ef7da774c67153f8f6f4c",
           "current": true
         }
       ]
@@ -707,54 +179,10 @@
     "lib/editor/tiny/plugins/panoptoltibutton": {
       "versions": [
         {
-          "date": "2026-06-19",
+          "date": "2026-06-22",
           "source": "Panopto/moodle-tiny_panoptoltibutton",
           "sourcetype": "github",
-          "commithash": "08a4ca0d690b76f17b518e3fa8ce33c23e8a45b7",
-          "current": true
-        }
-      ]
-    },
-    "lib/editor/tiny/plugins/wiris": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "wiris/moodle-tiny_wiris",
-          "sourcetype": "github",
-          "commithash": "201954a366d58a6c8d8b9a44d326a846c20dbfe2",
-          "current": true
-        }
-      ]
-    },
-    "lib/editor/tiny/plugins/wordimport": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "https://codeberg.org/linos/moodle-tiny_wordimport.git",
-          "sourcetype": "url",
-          "commithash": "ad9181081da4d790890fb1d19408db062a59e473",
-          "current": true
-        }
-      ]
-    },
-    "lib/editor/tiny/plugins/wordlimit": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "https://codeberg.org/linos/moodle-tiny_wordlimit.git",
-          "sourcetype": "url",
-          "commithash": "80f198e0336f030b83223f903fc0035d96e55549",
-          "current": true
-        }
-      ]
-    },
-    "local/adminer": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "adminerevo/adminerevo",
-          "sourcetype": "github",
-          "commithash": "d11a2e87cc0da5e631d442c4b59819f92117a733",
+          "commithash": "e8fe9ba800cc3677591ef3b0d9a02e709ccadc83",
           "current": true
         }
       ]
@@ -762,21 +190,10 @@
     "local/bulkenrol": {
       "versions": [
         {
-          "date": "2026-06-19",
+          "date": "2026-06-22",
           "source": "moodle-an-hochschulen/moodle-local_bulkenrol",
           "sourcetype": "github",
-          "commithash": "ffbaba29dc0a9a74f7330bdd2e0e4574ee9a95bb",
-          "current": true
-        }
-      ]
-    },
-    "local/d1": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "lsuonline/moodle-local_d1",
-          "sourcetype": "github",
-          "commithash": "be15943a095916e63d9404dc5af3ec66a895ad13",
+          "commithash": "3ff9f82fbab3b44d7103b8280a51159578ad279d",
           "current": true
         }
       ]
@@ -784,43 +201,10 @@
     "local/honorlockproctoring": {
       "versions": [
         {
-          "date": "2026-06-19",
+          "date": "2026-06-22",
           "source": "HonorLock/moodle-local_honorlockproctoring",
           "sourcetype": "github",
-          "commithash": "44be735e094179a80145f6c6bb8507a7bc8004fa",
-          "current": true
-        }
-      ]
-    },
-    "local/kalpanmaps": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "lsuonline/local_kalpanmaps",
-          "sourcetype": "github",
-          "commithash": "7639e003a80ab81e07df189bc16369092a4f1838",
-          "current": true
-        }
-      ]
-    },
-    "local/kaltura": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "kaltura/moodle-local_kaltura",
-          "sourcetype": "github",
-          "commithash": "3148d0959da87a3c1120077f4d2b624308b85b60",
-          "current": true
-        }
-      ]
-    },
-    "local/lsucli": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "lsuonline/moodle_local-lsucli",
-          "sourcetype": "github",
-          "commithash": "4d833941b73d8e6488c3df0e10295ff018b6be50",
+          "commithash": "17b3848d1da544b44e631ff6a05de884fe5d9d51",
           "current": true
         }
       ]
@@ -828,10 +212,10 @@
     "local/redislock": {
       "versions": [
         {
-          "date": "2026-06-19",
+          "date": "2026-06-22",
           "source": "open-lms-open-source/moodle-local_redislock",
           "sourcetype": "github",
-          "commithash": "91e94e46b899a34098dd297922b4905037f2c443",
+          "commithash": "cd8f5ead5933c4f877a8784c08256e2010c3aa14",
           "current": true
         }
       ]
@@ -839,7 +223,7 @@
     "local/reminders": {
       "versions": [
         {
-          "date": "2026-06-19",
+          "date": "2026-06-22",
           "source": "isuru89/moodle-local_reminders",
           "sourcetype": "github",
           "commithash": "1815fe6da472783157c024240b038c089a4d5009",
@@ -850,21 +234,10 @@
     "local/remote_courses": {
       "versions": [
         {
-          "date": "2026-06-19",
+          "date": "2026-06-22",
           "source": "LafColITS/moodle-local_remote_courses",
           "sourcetype": "github",
-          "commithash": "8d159caefb931a8b4e5934d6ef6c995c1bc1bd63",
-          "current": true
-        }
-      ]
-    },
-    "local/syllabusuploader": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "lsuonline/moodle-local_syllabusuploader",
-          "sourcetype": "github",
-          "commithash": "4dbf1e93e88db8a953128351e2b8561f1c811546",
+          "commithash": "750243225e8d6ac0a9d6e4f46a6bac814fb825b3",
           "current": true
         }
       ]
@@ -872,10 +245,10 @@
     "local/wirisquizzes": {
       "versions": [
         {
-          "date": "2026-06-19",
+          "date": "2026-06-22",
           "source": "wiris/moodle-local_wirisquizzes",
           "sourcetype": "github",
-          "commithash": "22118847475324e338dd4d9760f4881430091ce8",
+          "commithash": "473ca93c432a40063a59a69c6851f76097964f4c",
           "current": true
         }
       ]
@@ -883,32 +256,10 @@
     "mod/attendance": {
       "versions": [
         {
-          "date": "2026-06-19",
+          "date": "2026-06-22",
           "source": "danmarsden/moodle-mod_attendance",
           "sourcetype": "github",
-          "commithash": "4b0be553267f853c1996288ad501722574b74750",
-          "current": true
-        }
-      ]
-    },
-    "mod/board": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "brickfield/moodle-mod_board",
-          "sourcetype": "github",
-          "commithash": "cb1f1ea3f9402ac0f79a8d8afbf027def339a3ab",
-          "current": true
-        }
-      ]
-    },
-    "mod/book/tool/wordimport": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "ecampbell/moodle-booktool_wordimport",
-          "sourcetype": "github",
-          "commithash": "d1805ab339440a3af34f38cab50e429d53216956",
+          "commithash": "61712573bcf4dca26ec9e976df884fdbffdb1edc",
           "current": true
         }
       ]
@@ -916,10 +267,10 @@
     "mod/choicegroup": {
       "versions": [
         {
-          "date": "2026-06-19",
+          "date": "2026-06-22",
           "source": "ndunand/moodle-mod_choicegroup",
           "sourcetype": "github",
-          "commithash": "5278cf076ce43ef0a00c83128cd5eacebf82f361",
+          "commithash": "11490db522e3eae336a518b24d01b2a2860f73db",
           "current": true
         }
       ]
@@ -927,32 +278,10 @@
     "mod/customcert": {
       "versions": [
         {
-          "date": "2026-06-19",
+          "date": "2026-06-22",
           "source": "mdjnelson/moodle-mod_customcert",
           "sourcetype": "github",
-          "commithash": "f8673be2614236807fbb284cfb41433c0cd6c1de",
-          "current": true
-        }
-      ]
-    },
-    "mod/flashcard": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "vfremaux/moodle-mod_flashcard",
-          "sourcetype": "github",
-          "commithash": "b9b7c1c36f66d6926ef0e0d98c4aa899b027dc5d",
-          "current": true
-        }
-      ]
-    },
-    "mod/hvp": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "h5p/moodle-mod_hvp",
-          "sourcetype": "github",
-          "commithash": "a36099fe8c1ac8c5836f42653a55c563b8a05953",
+          "commithash": "9929e5430c72daa7482db58138389afb5265dc58",
           "current": true
         }
       ]
@@ -960,10 +289,10 @@
     "mod/journal": {
       "versions": [
         {
-          "date": "2026-06-19",
+          "date": "2026-06-22",
           "source": "elearningsoftware/moodle-mod_journal",
           "sourcetype": "github",
-          "commithash": "3fb8762a77d3eb653a30330c4aaeaa5b816a893f",
+          "commithash": "3455092e02dd4c6134db765e97c39541d3709635",
           "current": true
         }
       ]
@@ -971,32 +300,10 @@
     "mod/lightboxgallery": {
       "versions": [
         {
-          "date": "2026-06-19",
+          "date": "2026-06-22",
           "source": "open-lms-open-source/moodle-mod_lightboxgallery",
           "sourcetype": "github",
-          "commithash": "1cdec6ada251049e8a100450a0d7bdd9df3e1753",
-          "current": true
-        }
-      ]
-    },
-    "mod/panoptosubmission": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "Panopto/moodle-mod_panoptosubmission",
-          "sourcetype": "github",
-          "commithash": "8c1e218a6b50a6985e4f2642525f406235a048da",
-          "current": true
-        }
-      ]
-    },
-    "mod/questionnaire": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "PoetOS/moodle-mod_questionnaire",
-          "sourcetype": "github",
-          "commithash": "f976c8e8d0a4c731f9cf679b3096ba25b7612a92",
+          "commithash": "6afc5c7be6be142eb9d744a82a1b9c92c9223d2a",
           "current": true
         }
       ]
@@ -1004,10 +311,10 @@
     "mod/quiz/report/downloadsubmissions": {
       "versions": [
         {
-          "date": "2026-06-19",
+          "date": "2026-06-22",
           "source": "IITBombayWeb/moodle-quiz_downloadsubmissions",
           "sourcetype": "github",
-          "commithash": "28aef9d8f1fd79d7b01d473ca4d43e33efe15158",
+          "commithash": "83f427df0ef2413477e3fb5cb3adc9306043cce3",
           "current": true
         }
       ]
@@ -1015,21 +322,10 @@
     "mod/turnitintooltwo": {
       "versions": [
         {
-          "date": "2026-06-19",
+          "date": "2026-06-22",
           "source": "turnitin/moodle-mod_turnitintooltwo",
           "sourcetype": "github",
-          "commithash": "486cf54b5781a2aace5aee4d9ca2334e31d5bf81",
-          "current": true
-        }
-      ]
-    },
-    "plagiarism/turnitin": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "turnitin/moodle-plagiarism_turnitin",
-          "sourcetype": "github",
-          "commithash": "9a7051675cad8b331ec570402b4864a0b22a02d5",
+          "commithash": "101d93b82bfc31a65e13f3b01238db3696e72617",
           "current": true
         }
       ]
@@ -1037,7 +333,7 @@
     "question/behaviour/deferredfeedbackexplain": {
       "versions": [
         {
-          "date": "2026-06-19",
+          "date": "2026-06-22",
           "source": "timhunt/moodle-qbehaviour_deferredfeedbackexplain",
           "sourcetype": "github",
           "commithash": "c53b01b505389efabc8d0f987efc44507983e378",
@@ -1048,7 +344,7 @@
     "question/behaviour/regexpadaptivewithhelp": {
       "versions": [
         {
-          "date": "2026-06-19",
+          "date": "2026-06-22",
           "source": "rezeau/moodle-qbehaviour_regexpadaptivewithhelp",
           "sourcetype": "github",
           "commithash": "cecb9542e1fc58c3bbe24faef7500f44938b4a8c",
@@ -1059,7 +355,7 @@
     "question/behaviour/regexpadaptivewithhelpnopenalty": {
       "versions": [
         {
-          "date": "2026-06-19",
+          "date": "2026-06-22",
           "source": "rezeau/moodle-qbehaviour_regexpadaptivewithhelpnopenalty",
           "sourcetype": "github",
           "commithash": "94467990fd44bb558a8eda09cc3217a4a974381e",
@@ -1070,10 +366,10 @@
     "question/format/wordtable": {
       "versions": [
         {
-          "date": "2026-06-19",
+          "date": "2026-06-22",
           "source": "ecampbell/moodle-qformat_wordtable",
           "sourcetype": "github",
-          "commithash": "fe5a76de9b0e0dba62a80fac9b1cd0fe2c398446",
+          "commithash": "215a928758f66742f0475499f3c63d3db5d66c89",
           "current": true
         }
       ]
@@ -1081,10 +377,10 @@
     "question/type/essayautograde": {
       "versions": [
         {
-          "date": "2026-06-19",
+          "date": "2026-06-22",
           "source": "gbateson/moodle-qtype_essayautograde",
           "sourcetype": "github",
-          "commithash": "8e3a018436083649990f0989fba66a4673ace9a9",
+          "commithash": "c94423c798c2f696e2740ba178d2a233b2aacd6c",
           "current": true
         }
       ]
@@ -1092,10 +388,10 @@
     "question/type/essaywiris": {
       "versions": [
         {
-          "date": "2026-06-19",
+          "date": "2026-06-22",
           "source": "wiris/moodle-qtype_essaywiris",
           "sourcetype": "github",
-          "commithash": "e9964e40bb2deeae26356a0fa98d93fc38735487",
+          "commithash": "ca09c0725cf501c5b4ad6f1e94a89704c3a49df5",
           "current": true
         }
       ]
@@ -1103,10 +399,10 @@
     "question/type/gapfill": {
       "versions": [
         {
-          "date": "2026-06-19",
+          "date": "2026-06-22",
           "source": "marcusgreen/moodle-qtype_gapfill",
           "sourcetype": "github",
-          "commithash": "746614db2b06bef91818d702fd1d9875381ce918",
+          "commithash": "dd6c217d3f3d384aa6aa83af6ffe2a40d290425e",
           "current": true
         }
       ]
@@ -1114,10 +410,10 @@
     "question/type/matchwiris": {
       "versions": [
         {
-          "date": "2026-06-19",
+          "date": "2026-06-22",
           "source": "wiris/moodle-qtype_matchwiris",
           "sourcetype": "github",
-          "commithash": "05d00719be9661792d81c91a0d6563efb0230446",
+          "commithash": "36a115b5c2480a0dfe2974808306d322d7e663b2",
           "current": true
         }
       ]
@@ -1125,10 +421,10 @@
     "question/type/multianswerwiris": {
       "versions": [
         {
-          "date": "2026-06-19",
+          "date": "2026-06-22",
           "source": "wiris/moodle-qtype_multianswerwiris",
           "sourcetype": "github",
-          "commithash": "82b425d84ed9f6a97f857d10431738755199fe7a",
+          "commithash": "ee5654bd673d2f34884ea288192e463753c628c8",
           "current": true
         }
       ]
@@ -1136,10 +432,10 @@
     "question/type/multichoicewiris": {
       "versions": [
         {
-          "date": "2026-06-19",
+          "date": "2026-06-22",
           "source": "wiris/moodle-qtype_multichoicewiris",
           "sourcetype": "github",
-          "commithash": "72cb5bf94eceeffb13f25cfc94ddaf079e6719c1",
+          "commithash": "4d3564394e4de1e46163e441711718d59e10075c",
           "current": true
         }
       ]
@@ -1147,7 +443,7 @@
     "question/type/oumultiresponse": {
       "versions": [
         {
-          "date": "2026-06-19",
+          "date": "2026-06-22",
           "source": "moodleou/moodle-qtype_oumultiresponse",
           "sourcetype": "github",
           "commithash": "af53ba65e8d4a7288ef47cce2a77b5d6a0c26924",
@@ -1158,7 +454,7 @@
     "question/type/regexp": {
       "versions": [
         {
-          "date": "2026-06-19",
+          "date": "2026-06-22",
           "source": "rezeau/moodle-qtype_regexp",
           "sourcetype": "github",
           "commithash": "912eb08eef438fca3b8096b18a27506b1abea000",
@@ -1169,10 +465,10 @@
     "question/type/shortanswerwiris": {
       "versions": [
         {
-          "date": "2026-06-19",
+          "date": "2026-06-22",
           "source": "wiris/moodle-qtype_shortanswerwiris",
           "sourcetype": "github",
-          "commithash": "bb9c16d2697ca6f29227ba30675574ee470acb37",
+          "commithash": "f4446e6fa4e8fdc073c47a066113ec827b8bcab9",
           "current": true
         }
       ]
@@ -1180,10 +476,10 @@
     "question/type/truefalsewiris": {
       "versions": [
         {
-          "date": "2026-06-19",
+          "date": "2026-06-22",
           "source": "wiris/moodle-qtype_truefalsewiris",
           "sourcetype": "github",
-          "commithash": "7aa2a3f476f957c8eac0b950703331ac94f692ca",
+          "commithash": "395e972249fbcc18508c6bfaba820bb14262c57b",
           "current": true
         }
       ]
@@ -1191,10 +487,10 @@
     "question/type/wq": {
       "versions": [
         {
-          "date": "2026-06-19",
+          "date": "2026-06-22",
           "source": "wiris/moodle-qtype_wq",
           "sourcetype": "github",
-          "commithash": "c3ff10d42e8f13ee5fec60396a3834b9b98ac78d",
+          "commithash": "252d714d542b0e2b13107fa693ab57141792a5fe",
           "current": true
         }
       ]
@@ -1202,65 +498,10 @@
     "report/allylti": {
       "versions": [
         {
-          "date": "2026-06-19",
+          "date": "2026-06-22",
           "source": "anthology-ally/moodle-report_allylti",
           "sourcetype": "github",
-          "commithash": "27e2f178ba10293451812b587a8e6a0a6d7e20a5",
-          "current": true
-        }
-      ]
-    },
-    "report/componentgrades": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "marcusgreen/moodle-report_componentgrades",
-          "sourcetype": "github",
-          "commithash": "e553d999e26a0ad3457b9c8eb56104d84515a9e8",
-          "current": true
-        }
-      ]
-    },
-    "report/coursesize": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "lsuonline/moodle-report_coursesize",
-          "sourcetype": "github",
-          "commithash": "977aa88e1273598f1ee7d935d58e770dbe588108",
-          "current": true
-        }
-      ]
-    },
-    "report/customsql": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "lsuonline/lsuce-report_customsql",
-          "sourcetype": "github",
-          "commithash": "430ce322ebfec7bccb023332d06438555209ee47",
-          "current": true
-        }
-      ]
-    },
-    "report/editdates": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "moodleou/moodle-report_editdates",
-          "sourcetype": "github",
-          "commithash": "96fc7e855ad3ca7b06526fafe3ee742aff8acdaa",
-          "current": true
-        }
-      ]
-    },
-    "report/lpmonitoring": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "StudiUM/moodle-report_lpmonitoring",
-          "sourcetype": "github",
-          "commithash": "f4bd1e7bcd7290b4687743c784c225fef2532527",
+          "commithash": "4d189ef7a13d2d040a6dd7e1b5532e542fdef560",
           "current": true
         }
       ]
@@ -1268,428 +509,10 @@
     "report/lsusql": {
       "versions": [
         {
-          "date": "2026-06-19",
+          "date": "2026-06-22",
           "source": "lsuonline/moodle-report_lsusql",
           "sourcetype": "github",
           "commithash": "60ecdd5e59773dda52df5519e0764853a1831118",
-          "current": true
-        }
-      ]
-    },
-    "theme/snap": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "lsuonline/lsuce-theme_snap",
-          "sourcetype": "github",
-          "commithash": "34ee2133face841fc7291c53b2aa5827e944e343",
-          "current": true
-        }
-      ]
-    },
-    "filter/kaltura": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "kaltura/moodle_plugin",
-          "sourcetype": "github",
-          "commithash": "ba645572175708c74f8c7df88284648738497fc8",
-          "current": true
-        }
-      ]
-    },
-    "lib/editor/atto/plugins/kalturamedia": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "kaltura/moodle_plugin",
-          "sourcetype": "github",
-          "commithash": "ba645572175708c74f8c7df88284648738497fc8",
-          "current": true
-        }
-      ]
-    },
-    "mod/kalvidassign": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "kaltura/moodle_plugin",
-          "sourcetype": "github",
-          "commithash": "ba645572175708c74f8c7df88284648738497fc8",
-          "current": true
-        }
-      ]
-    },
-    "mod/kalvidres": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "kaltura/moodle_plugin",
-          "sourcetype": "github",
-          "commithash": "ba645572175708c74f8c7df88284648738497fc8",
-          "current": true
-        }
-      ]
-    },
-    "blocks/kalturamediagallery": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "kaltura/moodle-local_kalturamediagallery",
-          "sourcetype": "github",
-          "commithash": "25ef458360da3c179b9650a37fcb6bd1995042f3",
-          "current": true
-        }
-      ]
-    },
-    "local/kalturamediagallery": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "kaltura/moodle-local_kalturamediagallery",
-          "sourcetype": "github",
-          "commithash": "25ef458360da3c179b9650a37fcb6bd1995042f3",
-          "current": true
-        }
-      ]
-    },
-    "enrol/ues": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "lsuits/lsu-enrol_ues",
-          "sourcetype": "github",
-          "commithash": "afeade862fc2fc44e0f7c8fbb88faddf18130468",
-          "current": true
-        }
-      ]
-    },
-    "local/azure": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "lsuits/lsu-enrol_ues",
-          "sourcetype": "github",
-          "commithash": "afeade862fc2fc44e0f7c8fbb88faddf18130468",
-          "current": true
-        }
-      ]
-    },
-    "local/lsu": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "lsuits/lsu-enrol_ues",
-          "sourcetype": "github",
-          "commithash": "afeade862fc2fc44e0f7c8fbb88faddf18130468",
-          "current": true
-        }
-      ]
-    },
-    "local/online": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "lsuits/lsu-enrol_ues",
-          "sourcetype": "github",
-          "commithash": "afeade862fc2fc44e0f7c8fbb88faddf18130468",
-          "current": true
-        }
-      ]
-    },
-    "auth/oidc": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "Microsoft/o365-moodle",
-          "sourcetype": "github",
-          "commithash": "cfa4b0fa1b47452f945623f80805aa4ed46cd892",
-          "current": true
-        }
-      ]
-    },
-    "blocks/microsoft": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "Microsoft/o365-moodle",
-          "sourcetype": "github",
-          "commithash": "cfa4b0fa1b47452f945623f80805aa4ed46cd892",
-          "current": true
-        }
-      ]
-    },
-    "local/o365": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "Microsoft/o365-moodle",
-          "sourcetype": "github",
-          "commithash": "cfa4b0fa1b47452f945623f80805aa4ed46cd892",
-          "current": true
-        }
-      ]
-    },
-    "local/onenote": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "Microsoft/o365-moodle",
-          "sourcetype": "github",
-          "commithash": "cfa4b0fa1b47452f945623f80805aa4ed46cd892",
-          "current": true
-        }
-      ]
-    },
-    "mod/assign/feedback/onenote": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "Microsoft/o365-moodle",
-          "sourcetype": "github",
-          "commithash": "cfa4b0fa1b47452f945623f80805aa4ed46cd892",
-          "current": true
-        }
-      ]
-    },
-    "mod/assign/submission/onenote": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "Microsoft/o365-moodle",
-          "sourcetype": "github",
-          "commithash": "cfa4b0fa1b47452f945623f80805aa4ed46cd892",
-          "current": true
-        }
-      ]
-    },
-    "repository/office365": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "Microsoft/o365-moodle",
-          "sourcetype": "github",
-          "commithash": "cfa4b0fa1b47452f945623f80805aa4ed46cd892",
-          "current": true
-        }
-      ]
-    },
-    "blocks/cps": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "smatts3/lsuce-legacy-plugins",
-          "sourcetype": "github",
-          "commithash": "dcd12646bfeb020d88c53018a41d7d6f96f31a19",
-          "current": true
-        }
-      ]
-    },
-    "blocks/csv_profile": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "smatts3/lsuce-legacy-plugins",
-          "sourcetype": "github",
-          "commithash": "dcd12646bfeb020d88c53018a41d7d6f96f31a19",
-          "current": true
-        }
-      ]
-    },
-    "blocks/evaluation_kit_sso": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "smatts3/lsuce-legacy-plugins",
-          "sourcetype": "github",
-          "commithash": "dcd12646bfeb020d88c53018a41d7d6f96f31a19",
-          "current": true
-        }
-      ]
-    },
-    "blocks/iseek": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "smatts3/lsuce-legacy-plugins",
-          "sourcetype": "github",
-          "commithash": "dcd12646bfeb020d88c53018a41d7d6f96f31a19",
-          "current": true
-        }
-      ]
-    },
-    "blocks/lsu_libraries_research_link": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "smatts3/lsuce-legacy-plugins",
-          "sourcetype": "github",
-          "commithash": "dcd12646bfeb020d88c53018a41d7d6f96f31a19",
-          "current": true
-        }
-      ]
-    },
-    "blocks/my_picture": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "smatts3/lsuce-legacy-plugins",
-          "sourcetype": "github",
-          "commithash": "dcd12646bfeb020d88c53018a41d7d6f96f31a19",
-          "current": true
-        }
-      ]
-    },
-    "blocks/mylabmastering": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "smatts3/lsuce-legacy-plugins",
-          "sourcetype": "github",
-          "commithash": "dcd12646bfeb020d88c53018a41d7d6f96f31a19",
-          "current": true
-        }
-      ]
-    },
-    "blocks/post_grades": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "smatts3/lsuce-legacy-plugins",
-          "sourcetype": "github",
-          "commithash": "dcd12646bfeb020d88c53018a41d7d6f96f31a19",
-          "current": true
-        }
-      ]
-    },
-    "blocks/rollsheet": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "smatts3/lsuce-legacy-plugins",
-          "sourcetype": "github",
-          "commithash": "dcd12646bfeb020d88c53018a41d7d6f96f31a19",
-          "current": true
-        }
-      ]
-    },
-    "filter/tidy": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "smatts3/lsuce-legacy-plugins",
-          "sourcetype": "github",
-          "commithash": "dcd12646bfeb020d88c53018a41d7d6f96f31a19",
-          "current": true
-        }
-      ]
-    },
-    "grade/import/kioskpearsonjson": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "smatts3/lsuce-legacy-plugins",
-          "sourcetype": "github",
-          "commithash": "dcd12646bfeb020d88c53018a41d7d6f96f31a19",
-          "current": true
-        }
-      ]
-    },
-    "grade/import/pearson": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "smatts3/lsuce-legacy-plugins",
-          "sourcetype": "github",
-          "commithash": "dcd12646bfeb020d88c53018a41d7d6f96f31a19",
-          "current": true
-        }
-      ]
-    },
-    "local/aws_sdk": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "smatts3/lsuce-legacy-plugins",
-          "sourcetype": "github",
-          "commithash": "dcd12646bfeb020d88c53018a41d7d6f96f31a19",
-          "current": true
-        }
-      ]
-    },
-    "local/mylabmastering": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "smatts3/lsuce-legacy-plugins",
-          "sourcetype": "github",
-          "commithash": "dcd12646bfeb020d88c53018a41d7d6f96f31a19",
-          "current": true
-        }
-      ]
-    },
-    "local/mymedia": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "smatts3/lsuce-legacy-plugins",
-          "sourcetype": "github",
-          "commithash": "dcd12646bfeb020d88c53018a41d7d6f96f31a19",
-          "current": true
-        }
-      ]
-    },
-    "local/natsane": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "smatts3/lsuce-legacy-plugins",
-          "sourcetype": "github",
-          "commithash": "dcd12646bfeb020d88c53018a41d7d6f96f31a19",
-          "current": true
-        }
-      ]
-    },
-    "mod/library": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "smatts3/lsuce-legacy-plugins",
-          "sourcetype": "github",
-          "commithash": "dcd12646bfeb020d88c53018a41d7d6f96f31a19",
-          "current": true
-        }
-      ]
-    },
-    "mod/mylabmastering": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "smatts3/lsuce-legacy-plugins",
-          "sourcetype": "github",
-          "commithash": "dcd12646bfeb020d88c53018a41d7d6f96f31a19",
-          "current": true
-        }
-      ]
-    },
-    "mod/respondusws": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "smatts3/lsuce-legacy-plugins",
-          "sourcetype": "github",
-          "commithash": "dcd12646bfeb020d88c53018a41d7d6f96f31a19",
-          "current": true
-        }
-      ]
-    },
-    "mod/turningptintegration": {
-      "versions": [
-        {
-          "date": "2026-06-19",
-          "source": "smatts3/lsuce-legacy-plugins",
-          "sourcetype": "github",
-          "commithash": "dcd12646bfeb020d88c53018a41d7d6f96f31a19",
           "current": true
         }
       ]
