@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Fork third-party plugin repos referenced by submodulizer.json into the target
-# owner (default smatts3), choosing visibility based on the upstream and only
+# owner (default lsuonline), choosing visibility based on the upstream and only
 # forking what we are legally allowed to redistribute.
 #
 # For every plugin whose upstream owner is NOT in the keep list (default:
@@ -39,8 +39,10 @@
 # entries are copied once and every entry that used that URL is rewritten.
 #
 # Idempotent: once an entry points at the target owner it is in the keep list,
-# so re-running skips it. If the target repo already exists it is reused (and
-# re-mirrored unless --no-update).
+# so re-running skips it. If the target repo already exists under the target
+# owner, the script adopts it (rewrites submodulizer.json URLs and records pins
+# in submodulizer-moodle.json) instead of forking. Existing target repos are
+# re-mirrored on fork unless --no-update.
 #
 # IMPORTANT: the license check is a programmatic heuristic based on the license
 # GitHub detects (SPDX id), not legal advice. Anything that is not clearly an
@@ -61,9 +63,13 @@
 #                        nothing. With a token it does full classification;
 #                        without a token it can only list candidates.
 #       --manifest PATH  Manifest file (default: ./submodulizer.json).
-#       --target-owner   GitHub owner to create the forks under (default smatts3).
+#       --moodle-versions PATH
+#                        Version pins file (default: same directory as manifest,
+#                        submodulizer-moodle.json). Created or updated when a
+#                        target repo is adopted or newly forked.
+#       --target-owner   GitHub owner to create the forks under (default lsuonline).
 #       --keep-owners    Comma-separated owners to leave untouched
-#                        (default: lsuonline,smatts3 — target owner always kept).
+#                        (default: lsuonline — target owner always kept).
 #       --no-update      If the target repo already exists, do not re-mirror it.
 #       --fork-mode M    object (default): real GitHub fork objects for public
 #                        GitHub repos, mirror copy otherwise. mirror: always copy.
@@ -82,8 +88,9 @@ set -euo pipefail
 # ---------------------------------------------------------------------------
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 MANIFEST="$SCRIPT_DIR/submodulizer.json"
-TARGET_OWNER="smatts3"
-KEEP_OWNERS_CSV="lsuonline,smatts3"
+MOODLE_VERSIONS=""
+TARGET_OWNER="lsuonline"
+KEEP_OWNERS_CSV="lsuonline"
 DRY_RUN=false
 NO_UPDATE=false
 ASSUME_YES=false
@@ -102,6 +109,7 @@ while [[ $# -gt 0 ]]; do
   case "$1" in
     -n|--dry-run) DRY_RUN=true; shift ;;
     --manifest) MANIFEST="${2:?--manifest needs a path}"; shift 2 ;;
+    --moodle-versions) MOODLE_VERSIONS="${2:?--moodle-versions needs a path}"; shift 2 ;;
     --target-owner) TARGET_OWNER="${2:?--target-owner needs a value}"; shift 2 ;;
     --keep-owners) KEEP_OWNERS_CSV="${2:?--keep-owners needs a value}"; shift 2 ;;
     --no-update) NO_UPDATE=true; shift ;;
@@ -114,8 +122,15 @@ done
 
 case "$FORK_MODE" in object|mirror) ;; *) die "--fork-mode must be 'object' or 'mirror' (got '$FORK_MODE')" ;; esac
 
+[[ -n "$MOODLE_VERSIONS" ]] || MOODLE_VERSIONS="$(dirname -- "$MANIFEST")/submodulizer-moodle.json"
+
 # Token: accept GITHUB_TOKEN or GH_TOKEN.
 TOKEN="${GITHUB_TOKEN:-${GH_TOKEN:-}}"
+
+declare -a git_github_pat_c=()
+if [[ -n "$TOKEN" ]]; then
+  git_github_pat_c+=(-c "url.https://${TOKEN}@github.com/.insteadOf=https://github.com/")
+fi
 
 # Always keep the target owner, plus whatever the user listed (lowercased).
 declare -A KEEP_OWNERS=()
@@ -471,6 +486,131 @@ update_manifest_url() {
   mv "$tmp" "$MANIFEST"
 }
 
+# True when github.com/TARGET_OWNER/$1 exists (HTTP 200).
+target_repo_exists() {
+  local name="$1"
+  [[ -n "$TOKEN" ]] || return 1
+  api GET "/repos/$TARGET_OWNER/$name"
+  [[ "$HTTP_STATUS" == "200" ]]
+}
+
+# Resolve the tip SHA of $branch (or the repo default branch) on github.com.
+resolve_github_repo_tip_sha() {
+  local owner="$1" repo="$2" branch="${3:-}" sha def_br
+  if [[ -n "$TOKEN" ]]; then
+    api GET "/repos/$owner/$repo"
+    [[ "$HTTP_STATUS" == "200" ]] || return 1
+    def_br="$(printf '%s' "$API_BODY" | jq -r '.default_branch // empty')"
+    [[ -n "$branch" ]] || branch="$def_br"
+    [[ -n "$branch" ]] || return 1
+    api GET "/repos/$owner/$repo/git/ref/heads/${branch}"
+    if [[ "$HTTP_STATUS" == "200" ]]; then
+      sha="$(printf '%s' "$API_BODY" | jq -r '.object.sha // empty')"
+      [[ "$sha" =~ ^[0-9a-f]{40}$ ]] && { printf '%s\n' "$sha"; return 0; }
+    fi
+    [[ -n "$def_br" && "$branch" != "$def_br" ]] || return 1
+    api GET "/repos/$owner/$repo/git/ref/heads/${def_br}"
+    [[ "$HTTP_STATUS" == "200" ]] || return 1
+    sha="$(printf '%s' "$API_BODY" | jq -r '.object.sha // empty')"
+    [[ "$sha" =~ ^[0-9a-f]{40}$ ]] && { printf '%s\n' "$sha"; return 0; }
+    return 1
+  fi
+  local url="https://${GITHUB_HOST}/${owner}/${repo}.git" out
+  if [[ -n "$branch" ]]; then
+    out="$(GIT_TERMINAL_PROMPT=0 git "${git_github_pat_c[@]}" ls-remote --heads -- "$url" "refs/heads/$branch" 2>/dev/null || true)"
+    sha="$(awk 'NR==1 {print $1}' <<<"$out" | tr -d '\r')"
+    [[ "$sha" =~ ^[0-9a-f]{40}$ ]] && { printf '%s\n' "$sha"; return 0; }
+  fi
+  out="$(GIT_TERMINAL_PROMPT=0 git "${git_github_pat_c[@]}" ls-remote --symref -- "$url" HEAD 2>/dev/null || true)"
+  sha="$(awk '$2=="HEAD" {print $1}' <<<"$out" | tr -d '\r')"
+  [[ "$sha" =~ ^[0-9a-f]{40}$ ]] && { printf '%s\n' "$sha"; return 0; }
+  return 1
+}
+
+# Upsert a current=true pin for $path in submodulizer-moodle.json.
+upsert_moodle_plugin_pin() {
+  local path="$1" source="$2" commithash="$3" date_str="$4" tmp
+  [[ -f "$MOODLE_VERSIONS" ]] || printf '%s\n' '{"plugins":{}}' >"$MOODLE_VERSIONS"
+  tmp="$(mktemp "${MOODLE_VERSIONS}.XXXXXX")"
+  jq --arg path "$path" --arg date "$date_str" --arg source "$source" \
+    --arg hash "$commithash" \
+    '
+    .plugins[$path] = (
+      (.plugins[$path] // {versions: []})
+      | .versions |= map(if .current == true then . + {current: false} else . end)
+      | .versions += [{
+          date: $date,
+          source: $source,
+          sourcetype: "github",
+          commithash: $hash,
+          current: true
+        }]
+    )
+    ' "$MOODLE_VERSIONS" >"$tmp"
+  mv "$tmp" "$MOODLE_VERSIONS"
+}
+
+# Rewrite manifest URLs and record lsu pins for every plugin path using $src_url.
+record_lsu_adoption() {
+  local src_url="$1" new_url="$2" target_repo_name="$3"
+  local date_str path branch sha source="${TARGET_OWNER}/${target_repo_name}" n=0
+  local -a plugin_rows=()
+
+  date_str="$(date +%Y-%m-%d)"
+  while IFS=$'\t' read -r path branch; do
+    [[ -z "$path" ]] && continue
+    plugin_rows+=("${path}"$'\t'"${branch}")
+  done < <(jq -r --arg u "$src_url" '
+    (.defaults.branch // "main") as $defbr
+    | .plugins[]
+    | select(.disabled != true and .url == $u)
+    | "\(.path)\t\(.branch // $defbr)"
+  ' "$MANIFEST" | tr -d '\r')
+
+  if ((${#plugin_rows[@]} == 0)); then
+    warn "no manifest plugin paths use $src_url; submodulizer-moodle.json unchanged"
+    return 0
+  fi
+
+  if [[ "$src_url" != "$new_url" ]]; then
+    if $DRY_RUN; then
+      info "  would rewrite manifest url $src_url -> $new_url"
+    else
+      update_manifest_url "$src_url" "$new_url"
+      info "  updated submodulizer.json"
+    fi
+  fi
+
+  for row in "${plugin_rows[@]}"; do
+    IFS=$'\t' read -r path branch <<<"$row"
+    if ! sha="$(resolve_github_repo_tip_sha "$TARGET_OWNER" "$target_repo_name" "$branch")"; then
+      warn "could not resolve branch tip for $path ($TARGET_OWNER/$target_repo_name branch=${branch:-default}); skipping moodle pin"
+      continue
+    fi
+    if $DRY_RUN; then
+      info "  would pin $path -> $source@${sha:0:7} (branch ${branch:-default})"
+    else
+      upsert_moodle_plugin_pin "$path" "$source" "$sha" "$date_str"
+      info "  pinned $path -> $source@${sha:0:7}"
+    fi
+    n=$((n + 1))
+  done
+
+  if (( n > 0 )); then
+    $DRY_RUN && info "  would update submodulizer-moodle.json ($n plugin path(s))" \
+      || info "  updated submodulizer-moodle.json ($n plugin path(s))"
+  fi
+  return 0
+}
+
+# Target repo already exists: point manifest at it and record moodle pins (no fork).
+adopt_existing_target_repo() {
+  local src_url="$1" target_repo_name="$2"
+  local new_url="https://$GITHUB_HOST/$TARGET_OWNER/$target_repo_name.git"
+  info "  adopting existing $TARGET_OWNER/$target_repo_name"
+  record_lsu_adoption "$src_url" "$new_url" "$target_repo_name"
+}
+
 # ---------------------------------------------------------------------------
 # Mechanism dispatch + the two implementations (fork object / mirror copy).
 # ---------------------------------------------------------------------------
@@ -496,7 +636,7 @@ do_fork_object() {
   api GET "/repos/$target_full"
   if [[ "$HTTP_STATUS" == "200" ]]; then
     info "  reusing existing $target_full"
-    update_manifest_url "$src_url" "$new_url"
+    adopt_existing_target_repo "$src_url" "$name"
     return 0
   fi
 
@@ -513,8 +653,7 @@ do_fork_object() {
     return 1
   fi
   info "  fork requested (async; GitHub is populating $target_full)"
-  update_manifest_url "$src_url" "$new_url"
-  info "  updated submodulizer.json"
+  record_lsu_adoption "$src_url" "$new_url" "$name"
   return 0
 }
 
@@ -544,7 +683,7 @@ do_fork_mirror() {
     info "  reusing existing $target_full"
     if $NO_UPDATE; then
       info "  skipping re-mirror (--no-update)"
-      update_manifest_url "$src_url" "$new_url"
+      adopt_existing_target_repo "$src_url" "$name"
       return 0
     fi
   else
@@ -578,8 +717,7 @@ do_fork_mirror() {
   [[ $rc -ne 0 ]] && return 1
 
   info "  mirrored $src_url -> $target_full"
-  update_manifest_url "$src_url" "$new_url"
-  info "  updated submodulizer.json"
+  record_lsu_adoption "$src_url" "$new_url" "$name"
   return 0
 }
 
@@ -658,11 +796,22 @@ main() {
     case "$reply" in y|Y|yes|YES) ;; *) die "aborted by user" ;; esac
   fi
 
-  local i pub=0 priv=0 skip=0 fail=0
+  local i pub=0 priv=0 adopted=0 skip=0 fail=0
   for ((i=0; i<total; i++)); do
     local host="${SRC_HOSTS[$i]}" owner="${SRC_OWNERS[$i]}" repo="${SRC_REPOS[$i]}"
     local url="${SRC_URLS[$i]}" name="${SRC_NAMES[$i]}"
     local label="$owner/$repo"
+
+    if target_repo_exists "$name"; then
+      printf '[%d/%d] %s -> ADOPT_EXISTING (%s/%s)\n' \
+        "$((i+1))" "$total" "$label" "$TARGET_OWNER" "$name"
+      if adopt_existing_target_repo "$url" "$name"; then
+        adopted=$((adopted + 1))
+      else
+        fail=$((fail + 1))
+      fi
+      continue
+    fi
 
     fetch_source_meta "$host" "$owner" "$repo"
     local decision; decision="$(classify)"
@@ -699,9 +848,9 @@ main() {
 
   info ""
   if $DRY_RUN; then
-    info "== Dry-run summary: $pub public fork(s), $priv private fork(s), $skip skipped of $total =="
+    info "== Dry-run summary: $adopted adopted, $pub public fork(s), $priv private fork(s), $skip skipped of $total =="
   else
-    info "== Summary: $pub public fork(s), $priv private fork(s), $skip skipped, $fail failed of $total =="
+    info "== Summary: $adopted adopted, $pub public fork(s), $priv private fork(s), $skip skipped, $fail failed of $total =="
   fi
 
   print_report

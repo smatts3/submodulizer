@@ -29,12 +29,12 @@ fi
 set +e
 sub_out=$("$CLEANDEV/submodulize.sh" --repo "$MOODLE" --dry-run 2>&1)
 sub_ec=$?
-red_out=$(bash "$CLEANDEV/manifest-submodulize-redundant.sh" --repo "$MOODLE" 2>&1)
-red_ec=$?
+unsub_out=$("$CLEANDEV/unsubmodulize.sh" --repo "$MOODLE" --dry-run 2>&1)
+unsub_ec=$?
 set -e
 [[ "$sub_ec" -ne 0 ]] || fail "expected submodulize nonzero exit"
-[[ "$red_ec" -ne 0 ]] || fail "expected manifest-submodulize-redundant nonzero exit"
+[[ "$unsub_ec" -ne 0 ]] || fail "expected unsubmodulize nonzero exit"
 echo "$sub_out" | grep -Fq "Manifest not found" || fail "expected submodulize stderr to mention Manifest not found"
-echo "$red_out" | grep -Fq "Manifest not found" || fail "expected redundant stderr to mention Manifest not found"
+echo "$unsub_out" | grep -Fq "Manifest not found" || fail "expected unsubmodulize stderr to mention Manifest not found"
 
 ok "default manifest path requires ROOT/submodulizer.json when --manifest omitted"

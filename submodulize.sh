@@ -487,6 +487,8 @@ BOOTSTRAP_EXPLICIT=false
 SYNC_UNSUB=false
 NO_SYNC_FROM_UNSUB=false
 PLAIN_LOG=false
+PUSH_OWNER="${SUBMODULIZER_PUSH_OWNER:-lsuonline}"
+PUSH_OWNER_EXPLICIT=false
 [[ "${SUBMODULIZER_PLAIN_LOG:-}" =~ ^(1|true|yes)$ ]] && PLAIN_LOG=true
 declare -a PLUGIN_BASE_OVERRIDES=()
 
@@ -536,6 +538,11 @@ Replay (default — one superproject commit per plugin-repo commit on --target):
   --plugin-base P=S     Optional start SHA for manifest path P
   --sync-unsub          Force the unsub→submodulized sync step (even if merge-base already equals unsub tip). Normally automatic when both branches exist and unsub is ahead.
   --no-sync-from-unsub  After manifest one-shot: do not replay unsubmodulized onto submodulized (overrides automatic sync).
+  --push-owner NAME     When replaying vendored plugin changes to plugin repos, push to
+                        github.com/NAME/repo.git instead of the manifest URL owner (default:
+                        lsuonline, or SUBMODULIZER_PUSH_OWNER). Skipped when the manifest
+                        URL is already under NAME. Use --no-push-owner to push to origin only.
+  --no-push-owner       Push plugin sync commits to origin (manifest URL owner) only.
   --plain-log           Replay/sync: use only upstream commit messages (no Replayed-from / Synced-from-unsub footers).
                         Manifest one-shot: commit message "Update plugin trees" instead of chore/submodule wording.
                         Bootstrap passes this through to unsubmodulize replay. Env: SUBMODULIZER_PLAIN_LOG=1.
@@ -596,6 +603,16 @@ while [[ $# -gt 0 ]]; do
       ;;
     --no-sync-from-unsub)
       NO_SYNC_FROM_UNSUB=true
+      shift
+      ;;
+    --push-owner)
+      PUSH_OWNER="${2:?}"
+      PUSH_OWNER_EXPLICIT=true
+      shift 2
+      ;;
+    --no-push-owner)
+      PUSH_OWNER=""
+      PUSH_OWNER_EXPLICIT=true
       shift
       ;;
     --plain-log)
@@ -871,6 +888,46 @@ rewrite_github_url_to_ssh() {
   fi
 }
 
+# Parse a github.com HTTPS or git@ URL. Prints "owner<TAB>repo" or returns 1.
+submodulizer_parse_github_owner_repo() {
+  local u="$1" rest owner repo
+  case "$u" in
+    https://github.com/*|http://github.com/*)
+      rest="${u#*://github.com/}"
+      owner="${rest%%/*}"
+      repo="${rest#*/}"
+      ;;
+    git@github.com:*)
+      rest="${u#git@github.com:}"
+      owner="${rest%%/*}"
+      repo="${rest#*/}"
+      ;;
+    *) return 1 ;;
+  esac
+  repo="${repo%.git}"
+  repo="${repo%/}"
+  [[ -n "$owner" && -n "$repo" ]] || return 1
+  printf '%s\t%s\n' "$owner" "$repo"
+}
+
+# Where to push plugin sync branches: "origin" or a URL (github.com only).
+submodulizer_plugin_push_target() {
+  local manifest_url="$1" parsed owner repo owner_lc target_lc
+  [[ -n "$PUSH_OWNER" ]] || { printf '%s\n' origin; return 0; }
+  parsed="$(submodulizer_parse_github_owner_repo "$manifest_url")" || { printf '%s\n' origin; return 0; }
+  IFS=$'\t' read -r owner repo <<< "$parsed"
+  owner_lc="$(printf '%s' "$owner" | tr '[:upper:]' '[:lower:]')"
+  target_lc="$(printf '%s' "$PUSH_OWNER" | tr '[:upper:]' '[:lower:]')"
+  [[ "$owner_lc" == "$target_lc" ]] && { printf '%s\n' origin; return 0; }
+  if $USE_SSH; then
+    printf '%s\n' "git@github.com:${PUSH_OWNER}/${repo}.git"
+  elif [[ -n "${GITHUB_TOKEN:-}" ]]; then
+    printf '%s\n' "https://${GITHUB_TOKEN}@github.com/${PUSH_OWNER}/${repo}.git"
+  else
+    printf '%s\n' "https://github.com/${PUSH_OWNER}/${repo}.git"
+  fi
+}
+
 # Parent index only has gitlinks; files inside each plugin dir are the submodule checkout (not parent blobs).
 # checkout to a vendored branch would replace those dirs unless submodule working trees are cleared first.
 submodulize_hint_switch_from_submodule_branch() {
@@ -956,7 +1013,7 @@ submodulize_apply_moodle_pin() {
 # Replay commits on unsubmodulized (since merge-base with TARGET_BRANCH) onto TARGET_BRANCH: each commit
 # may only touch paths under submodulizer.json roots. Plugin trees must match an existing plugin
 # commit, or we create commits on branch unsubmodulized_sync in the plugin repo (from manifest upstream
-# branch, then chained) and push origin.
+# branch, then chained) and push to the push target (lsuonline by default).
 submodulize_sync_from_unsubmodulized() {
   if $DRY_RUN; then
     echo "submodulize: sync from unsubmodulized — dry-run not supported; skipping." >&2
@@ -993,15 +1050,22 @@ submodulize_sync_from_unsubmodulized() {
     printf '%s\n' "$best"
   }
 
-  # Create (or extend) branch unsubmodulized_sync in the plugin bare clone from vendored tree at U:r, push to origin.
+  # Create (or extend) branch unsubmodulized_sync in the plugin bare clone from vendored tree at U:r, push to push target.
   replay_vendored_into_plugin_unsub_sync_branch() {
-    local pdir="$1" upstream_br="$2" U="$3" path_r="$4" want_tree="$5"
-    local wtd parent_sha sync_br=unsubmodulized_sync new_h
+    local pdir="$1" upstream_br="$2" U="$3" path_r="$4" want_tree="$5" plugin_url="$6"
+    local wtd parent_sha sync_br=unsubmodulized_sync new_h push_target remote_sync_ref
     rm -f "$TMPD/last_plugin_replay_sha"
 
+    push_target="$(submodulizer_plugin_push_target "$plugin_url")"
     GIT_TERMINAL_PROMPT=0 git -C "$pdir" fetch -q origin 2>/dev/null || true
+    if [[ "$push_target" != origin ]]; then
+      GIT_TERMINAL_PROMPT=0 git "${git_github_pat_c[@]}" -C "$pdir" fetch -q "$push_target" 2>/dev/null || true
+      remote_sync_ref="$(GIT_TERMINAL_PROMPT=0 git "${git_github_pat_c[@]}" -C "$pdir" ls-remote "$push_target" "refs/heads/$sync_br" 2>/dev/null | awk '{print $1}' | head -n1)"
+    fi
     if git -C "$pdir" show-ref --verify --quiet "refs/heads/$sync_br"; then
       parent_sha="$(git -C "$pdir" rev-parse "$sync_br")"
+    elif [[ -n "${remote_sync_ref:-}" ]]; then
+      parent_sha="$remote_sync_ref"
     elif git -C "$pdir" show-ref --verify --quiet "refs/remotes/origin/$sync_br"; then
       parent_sha="$(git -C "$pdir" rev-parse "refs/remotes/origin/$sync_br")"
     elif git -C "$pdir" show-ref --verify --quiet "refs/heads/$upstream_br"; then
@@ -1089,8 +1153,12 @@ submodulize_sync_from_unsubmodulized() {
       return 1
     }
     git -C "$wtd" branch -f "$sync_br" "$new_h" >/dev/null 2>&1
-    if ! GIT_TERMINAL_PROMPT=0 git "${git_github_pat_c[@]}" -C "$pdir" push -u origin "$sync_br" >/dev/null 2>&1; then
-      echo "submodulize: warning — push origin $sync_br failed (SSH/HTTPS or GITHUB_TOKEN). Superproject points at $new_h; push the plugin repo before others submodule-update." >&2
+    if [[ "$push_target" == origin ]]; then
+      if ! GIT_TERMINAL_PROMPT=0 git "${git_github_pat_c[@]}" -C "$pdir" push -u origin "$sync_br" >/dev/null 2>&1; then
+        echo "submodulize: warning — push origin $sync_br failed (SSH/HTTPS or GITHUB_TOKEN). Superproject points at $new_h; push the plugin repo before others submodule-update." >&2
+      fi
+    elif ! GIT_TERMINAL_PROMPT=0 git "${git_github_pat_c[@]}" -C "$pdir" push -u "$push_target" "$sync_br" >/dev/null 2>&1; then
+      echo "submodulize: warning — push $sync_br to $push_target failed (SSH/HTTPS or GITHUB_TOKEN). Superproject points at $new_h; push the plugin repo before others submodule-update." >&2
     fi
     git -C "$pdir" worktree remove -f "$wtd" >/dev/null 2>&1 || true
     printf '%s\n' "$new_h" >"$TMPD/last_plugin_replay_sha"
@@ -1182,7 +1250,7 @@ submodulize_sync_from_unsubmodulized() {
         upstream_br="${M_BRANCHES[$j]}"
         if newsha="$(submodulizer_find_plugin_commit_for_tree "$pdir" "$want_tr" "${M_TREE[$j]}" "$REPO_ROOT")"; then
           :
-        elif replay_vendored_into_plugin_unsub_sync_branch "$pdir" "$upstream_br" "$U" "$r" "$want_tr"; then
+        elif replay_vendored_into_plugin_unsub_sync_branch "$pdir" "$upstream_br" "$U" "$r" "$want_tr" "${M_URLS[$j]}"; then
           newsha="$(tr -d '\r\n' <"$TMPD/last_plugin_replay_sha")"
           echo "submodulize: sync from unsubmodulized — replayed $U:$r to plugin branch unsubmodulized_sync ($(git rev-parse --short "$newsha"))." >&2
         else
